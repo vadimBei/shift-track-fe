@@ -1,0 +1,53 @@
+<app-go-back path="/administration"></app-go-back>
+<div class="department-card__wrapper">
+    <div class="department-card__wrapper-header">
+        <div>
+            <strong>
+                Назва
+            </strong>
+        </div>
+
+        <div class="department-card__add-department">
+            <button 
+              class="btn"
+              (click)="openCreateDepartmentModal()"
+            >Додати
+            </button>
+        </div>
+
+    </div>
+    
+    <div class="department-card__underline"></div>
+
+    @for(groupe of groupedDepartments$ | async; track $index)
+    {
+        <div class="department-card_unit">
+            <strong>
+                Регіон: {{groupe.unit.name}}
+            </strong>
+        </div>
+
+        @for (department of groupe.departments; track department.id) 
+        {
+            <div class="department-card">
+                <div>
+                    {{department.name}}
+                </div>
+    
+                <div class="department-card__buttons">
+                    <div 
+                      class="department-card__button"
+                      (click)="openEditDepartmentModal(department)">
+                        <img src="/assets/icons/edit.svg" alt="edit">
+                    </div>
+    
+                    <div class="department-card__button">
+                        <img src="/assets/icons/delete.svg" alt="delete">
+                    </div>
+                </div>
+            </div>
+
+            <div class="department-card__underline"></div>
+        }        
+    }
+</div>

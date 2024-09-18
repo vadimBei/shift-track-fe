@@ -1,0 +1,71 @@
+:host {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100dvh;
+  align-items: center;
+  margin: 0 5%;
+  justify-items: center;
+}
+
+.logo {
+  justify-self: center;
+  display: grid;
+  grid-template-rows: repeat((2 1fr));
+  align-items: center;
+  justify-items: center;
+  grid-gap: 20px;
+}
+
+.register {
+  border: 1px solid var(--primary-color);
+  border-radius: 5%;
+  padding: 50px;
+  display: grid;
+  grid-template-rows: 50px auto 70px;
+  align-items: center;
+  justify-items: center;
+  grid-gap: 5px;
+}
+
+.register h1 {
+  justify-self: left;
+}
+
+:host form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #ffffffbf;
+  cursor: pointer;
+}
+
+.password-eye-btn.active {
+  color: var(--primary-color);
+}
+
+.login a {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--light-color);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--primary-color);
+  }
+}

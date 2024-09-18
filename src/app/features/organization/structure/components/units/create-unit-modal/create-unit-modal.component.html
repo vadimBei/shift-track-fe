@@ -1,0 +1,54 @@
+<div class="my-modal">
+    <div class="my-modal-header">
+      <h6 class="h6">{{title}}</h6>
+  
+      <button
+        class="close-modal-button" 
+        (click)="bsModalRef.hide()">
+        <span>&times;</span>
+      </button>
+    </div>
+  
+    <div class="my-modal-body">
+      <form
+        id="createUnitFrom"
+        [formGroup]="form"
+        (ngSubmit)="createUnit()">
+        <label class="form-control-label mb16">
+          Код:
+          <input 
+            class="form-input"
+            type="text"
+            formControlName="code"
+            placeholder="Введіть код регіону">
+        </label>
+  
+        <label class="form-control-label mb16">
+          Назва:
+          <input 
+            class="form-input"
+            type="text"
+            formControlName="name"
+            placeholder="Введіть назву регіону">
+        </label>
+  
+        <label class="form-control-label mb16">
+          Опис:
+          <input 
+            class="form-input"
+            type="text"
+            formControlName="description"
+            placeholder="Введіть опис регіону">
+        </label>
+      </form>
+      
+      <button 
+        class="btn btn-shadow" 
+        type="submit"
+        form="createUnitFrom"
+        [class.disabled]="!form.valid"
+        [disabled]="!form.valid"
+      >Зберегти
+      </button>
+    </div>
+  </div>

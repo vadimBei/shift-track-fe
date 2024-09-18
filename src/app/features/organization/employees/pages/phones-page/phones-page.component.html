@@ -1,0 +1,94 @@
+<div 
+  class="filter-card"
+  [formGroup]="form">
+    <select 
+      class="form-input filter-card_unit-selector"
+      formControlName="unitId"
+      (change)="onUnitChange($event)">
+        <option value="null">Оберіть регіон</option>
+        @for(unit of units$ | async; track unit.id)
+        {
+            <option value="{{unit.id}}">{{unit.name}}</option>
+        }
+    </select>
+
+  <input 
+    class="form-input filter-card__search" 
+    type="text" 
+    placeholder="Пошук"
+    formControlName="searchPattern"
+    (input)="onSearchChange($event)">
+</div>
+
+<div class="profile-card__wrapper">
+    <div class="profile-card__wrapper-header">
+        <div>
+            <strong>
+                ПІБ
+            </strong>
+        </div>
+    
+        <div>
+            <strong>
+                Мобільний
+            </strong>
+        </div>
+    
+        <div>
+            <strong>
+                Email
+            </strong>
+        </div>
+    
+        <div>
+            <strong>
+                Регіон
+            </strong>
+        </div>
+    
+        <div>
+            <strong>
+                Департамент
+            </strong>
+        </div>
+    
+        <div>
+            <strong>
+                Посада
+            </strong>
+        </div>
+    </div>
+
+    <div class="profile-card_underline"></div>
+
+    @for (employee of employees$ | async; track employee.id)
+    {
+        <div class="profile-card">
+            <div>
+                {{employee.fullName}}
+            </div>
+
+            <div>
+                {{employee.phoneNumber}}
+            </div>
+
+            <div>
+                {{employee.email}}
+            </div>
+
+            <div class="profile-card__long-text">
+                {{employee.department?.unit?.name}}
+            </div>
+
+            <div class="profile-card__long-text">
+                {{employee.department?.name}}
+            </div>
+
+            <div class="profile-card__long-text">
+                {{employee.position?.name}}
+            </div>
+        </div>
+
+        <div class="profile-card_underline"></div>
+    }
+</div>

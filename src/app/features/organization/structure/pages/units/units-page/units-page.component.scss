@@ -1,0 +1,52 @@
+:host {
+  height: 100%;
+  display: block;
+  padding-bottom: 25px;
+}
+
+.unit-card__wrapper {
+  border: 1px solid var(--primary-color);
+  padding: 10px 10px;
+  height: 90%;
+}
+
+.unit-card__wrapper-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  align-items: center;
+  margin-bottom: none;
+  padding: 0 20px;
+}
+
+.unit-card__add-unit {
+  width: 50%;
+  justify-self: end;
+}
+
+.unit-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  align-items: center;
+  height: 50px;
+  padding: 0 20px;
+}
+
+.unit-card__underline {
+  display: block;
+  border: 1px solid var(--primary-color);
+  margin: 5px 0;
+}
+
+.unit-card__buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  grid-gap: 15px;
+  justify-items: center;
+}
+
+.unit-card__button {
+  cursor: pointer;
+}

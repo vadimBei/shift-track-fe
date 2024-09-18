@@ -1,0 +1,8 @@
+
+@for (item of administrations; track $index)
+{
+<div class="administration-item" routerLink="{{item.path}}">
+    <img [src]="getIconSrc(item.icon)" alt="logo" class="mb16">
+    <h6 class="h6">{{item.title}}</h6>
+</div>
+}

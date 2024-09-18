@@ -1,0 +1,62 @@
+<app-go-back path="/administration"></app-go-back>
+<div class="unit-card__wrapper">
+    <div class="unit-card__wrapper-header">
+        <div>
+            <strong>
+                Код
+            </strong>
+        </div>
+
+        <div>
+            <strong>
+                Назва
+            </strong>
+        </div>
+
+        <div>
+            <strong>
+                Опис
+            </strong>
+        </div>
+        
+        <div class="unit-card__add-unit">
+            <button 
+              class="btn"
+              (click)="openCreateUnitModal()">Додати</button>
+        </div>
+
+    </div>
+    
+    <div class="unit-card__underline"></div>
+
+    @for(unit of units$ | async; track unit.id)
+    {
+        <div class="unit-card">
+            <div>
+                {{unit.code}}
+            </div>
+
+            <div>
+                {{unit.name}}
+            </div>
+
+            <div>
+                {{unit.description}}
+            </div>
+
+            <div class="unit-card__buttons">
+                <div 
+                  class="unit-card__button"
+                  (click)="openEditUnitModal(unit)">
+                    <img src="/assets/icons/edit.svg" alt="edit">
+                </div>
+
+                <div class="unit-card__button">
+                    <img src="/assets/icons/delete.svg" alt="delete">
+                </div>
+            </div>
+        </div>
+
+        <div class="unit-card__underline"></div>
+    }
+</div>
