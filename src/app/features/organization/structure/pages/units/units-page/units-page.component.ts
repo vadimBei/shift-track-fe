@@ -38,7 +38,6 @@ export class UnitsPageComponent implements OnInit {
     const initialState: ModalOptions = {
       class: 'modal modal-dialog-centered',
       initialState: {
-        title: 'Редагування регіону',
         unit: unit
       }
     }
@@ -52,16 +51,13 @@ export class UnitsPageComponent implements OnInit {
 
   openCreateUnitModal(){
     const initialState: ModalOptions = {
-      class: 'modal modal-dialog-centered',
-      initialState: {
-        title: 'Створення регіону'
-      }
+      class: 'modal modal-dialog-centered'
     }
 
     const ref = this.modalService.show(CreateUnitModalComponent, initialState);
 
     ref.onHidden?.subscribe({
       next: () => this.getUnits()
-    })
+    });
   }
 }

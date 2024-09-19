@@ -1,15 +1,16 @@
 <div>
     <div class="logo">
-        <img class="ml16"
+        <img
           src="/assets/icons/cube.svg"
           alt="Logo">
         
-        <h2 class=" ml40">ShiftTrack</h2>
+        <h2>ShiftTrack</h2>
     </div>
     
     <nav class="mt10">
         <ul class="main-menu-list">
-            @for (item of menuItems; track $index) {
+            @for (item of menuItems; track $index) 
+            {
                 <li>
                     <a class="menu-item"
                        routerLink="{{item.link}}"

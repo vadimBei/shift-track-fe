@@ -20,7 +20,6 @@ export class EditUnitModalComponent implements OnInit {
   bsModalRef = inject(BsModalRef);
   form: FormGroup = new FormGroup({});
   request?: EditUnitRequest;
-  title = '';
   unit?: Unit;
 
   constructor() {
