@@ -1,1 +1,54 @@
 <app-go-back path="/administration"></app-go-back>
+<div class="position-card__wrapper">
+    <div class="position-card__wrapper-header">
+        <div>
+            <strong>
+                Назва
+            </strong>
+        </div>
+
+        <div>
+            <strong>
+                Опис
+            </strong>
+        </div>
+
+        <div class="position-card__add-position">
+            <button 
+              class="btn"
+              (click)="openCreatePositionModal()"
+            >Додати
+            </button>
+        </div>
+
+    </div>
+    
+    <div class="position-card__underline"></div>
+
+    @for(position of positoins$ | async; track position.id)
+    {
+        <div class="position-card">
+            <div>
+                {{position.name}}
+            </div>
+
+            <div>
+                {{position.description}}
+            </div>
+
+            <div class="position-card__buttons">
+                <div
+                  class="position-card__button"
+                  (click)="openEditPositionModal(position)">
+                    <img src="/assets/icons/edit.svg" alt="edit">
+                </div>
+
+                <div class="position-card__button">
+                    <img src="/assets/icons/delete.svg" alt="delete">
+                </div>
+            </div>
+        </div>
+
+        <div class="position-card__underline"></div>    
+    }
+</div>

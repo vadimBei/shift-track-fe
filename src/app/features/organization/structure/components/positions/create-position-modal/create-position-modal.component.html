@@ -13,16 +13,7 @@
       <form
         id="createUnitFrom"
         [formGroup]="form"
-        (ngSubmit)="createUnit()">
-        <label class="form-control-label mb16">
-          Код:
-          <input 
-            class="form-input"
-            type="text"
-            formControlName="code"
-            placeholder="Введіть код регіону">
-        </label>
-  
+        (ngSubmit)="createPosition()">  
         <label class="form-control-label mb16">
           Назва:
           <input 
