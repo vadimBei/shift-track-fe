@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './core/layout/components/layout/layout.component';
 import { authGuard } from './core/account/guards/auth.guard';
+import { LoginPageComponent } from './core/account/pages/login-page/login-page.component';
 
 export const routes: Routes = [
+    {
+        path: '',
+        component: LoginPageComponent
+    },
     {
         path: 'employees',
         component: LayoutComponent,

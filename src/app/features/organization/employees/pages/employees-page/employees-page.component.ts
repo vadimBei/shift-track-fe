@@ -1,32 +1,32 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
+import { GoBackComponent } from '../../../../../shared/components/go-back/go-back.component';
 import { EmployeesService } from '../../services/employees.service';
-import { Employee } from '../../models/employee.model';
-import { AllEmployeesRequest } from '../../models/all-employees-request.model';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { Unit } from '../../../structure/models/unit.model';
 import { UnitService } from '../../../structure/services/unit.service';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, Subject, subscribeOn } from 'rxjs';
+import { AllEmployeesRequest } from '../../models/all-employees-request.model';
+import { Employee } from '../../models/employee.model';
+import { Unit } from '../../../structure/models/unit.model';
 import { CommonModule } from '@angular/common';
 import { DepartmentService } from '../../../structure/services/department.service';
 import { Department } from '../../../structure/models/department.model';
 
 @Component({
-  selector: 'app-phones-page',
+  selector: 'app-employees-page',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GoBackComponent
   ],
-  templateUrl: './phones-page.component.html',
-  styleUrl: './phones-page.component.scss'
+  templateUrl: './employees-page.component.html',
+  styleUrl: './employees-page.component.scss'
 })
-export class PhonesPageComponent implements OnInit {
-  employeeService = inject(EmployeesService);
+export class EmployeesPageComponent implements OnInit {
   departmentService = inject(DepartmentService);
+  employeeService = inject(EmployeesService);
   unitService = inject(UnitService);
-
   fb = inject(FormBuilder);
   searchSubject$: Subject<string> = new Subject<string>();
   form: FormGroup = new FormGroup({});
@@ -60,10 +60,18 @@ export class PhonesPageComponent implements OnInit {
     this.loadUnits();
   }
 
+  getEmployees() {
+    this.employeeService.getAllEmployees(this.request!)
+      .subscribe(val => {
+        this.employees$.next(val);
+      });
+  }
+
   initializeForm() {
     this.form = this.fb.group({
       searchPattern: [undefined],
-      unitId: [null]
+      unitId: [null],
+      departmentId: [null]
     });
   }
 
@@ -95,13 +103,6 @@ export class PhonesPageComponent implements OnInit {
     this.getEmployees();
   }
 
-  getEmployees() {
-    this.employeeService.getAllEmployees(this.request!)
-      .subscribe(val => {
-        this.employees$.next(val);
-      });
-  }
-
   onDepartmentChange(event: Event) {
     if (!this.request)
       return;
@@ -109,13 +110,10 @@ export class PhonesPageComponent implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     const departmentId = selectElement.value;
 
-    if (departmentId == 'null'){
+    if (departmentId == 'null')
       this.request.departmentId = undefined;
-    }
     else
-    {
       this.request.departmentId = Number(departmentId);
-    }
 
     this.getEmployees();
   }

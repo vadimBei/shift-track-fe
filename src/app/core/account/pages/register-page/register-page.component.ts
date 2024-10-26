@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { AbstractControl } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { AccountService } from '../../services/account.service';
+import { CreateUserRequest } from '../../models/create-user-request.model';
+import { EmployeeGender } from '../../../../features/organization/employees/enums/employee-gender.enum';
 
 @Component({
   selector: 'app-register-page',
@@ -26,9 +28,22 @@ export class RegisterPageComponent implements OnInit {
   isPasswordVisible = signal<boolean>(false);
   isConfirmPasswordVisible = signal<boolean>(false);
   validationErrors?: string[];
+  request?: CreateUserRequest;
+
 
   ngOnInit(): void {
     this.initializeForm()
+
+    this.request = {
+      name: '',
+      surname: '',
+      patronymic: '',
+      email: '',
+      phoneNumber: '',
+      gender: EmployeeGender.none,
+      password: '',
+      confirmPassword: ''
+    };
   }
 
   initializeForm() {
@@ -70,7 +85,19 @@ export class RegisterPageComponent implements OnInit {
 
   register() {
     if (this.form.valid) {
-      this.accountService.register(this.form.value)
+      if (!this.request)
+        return;
+
+      this.request.name = this.form.value.name;
+      this.request.surname = this.form.value.surname;
+      this.request.patronymic = this.form.value.patronymic;
+      this.request.email = this.form.value.email;
+      this.request.phoneNumber = this.form.value.phoneNumber;
+      this.request.gender = this.form.value.gender;
+      this.request.confirmPassword = this.form.value.confirmPassword;
+      this.request.password = this.form.value.password;
+
+      this.accountService.register(this.request)
         .subscribe({
           next: () => this.router.navigateByUrl('/employees/contact-list'),
           error: err => {

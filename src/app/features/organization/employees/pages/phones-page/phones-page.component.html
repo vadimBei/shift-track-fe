@@ -12,12 +12,23 @@
         }
     </select>
 
-  <input 
-    class="form-input filter-card__search" 
-    type="text" 
-    placeholder="Пошук"
-    formControlName="searchPattern"
-    (input)="onSearchChange($event)">
+    <select 
+      class="form-input "
+      formControlName="unitId"
+      (change)="onDepartmentChange($event)">
+        <option value="null">Оберіть департамент</option>
+        @for(department of departments$ | async; track department.id)
+        {
+            <option value="{{department.id}}">{{department.name}}</option>
+        }
+    </select>
+
+    <input 
+      class="form-input filter-card__search" 
+      type="text" 
+      placeholder="Пошук"
+      formControlName="searchPattern"
+      (input)="onSearchChange($event)">
 </div>
 
 <div class="profile-card__wrapper">

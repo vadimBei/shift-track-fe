@@ -1,154 +1,73 @@
-import { HttpErrorResponse, HttpHandler, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { AccountService } from "../../core/account/services/account.service";
-import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from "rxjs";
-import { Token } from "../../core/account/models/token.model";
+import { BehaviorSubject, catchError, filter, switchMap, tap, throwError } from "rxjs";
 
-let isRefreshing = false;
-let token$: BehaviorSubject<Token | null> = new BehaviorSubject<Token | null>(null);
+let isRefreshing$ = new BehaviorSubject<boolean>(false);
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     const accountService = inject(AccountService);
 
-    const token = accountService.token();
+    var accessToken = accountService.token()?.accessToken;
 
-    if (token) {
-        req = addToken(req, token);
+    if (!accessToken) {
+        return next(req);
+    }
+    
+    if (isRefreshing$.value) {
+        return refreshTokenAndProceed(accountService, req, next);
     }
 
-    return next(req)
+    return next(addToken(req, accessToken))
         .pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 401) {
-                    if (req.url.includes('refresh')) {
-                        accountService.logout();
-
-                        return throwError(() => new Error('Refresh token expired or invalid, logging out'));
-                    }
-
-                    return handle401Error(req, next, accountService);
+                debugger
+                if (error.status === 401) {
+                    return refreshTokenAndProceed(accountService, req, next);
                 }
-                else {
-                    return throwError(() => new Error());
-                }
+
+                return throwError(() => error);
             })
         )
 }
 
 const addToken = (
     req: HttpRequest<any>,
-    token: Token) => {
+    accessToken: string) => {
     return req.clone({
         setHeaders: {
-            Authorization: `Bearer ${token.accessToken}`
+            Authorization: `Bearer ${accessToken}`
         }
     });
 }
 
-const handle401Error = (
+const refreshTokenAndProceed = (
+    accountService: AccountService,
     req: HttpRequest<any>,
-    next: HttpHandlerFn,
-    accountService: AccountService) => {
-    if (!isRefreshing) {
-        isRefreshing = true;
-        token$.next(null);
+    next: HttpHandlerFn
+) => {
+    if (!isRefreshing$.value) {
+        isRefreshing$.next(true);
 
-        const refreshToken = accountService.token()?.refreshToken;
-        debugger
-        if (refreshToken) {
-            return accountService.refreshToken()
-                .pipe(
-                    switchMap((token: Token) => {
-                        isRefreshing = false;
-                        token$.next(token);
-
-                        return next(addToken(req, token));
-                    }),
-                    catchError((error) => {
-                        isRefreshing = false;
-                        accountService.logout();
-                        debugger
-                        return throwError(() => new Error('Refresh token is not available'));
-                    })
-                );
-        }
-        else {
-            accountService.logout();
-
-            return throwError(() => new Error('Refresh token is not available'));
-        }
+        return accountService.refreshToken()
+            .pipe(
+                switchMap(token => {
+                    return next(addToken(req, token.accessToken))
+                        .pipe(
+                            tap(() => isRefreshing$.next(false))
+                        );
+                })
+            );
     }
-    else {
-        return token$.pipe(
-            filter(token => token != null),
-            take(1),
-            switchMap(token => next(addToken(req, token!)))
-        );
+
+    if (req.url.includes('refresh')) {
+        return next(addToken(req, accountService.token()?.accessToken!));
     }
+
+    return isRefreshing$.pipe(
+        filter(isRefreshing => !isRefreshing),
+        switchMap(res => {
+            return next(addToken(req, accountService.token()?.accessToken!));
+        })
+    );
 }
-
-// if (!accountService.token()) {
-//     return next(req);
-// }
-
-// if (isRefreshing$.value) {
-//     return refreshTokenAndProceed(accountService, req, next);
-// }
-
-// return next(addToken(req, accountService))
-//     .pipe(
-//         catchError((httpError: HttpErrorResponse) => {
-//             const backendError = httpError.error as BackendError;
-
-//             if (httpError) {
-//                 switch (httpError.status) {
-
-//                     case 401: {
-//                         return refreshTokenAndProceed(accountService, req, next);
-//                     }
-
-//                     default: {
-//                         console.log('Unhandled error', httpError);
-
-//                     }
-//                 }
-//             }
-//             throw httpError;
-//         })
-//     );
-
-
-// const refreshTokenAndProceed = (
-//     accountService: AccountService,
-//     req: HttpRequest<any>,
-//     next: HttpHandlerFn
-// ) => {
-//     if (!isRefreshing$.value) {
-//         isRefreshing$.next(true);
-
-//         return accountService.refreshToken()
-//             .pipe(
-//                 switchMap(() => {
-//                     return next(addToken(req, accountService))
-//                         .pipe(
-//                             tap(() => {
-//                                 isRefreshing$.next(false);
-//                             })
-//                         );
-//                 })
-//             );
-//     }
-
-//     if (req.url.includes('refresh')) {
-//         debugger
-//         return next(addToken(req, accountService));
-//     }
-
-//     return isRefreshing$.pipe(
-//         filter(isRefreshing => !isRefreshing),
-//         switchMap(res => {
-//             return next(addToken(req, accountService));
-//         })
-//     )
-
-// }
