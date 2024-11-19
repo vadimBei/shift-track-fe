@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { AllEmployeesRequest } from '../models/all-employees-request.model';
+import { EditEmployeeRequest } from '../models/edit-employee-request';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { AllEmployeesRequest } from '../models/all-employees-request.model';
 export class EmployeesService {
   private httpClient = inject(HttpClient);
 
-  private baseApiUrl = 'system/user/employees';
+  private path = 'system/user/employees';
 
   getAllEmployees(request: AllEmployeesRequest) {
     let filter = new HttpParams();
@@ -19,15 +20,29 @@ export class EmployeesService {
         filter = filter.set('unitId', request.unitId);
       }
 
+      if (request.departmentId !== undefined && request.departmentId !== null) {
+        filter = filter.set('departmentId', request.departmentId);
+      }
+
       if (request.searchPattern) {
         filter = filter.set('searchPattern', request.searchPattern);
       }
     }
 
-    return this.httpClient.get<Employee[]>(`${this.baseApiUrl}`,
+    return this.httpClient.get<Employee[]>(`${this.path}`,
       {
         params: filter
       }
     );
+  }
+
+  getEmployeeById(id: number) {
+    return this.httpClient.get<Employee>(this.path + `/${id}`);
+  }
+
+  updateEmployee(request: EditEmployeeRequest) {
+    return this.httpClient.put<Employee>(
+      this.path,
+      request);
   }
 }

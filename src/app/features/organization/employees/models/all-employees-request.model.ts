@@ -1,4 +1,5 @@
 export interface AllEmployeesRequest {
-    unitId?: number,
-    searchPattern?: string
+    unitId?: number;
+    departmentId?: number;
+    searchPattern?: string;
 }

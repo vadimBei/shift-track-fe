@@ -30,7 +30,7 @@ export class DepartmentsPageComponent implements OnInit {
   }
 
   getDepartments() {
-    this.depaermentService.getGroupedDepartmentsByUnit()
+    this.depaermentService.getGroupedDepartmentsGroupedByUnits()
       .subscribe(departments => {
         this.groupedDepartments$.next(departments);
       })

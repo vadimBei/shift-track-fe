@@ -35,6 +35,11 @@ export class AdministrationPageComponent {
       icon: 'administration_positions'
     },
     {
+      title: 'Працівники',
+      path: '/administration/employees',
+      icon: 'administration_employees'
+    },
+    {
       title: 'Робочі зміни',
       path: '/administration/shifts',
       icon: 'administration_shifts',

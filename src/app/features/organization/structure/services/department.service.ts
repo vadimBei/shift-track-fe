@@ -15,7 +15,7 @@ export class DepartmentService {
 
   constructor() { }
 
-  getGroupedDepartmentsByUnit() {
+  getGroupedDepartmentsGroupedByUnits() {
     return this.httpClient.get<GroupedDepartmentsByUnit[]>(this.path + `/grouped/by-unit`);
   }
 

@@ -3,8 +3,9 @@ import { UnitsPageComponent } from "../../features/organization/structure/pages/
 import { AdministrationPageComponent } from "./pages/administration-page/administration-page.component";
 import { DepartmentsPageComponent } from "../../features/organization/structure/pages/departments/departments-page/departments-page.component";
 import { TimesheetShiftsPageComponent } from "../../features/organization/timesheet/pages/timesheet-shifts-page/timesheet-shifts-page.component";
-import { EditEmployeeComponent } from "../../features/organization/employees/pages/edit-employee/edit-employee.component";
 import { PositionsPageComponent } from "../../features/organization/structure/pages/positions/positions-page/positions-page.component";
+import { EmployeesPageComponent } from "../../features/organization/employees/pages/employees-page/employees-page.component";
+import { EditAccountPageComponent } from "../account/pages/edit-account-page/edit-account-page.component";
 
 const routes: Routes = [
     {
@@ -25,11 +26,15 @@ const routes: Routes = [
     },
     {
         path: 'profile',
-        component: EditEmployeeComponent
+        component: EditAccountPageComponent
     },
     {
         path: 'positions',
         component: PositionsPageComponent
+    },
+    {
+        path: 'employees',
+        component: EmployeesPageComponent
     }
 ]
 
