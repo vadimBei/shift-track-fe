@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { AllEmployeesRequest } from '../models/all-employees-request.model';
+import { EditEmployeeRequest } from '../models/edit-employee-request';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,13 @@ export class EmployeesService {
     );
   }
 
-  getEmployeeById(id: number){
+  getEmployeeById(id: number) {
     return this.httpClient.get<Employee>(this.path + `/${id}`);
+  }
+
+  updateEmployee(request: EditEmployeeRequest) {
+    return this.httpClient.put<Employee>(
+      this.path,
+      request);
   }
 }

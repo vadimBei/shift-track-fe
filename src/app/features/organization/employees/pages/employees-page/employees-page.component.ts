@@ -3,13 +3,15 @@ import { GoBackComponent } from '../../../../../shared/components/go-back/go-bac
 import { EmployeesService } from '../../services/employees.service';
 import { UnitService } from '../../../structure/services/unit.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, Subject, subscribeOn } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import { AllEmployeesRequest } from '../../models/all-employees-request.model';
 import { Employee } from '../../models/employee.model';
 import { Unit } from '../../../structure/models/unit.model';
 import { CommonModule } from '@angular/common';
 import { DepartmentService } from '../../../structure/services/department.service';
 import { Department } from '../../../structure/models/department.model';
+import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { EditEmployeeModalComponent } from '../../components/edit-employee-modal/edit-employee-modal.component';
 
 @Component({
   selector: 'app-employees-page',
@@ -28,6 +30,8 @@ export class EmployeesPageComponent implements OnInit {
   employeeService = inject(EmployeesService);
   unitService = inject(UnitService);
   fb = inject(FormBuilder);
+  modalService = inject(BsModalService);
+
   searchSubject$: Subject<string> = new Subject<string>();
   form: FormGroup = new FormGroup({});
 
@@ -57,7 +61,7 @@ export class EmployeesPageComponent implements OnInit {
         this.getEmployees();
       });
 
-    this.loadUnits();
+    this.getUnits();
   }
 
   getEmployees() {
@@ -89,7 +93,7 @@ export class EmployeesPageComponent implements OnInit {
 
     if (unitId == 'null') {
       this.request.unitId = undefined;
-
+      this.request.departmentId = undefined;
       this.departments$.next([]);
 
       this.initializeForm();
@@ -97,7 +101,7 @@ export class EmployeesPageComponent implements OnInit {
     else {
       this.request.unitId = Number(unitId);
 
-      this.loadDepartmentsByUnitId(this.request!.unitId!);
+      this.getDepartmentsByUnitId(this.request!.unitId!);
     }
 
     this.getEmployees();
@@ -118,17 +122,32 @@ export class EmployeesPageComponent implements OnInit {
     this.getEmployees();
   }
 
-  loadUnits() {
+  getUnits() {
     this.unitService.getUnits()
       .subscribe(units => {
         this.units$.next(units);
       });
   }
 
-  loadDepartmentsByUnitId(unitId: number) {
+  getDepartmentsByUnitId(unitId: number) {
     this.departmentService.getDepartmentsByUnitId(unitId)
       .subscribe(departments => {
         this.departments$.next(departments);
       });
+  }
+
+  openEditEmployeeModal(employeeId: number) {
+    const initialState: ModalOptions = {
+      class: 'modal modal-dialog-centered',
+      initialState: {
+        employeeId: employeeId,
+      }
+    }
+
+    const ref = this.modalService.show(EditEmployeeModalComponent, initialState);
+
+    ref.onHidden?.subscribe({
+      next: () => this.getEmployees()
+    })
   }
 }

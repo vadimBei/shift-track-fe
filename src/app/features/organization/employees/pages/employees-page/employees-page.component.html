@@ -17,7 +17,7 @@
     
         <select 
           class="form-input "
-          formControlName="unitId"
+          formControlName="departmentId"
           (change)="onDepartmentChange($event)">
             <option value="null">Оберіть департамент</option>
             @for(department of departments$ | async; track department.id)
@@ -104,12 +104,15 @@
 
                 <div class="profile-card_buttons">
                     <div 
-                    class="profile-card_button"
-                    >
-                      <img src="/assets/icons/edit.svg" alt="edit">
+                      class="profile-card_button">
+                      <img 
+                        src="/assets/icons/edit.svg" 
+                        alt="edit"
+                        (click)="openEditEmployeeModal(employee.id)">
                   </div>
   
-                  <div class="profile-card_button">
+                  <div 
+                    class="profile-card_button">
                       <img src="/assets/icons/delete.svg" alt="delete">
                   </div>
                 </div>

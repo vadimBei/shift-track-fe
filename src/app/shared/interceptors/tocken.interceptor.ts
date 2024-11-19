@@ -13,7 +13,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     if (!accessToken) {
         return next(req);
     }
-    
+
     if (isRefreshing$.value) {
         return refreshTokenAndProceed(accountService, req, next);
     }
@@ -21,7 +21,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     return next(addToken(req, accessToken))
         .pipe(
             catchError(error => {
-                debugger
                 if (error.status === 401) {
                     return refreshTokenAndProceed(accountService, req, next);
                 }

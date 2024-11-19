@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { GoBackComponent } from '../../../../shared/components/go-back/go-back.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { EmployeesService } from '../../../../features/organization/employees/services/employees.service';
@@ -7,6 +6,8 @@ import { Employee } from '../../../../features/organization/employees/models/emp
 import { EmployeeGender } from '../../../../features/organization/employees/enums/employee-gender.enum';
 import { EditAccountRequest } from '../../models/edit-account-request.model';
 import moment from 'moment';
+import { throwError } from 'rxjs';
+import { GoBackComponent } from '../../../../shared/components/go-back/go-back.component';
 @Component({
   selector: 'app-edit-account-page',
   standalone: true,
@@ -116,9 +117,7 @@ export class EditAccountPageComponent {
 
     this.accountService.updateAccount(this.request)
       .subscribe({
-        error: error => {
-          console.error('updating account error', error);
-        }
+        error: error => throwError(() => new Error(error))
       });
   }
 
