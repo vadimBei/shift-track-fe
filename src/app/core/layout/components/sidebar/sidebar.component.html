@@ -1,25 +1,32 @@
-<div>
-    <div class="logo">
-        <img
-          src="/assets/icons/cube.svg"
-          alt="Logo">
-        
-        <h2>ShiftTrack</h2>
+<div class="d-flex flex-column vh-100">
+    <div class="row pt-2 justify-content-center bg-primary">
+        <div class="col-2">
+            <img src="/assets/icons/cube.svg" alt="Logo">
+        </div>
+        <div class="col-auto">
+            <h2 class="h2 text-light">ShiftTrack</h2>
+        </div>
     </div>
-    
-    <nav class="mt10">
-        <ul class="main-menu-list">
-            @for (item of menuItems; track $index) 
-            {
-                <li>
-                    <a class="menu-item"
-                       routerLink="{{item.link}}"
-                       routerLinkActive="active">
-                        <img [src]="getMenuIconSrc(item.icon)">
-                        <span>{{item.label}}</span> 
+
+    <nav class="navbar navbar-expand-lg flex-grow-1 bg-body-tertiary d-flex flex-column align-items-start ">
+        <div class="container flex-column">
+            <ul class="navbar-nav flex-column w-100">
+                @for (item of menuItems; track $index)
+                {
+                <li class="main-menu-list mb-1">
+                    <a class="menu-item" routerLink="{{item.link}}" routerLinkActive="active">
+                        <div class="row">
+                            <div class="col-1">
+                                <img [src]="getMenuIconSrc(item.icon)">
+                            </div>
+                            <div class="col-auto">
+                                <h6 class="h6">{{item.label}}</h6>
+                            </div>
+                        </div>
                     </a>
                 </li>
-            }
-        </ul>
+                }
+            </ul>
+        </div>
     </nav>
 </div>

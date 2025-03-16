@@ -3,6 +3,7 @@
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/mixins";
 
 $theme-colors: (
   "primary": #6200ea,
@@ -32,6 +33,14 @@ body {
   font-family: "JetBrains Mono", sans-serif;
 }
 
+.bg-primary {
+  background-color: #6200ea !important;
+}
+
+.text-primary {
+  color: #6200ea !important;
+}
+
 .btn {
   color: var(--light-color);
   padding: 10px 20px;
@@ -51,6 +60,12 @@ body {
 .h6 {
   font-size: 18px;
   line-height: 24px;
+  font-weight: 800;
+}
+
+.h2 {
+  font-size: 35px;
+  line-height: 50px;
   font-weight: 800;
 }
 
