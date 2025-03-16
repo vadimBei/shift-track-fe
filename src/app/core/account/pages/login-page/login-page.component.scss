@@ -9,21 +9,6 @@ h1 {
   background-position: center;
 }
 
-.password-eye-btn {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--light-color);
-  cursor: pointer;
-}
-
-.password-eye-btn.active {
-  color: var(--primary-color);
-}
-
 .login-container a {
   cursor: pointer;
   border: none;
@@ -31,12 +16,6 @@ h1 {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 700;
-  font-size: 14px;
-  line-height: 24px;
-}
-
-.login-container a:hover {
-  font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
 }

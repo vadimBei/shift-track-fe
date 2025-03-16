@@ -5,7 +5,7 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 $theme-colors: (
-  "primary": #6200ea
+  "primary": #6200ea,
 );
 
 @import "../node_modules/bootstrap/scss/bootstrap";
@@ -32,7 +32,6 @@ body {
   font-family: "JetBrains Mono", sans-serif;
 }
 
-
 .btn {
   color: var(--light-color);
   padding: 10px 20px;
@@ -41,10 +40,6 @@ body {
   line-height: 24px;
   cursor: pointer;
   border-radius: 4px;
-
-  &:hover {
-    background-color: var(--primary-hover-color);
-  }
 }
 
 .h1 {
@@ -62,6 +57,27 @@ body {
 .form-control:hover {
   border-color: var(--primary-color) !important;
   outline: none;
+}
+
+.logo {
+  height: 200px;
+  width: 200px;
+}
+
+
+.password-eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--grey-color);
+  cursor: pointer;
+}
+
+.password-eye-btn.active {
+  color: var(--primary-color);
 }
 
 // .modal {
