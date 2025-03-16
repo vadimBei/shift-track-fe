@@ -1,8 +1,21 @@
-
-@for (item of administrations; track $index)
-{
-<div class="administration-item" routerLink="{{item.path}}">
-    <img [src]="getIconSrc(item.icon)" alt="logo" class="mb16">
-    <h6 class="h6">{{item.title}}</h6>
+<div class="container text-center">
+    <div class="row gy-5">
+        @for (item of administrations; track $index)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                <div class="card shadow mt-3 mt-xl-10">
+                    <div class="row g-0">
+                        <div class="col">
+                            <div class="card-body p-5">
+                                <div routerLink="{{item.path}}">
+                                    <img [src]="getIconSrc(item.icon)" alt="logo" class="mb16">
+                                    <h6 class="h6">{{item.title}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-}
