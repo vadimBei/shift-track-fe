@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AccountService } from '../../services/account.service';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { NgModule} from '@angular/core';
 
 @Component({
   selector: 'app-login-page',
