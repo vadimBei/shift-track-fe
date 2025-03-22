@@ -21,14 +21,6 @@ $theme-colors: (
   --pink-color: #e6268d;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 body {
   font-family: "JetBrains Mono", sans-serif;
 }
@@ -39,6 +31,21 @@ body {
 
 .text-primary {
   color: #6200ea !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--primary-color);
+  color: var(--light-color) !important;
 }
 
 .btn {
@@ -78,7 +85,6 @@ body {
   height: 200px;
   width: 200px;
 }
-
 
 .password-eye-btn {
   position: absolute;

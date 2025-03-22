@@ -2,16 +2,20 @@
   background: var(--primary-color);
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 1fr 40px;
   padding: 0 10px;
   align-items: center;
+}
+
+.account button {
+  background: none;
+  border: none;
 }
 
 .log-out {
   grid-column: 2;
   color: var(--light-color);
   padding: 10px 20px;
-  align-content: center;
   font-weight: 800;
   font-size: 14px;
   line-height: 24px;

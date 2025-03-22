@@ -2,7 +2,6 @@
 import { EmployeeGender } from "../enums/employee-gender.enum";
 import { Department } from "../../structure/models/department.model";
 import { Position } from "../../structure/models/position.model";
-import { Unit } from "../../structure/models/unit.model";
 
 export interface Employee {
     id: number;
