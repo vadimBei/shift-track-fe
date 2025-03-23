@@ -1,19 +1,9 @@
-:host {
-  background: var(--primary-color);
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 40px;
-  padding: 0 10px;
-  align-items: center;
-}
-
 .account button {
   background: none;
   border: none;
 }
 
 .log-out {
-  grid-column: 2;
   color: var(--light-color);
   padding: 10px 20px;
   font-weight: 800;
