@@ -1,24 +1,24 @@
-:host {
-  display: grid;
-  grid-template-rows: 100px auto;
-  grid-gap: 10px;
-  height: 100%;
-  padding-bottom: 25px;
-}
+// :host {
+//   display: grid;
+//   grid-template-rows: 100px auto;
+//   grid-gap: 10px;
+//   height: 100%;
+//   padding-bottom: 25px;
+// }
 
-.filter-card {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
-  padding: 25px 25px;
-  background: var(--dark-color);
-  border-radius: 5px;
-  border: 1px solid var(--primary-color);
+// .filter-card {
+//   display: grid;
+//   grid-template-columns: repeat(4, 1fr);
+//   grid-gap: 20px;
+//   padding: 25px 25px;
+//   background: var(--dark-color);
+//   border-radius: 5px;
+//   border: 1px solid var(--primary-color);
 
-  .form-input {
-    margin-top: 0;
-  }
-}
+//   .form-input {
+//     margin-top: 0;
+//   }
+// }
 
 .profile-card__wrapper-header {
   display: grid;

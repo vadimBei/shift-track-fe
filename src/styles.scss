@@ -48,6 +48,10 @@ body {
   color: var(--light-color) !important;
 }
 
+.page-item {
+  cursor: pointer;
+}
+
 .btn {
   color: var(--light-color);
   padding: 10px 20px;
