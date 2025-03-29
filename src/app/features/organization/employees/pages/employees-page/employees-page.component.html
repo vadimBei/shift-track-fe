@@ -1,122 +1,195 @@
 <app-go-back path="/administration"></app-go-back>
 
-<div class="employees-container">
-    <div 
-      class="filter-card"
-      [formGroup]="form">
-        <select 
-          class="form-input"
-          formControlName="unitId"
-          (change)="onUnitChange($event)">
-            <option value="null">Оберіть регіон</option>
-            @for(unit of units$ | async; track unit.id)
-            {
-                <option value="{{unit.id}}">{{unit.name}}</option>
-            }
-        </select>
-    
-        <select 
-          class="form-input "
-          formControlName="departmentId"
-          (change)="onDepartmentChange($event)">
-            <option value="null">Оберіть департамент</option>
-            @for(department of departments$ | async; track department.id)
-            {
-                <option value="{{department.id}}">{{department.name}}</option>
-            }
-        </select>
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div 
+          class="row" 
+          [formGroup]="form">
+            <div class="col-3">
+                <div class="form-floating">
+                    <select 
+                      class="form-control form-control-sm" 
+                      formControlName="unitId" 
+                      id="unit"
+                      (change)="onUnitChange($event)">
+                        <option value="null">Оберіть регіон</option>
+                        @for(unit of units$ | async; track unit.id)
+                        {
+                        <option value="{{unit.id}}">{{unit.name}}</option>
+                        }
+                    </select>
 
-        <input 
-          class="form-input" 
-          type="text" 
-          placeholder="Пошук"
-          formControlName="searchPattern"
-          (input)="onSearchChange($event)">
+                    <label class="form-label" for="unit">
+                        Регіон:
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="form-floating">
+                    <select 
+                      class="form-control form-control-sm" 
+                      id="department" 
+                      formControlName="unitId"
+                      (change)="onDepartmentChange($event)">
+                        <option value="null">Оберіть департамент</option>
+                        @for(department of departments$ | async; track department.id)
+                        {
+                        <option value="{{department.id}}">{{department.name}}</option>
+                        }
+                    </select>
+
+                    <label class="form-label" for="department">
+                        Департамент:
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="form-floating">
+                    <input 
+                      class="form-control form-control-sm" 
+                      id="search" 
+                      type="text" 
+                      placeholder="Пошук"
+                      formControlName="searchPattern" 
+                      (input)="onSearchChange($event)">
+
+                    <label class="form-label" for="search">
+                        Пошук:
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div class="profile-card_wrapper">
-        <div class="profile-card_wrapper-header">
-            <div>
+</div>
+
+<div class="card shadow d-flex flex-column h-100">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-3">
                 <strong>
                     ПІБ
                 </strong>
             </div>
-        
-            <div>
+
+            <div class="col">
                 <strong>
                     Мобільний
                 </strong>
             </div>
-        
-            <div>
+
+            <div class="col">
                 <strong>
                     Email
                 </strong>
             </div>
-        
-            <div>
+
+            <div class="col">
                 <strong>
                     Регіон
                 </strong>
             </div>
-        
-            <div>
+
+            <div class="col">
                 <strong>
                     Департамент
                 </strong>
             </div>
-        
-            <div>
+
+            <div class="col">
                 <strong>
                     Посада
                 </strong>
             </div>
-        </div>
-    
-        <div class="profile-card_underline"></div>
-    
-        @for (employee of employees$ | async; track employee.id)
-        {
-            <div class="profile-card">
-                <div class="profile-card_long-text">
-                    {{employee.fullName}}
-                </div>
-    
-                <div class="profile-card_long-text">
-                    {{employee.phoneNumber}}
-                </div>
-    
-                <div class="profile-card_long-text">
-                    {{employee.email}}
-                </div>
-    
-                <div class="profile-card_long-text">
-                    {{employee.department?.unit?.name}}
-                </div>
-    
-                <div class="profile-card_long-text">
-                    {{employee.department?.name}}
-                </div>
-    
-                <div class="profile-card_long-text">
-                    {{employee.position?.name}}
-                </div>
 
-                <div class="profile-card_buttons">
-                    <div 
-                      class="profile-card_button">
-                      <img 
-                        src="/assets/icons/edit.svg" 
-                        alt="edit"
-                        (click)="openEditEmployeeModal(employee.id)">
-                  </div>
-  
-                  <div 
-                    class="profile-card_button">
-                      <img src="/assets/icons/delete.svg" alt="delete">
-                  </div>
-                </div>
+            <div class="col-2">
+
             </div>
+        </div>
+    </div>
+
+    <div class="card-body pt-0">
+        @for (employee of employees$ | async; track employee.id; let index = $index)
+        {
+        <div 
+          class="row pt-3 pb-3" 
+          [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+            <div class="col-3 text-truncate">
+                <strong>{{employee.fullName}}</strong>
+            </div>
+
+            <div class="col text-truncate">
+                {{employee.phoneNumber}}
+            </div>
+
+            <div class="col text-truncate">
+                {{employee.email}}
+            </div>
+
+            <div class="col text-truncate">
+                {{employee.department?.unit?.name}}
+            </div>
+
+            <div class="col text-truncate">
+                {{employee.department?.name}}
+            </div>
+
+            <div class="col text-truncate">
+                {{employee.position?.name}}
+            </div>
+
+            <div class="col-1">
+                <img 
+                  class="profile-card_button" 
+                  src="/assets/icons/edit.svg" 
+                  alt="edit" 
+                  (click)="openEditEmployeeModal(employee.id)">
+            </div>
+
+            <div class="col-1 profile-card_button">
+                <img 
+                  class="profile-card_button" 
+                  src="/assets/icons/delete.svg" 
+                  alt="delete">
+            </div>
+        </div>
         }
+    </div>
+
+    <div class="card-footer d-flex align-items-center justify-content-center">
+        <nav>
+            <ul class="pagination mb-0">
+                <li class="page-item">
+                    <a class="page-link text-primary" aria-label="Previous">
+                        <strong aria-hidden="true">&laquo;</strong>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link text-primary">
+                        <strong>1</strong>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link text-primary">
+                        <strong>2</strong>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link text-primary">
+                        <strong>3</strong>
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link text-primary" aria-label="Next">
+                        <strong aria-hidden="true">&raquo;</strong>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

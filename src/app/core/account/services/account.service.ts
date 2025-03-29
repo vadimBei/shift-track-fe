@@ -16,7 +16,6 @@ export class AccountService {
   private router = inject(Router);
 
   token = signal<Token | null>(null);
-  currentUser = signal<CurrentUser | null>(null);
 
   constructor() {
     const storedToken = localStorage.getItem('token');

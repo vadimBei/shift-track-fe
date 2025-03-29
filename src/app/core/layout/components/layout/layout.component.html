@@ -1,8 +1,17 @@
-<app-sidebar></app-sidebar>
+<div class="d-flex flex-column vh-100 overflow-hidden">
+    <div class="flex-shrink-0">
+        <app-header></app-header>
+    </div>
 
-<div class="cointainer-test">
-    <app-header></app-header>
-    <div class="main-content-test">
-        <router-outlet></router-outlet>
+    <div class="d-flex flex-grow-1 overflow-hidden">
+        <div class="col-2 d-flex flex-column">
+            <app-sidebar></app-sidebar>
+        </div>
+
+        <div class="col-10 d-flex flex-column overflow-auto pt-3">
+            <div class="container">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
     </div>
 </div>

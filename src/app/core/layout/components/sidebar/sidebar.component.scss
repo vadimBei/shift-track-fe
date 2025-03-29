@@ -1,28 +1,8 @@
-:host {
-  display: block;
-  height: 100vh;
-  background: var(--dark-color);
-  box-sizing: border-box;
-}
-
 .logo {
-  display: grid;
-  grid-template-columns: 50px auto;
-  align-content: center;
   background: var(--primary-color);
-  padding: 12px 12px;
-  justify-items: center;
-}
-
-nav {
-  padding: 0 12px;
-}
-
-.main-menu-list {
-  display: grid;
-  grid-gap: 8px;
-  list-style: none;
-  padding-left: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .main-menu-list a {
@@ -34,22 +14,17 @@ nav {
   cursor: pointer;
   border: none;
   background: none;
-  color: var(--light-color);
+  color: var(--primary-color);
   display: grid;
-  grid-template-columns: 16px 1fr max-content;
-  align-items: center;
-  grid-gap: 12px;
   font-weight: 700;
   font-size: 14px;
   line-height: 24px;
-  width: 100%;
   text-align: left;
-  border-radius: 2px;
 
   &.active,
   &:hover,
   &:focus-visible {
-    background: var(--dark-hover-color);
-    color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--light-color);;
   }
 }

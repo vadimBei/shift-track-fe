@@ -148,6 +148,7 @@ export class EmployeesPageComponent implements OnInit {
 
     ref.onHidden?.subscribe({
       next: () => this.getEmployees()
-    })
+    });
+
   }
 }

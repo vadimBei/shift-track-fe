@@ -7,12 +7,11 @@ import { EmployeeGender } from '../../../../features/organization/employees/enum
 import { EditAccountRequest } from '../../models/edit-account-request.model';
 import moment from 'moment';
 import { throwError } from 'rxjs';
-import { GoBackComponent } from '../../../../shared/components/go-back/go-back.component';
+
 @Component({
   selector: 'app-edit-account-page',
   standalone: true,
   imports: [
-    GoBackComponent,
     ReactiveFormsModule
   ],
   templateUrl: './edit-account-page.component.html',

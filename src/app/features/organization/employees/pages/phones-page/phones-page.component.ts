@@ -57,13 +57,14 @@ export class PhonesPageComponent implements OnInit {
         this.getEmployees();
       });
 
-    this.loadUnits();
+    this.getUnits();
   }
 
   initializeForm() {
     this.form = this.fb.group({
       searchPattern: [undefined],
-      unitId: [null]
+      unitId: [null],
+      departmentId: [null]
     });
   }
 
@@ -81,6 +82,7 @@ export class PhonesPageComponent implements OnInit {
 
     if (unitId == 'null') {
       this.request.unitId = undefined;
+      this.request.departmentId = undefined;
 
       this.departments$.next([]);
 
@@ -89,7 +91,7 @@ export class PhonesPageComponent implements OnInit {
     else {
       this.request.unitId = Number(unitId);
 
-      this.loadDepartmentsByUnitId(this.request!.unitId!);
+      this.getDepartmentsByUnitId(this.request!.unitId!);
     }
 
     this.getEmployees();
@@ -120,14 +122,14 @@ export class PhonesPageComponent implements OnInit {
     this.getEmployees();
   }
 
-  loadUnits() {
+  getUnits() {
     this.unitService.getUnits()
       .subscribe(units => {
         this.units$.next(units);
       });
   }
 
-  loadDepartmentsByUnitId(unitId: number) {
+  getDepartmentsByUnitId(unitId: number) {
     this.departmentService.getDepartmentsByUnitId(unitId)
       .subscribe(departments => {
         this.departments$.next(departments);

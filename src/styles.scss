@@ -1,72 +1,70 @@
 @import "fonts";
 @import "margins";
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/mixins";
+
+$theme-colors: (
+  "primary": #6200ea,
+);
+
+@import "../node_modules/bootstrap/scss/bootstrap";
 
 :root {
   --dark-color: #171717;
   --light-color: #ffffff;
-  --primary-color: #ae7aff;
-  --primary-hover-color: #a168fd;
+  --primary-color: #6200ea;
+  --primary-hover-color: #6200ea;
   --grey-color: #5f646d;
   --dark-hover-color: #212121;
   --pink-color: #e6268d;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 body {
   font-family: "JetBrains Mono", sans-serif;
-  background: var(--dark-hover-color);
-  color: var(--light-color);
+}
+
+.bg-primary {
+  background-color: #6200ea !important;
+}
+
+.text-primary {
+  color: #6200ea !important;
+}
+
+.text-bg-primary{
+  background-color: #6200ea !important;
+  color: var(--light-color) !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: var(--primary-color);
+  color: var(--light-color) !important;
+}
+
+.page-item {
+  cursor: pointer;
 }
 
 .btn {
-  background-color: var(--primary-color);
-  color: var(--dark-color);
+  color: var(--light-color);
   padding: 10px 20px;
   font-weight: 700;
   font-size: 14px;
   line-height: 24px;
   cursor: pointer;
-  width: 100%;
   border-radius: 4px;
-  border: 1px solid var(--dark-color);
-  justify-content: center;
-
-  &:hover {
-    background-color: var(--primary-hover-color);
-  }
-}
-
-.btn.disabled {
-  background-color: var(--grey-color);
-}
-
-.btn-shadow {
-  position: relative;
-
-  &:before {
-    content: "";
-    position: absolute;
-    bottom: -4px;
-    right: -4px;
-    background: var(--grey-color);
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    border-radius: 4px;
-  }
-}
-
-.btn-shadow.disabled {
-  &:before {
-    background: none;
-  }
 }
 
 .h1 {
@@ -81,81 +79,80 @@ body {
   font-weight: 800;
 }
 
-.subtitle {
-  font-size: 14px;
-  line-height: 20px;
+.h2 {
+  font-size: 35px;
+  line-height: 50px;
+  font-weight: 800;
 }
 
-.form-control-label {
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-  display: block;
-}
-
-.form-input {
-  margin-top: 8px;
-  display: block;
-  border: 1px solid var(--light-color);
-  border-radius: 4px;
-  padding: 10px 10px;
-  background: var(--dark-color);
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 21px;
-  font-family: "JetBrains Mono", sans-serif;
-  color: var(--light-color);
-  width: 100%;
-}
-
-.form-input:hover {
+.form-control:hover {
   border-color: var(--primary-color) !important;
   outline: none;
 }
 
-.modal {
-  height: auto;
-  border-radius: 5%;
+.logo {
+  height: 200px;
+  width: 200px;
 }
 
-.modal-content {
-  background-color: var(--dark-hover-color);
-}
-
-.my-modal {
-  padding: 25px;
-  display: grid;
-  grid-template-rows: 30px auto;
-  grid-gap: 20px;
-  border: 1px solid var(--primary-color);
-  border-radius: 5%;
-}
-
-.my-modal-header {
-  display: grid;
-  grid-template-columns: auto 30px;
-  grid-gap: 15px;
-}
-
-.my-modal-body {
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  grid-gap: 20px;
-}
-
-.close-modal-button {
-  background-color: var(--primary-color);
-  color: var(--dark-color);
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 24px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid var(--dark-color);
-  justify-content: center;
+.password-eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--grey-color);
   cursor: pointer;
-
-  &:hover {
-    background-color: var(--primary-hover-color);
-  }
 }
+
+.password-eye-btn.active {
+  color: var(--primary-color);
+}
+
+// .modal {
+//   height: auto;
+//   border-radius: 5%;
+// }
+
+// .modal-content {
+//   background-color: var(--dark-hover-color);
+// }
+
+// .my-modal {
+//   padding: 25px;
+//   display: grid;
+//   grid-template-rows: 30px auto;
+//   grid-gap: 20px;
+//   border: 1px solid var(--primary-color);
+//   border-radius: 5%;
+// }
+
+// .my-modal-header {
+//   display: grid;
+//   grid-template-columns: auto 30px;
+//   grid-gap: 15px;
+// }
+
+// .my-modal-body {
+//   display: grid;
+//   grid-template-rows: repeat(3, auto);
+//   grid-gap: 20px;
+// }
+
+// .close-modal-button {
+//   background-color: var(--primary-color);
+//   color: var(--dark-color);
+//   font-weight: 700;
+//   font-size: 14px;
+//   line-height: 24px;
+//   width: 100%;
+//   border-radius: 4px;
+//   border: 1px solid var(--dark-color);
+//   justify-content: center;
+//   cursor: pointer;
+
+//   &:hover {
+//     background-color: var(--primary-hover-color);
+//   }
+// }

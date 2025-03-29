@@ -15,11 +15,6 @@ import { RouterLink
 export class AdministrationPageComponent {
   administrations: AdministrationItem[] = [
     {
-      title: 'Мій профіль',
-      path: '/administration/profile',
-      icon: 'administration_profile',
-    },
-    {
       title: 'Регіони',
       path: '/administration/units',
       icon: 'administration_units',

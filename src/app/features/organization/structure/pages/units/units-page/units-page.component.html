@@ -1,62 +1,66 @@
 <app-go-back path="/administration"></app-go-back>
-<div class="unit-card__wrapper">
-    <div class="unit-card__wrapper-header">
-        <div>
-            <strong>
-                Код
-            </strong>
-        </div>
 
-        <div>
-            <strong>
-                Назва
-            </strong>
-        </div>
-
-        <div>
-            <strong>
-                Опис
-            </strong>
-        </div>
-        
-        <div class="unit-card__add-unit">
-            <button 
-              class="btn"
-              (click)="openCreateUnitModal()">Додати</button>
-        </div>
-
-    </div>
-    
-    <div class="unit-card__underline"></div>
-
-    @for(unit of units$ | async; track unit.id)
-    {
-        <div class="unit-card">
-            <div>
-                {{unit.code}}
+<div class="card shadow">
+    <div class="card-header">
+        <div class="row align-items-end">
+            <div class="col-3">
+                <strong>
+                    Код
+                </strong>
             </div>
 
-            <div>
+            <div class="col">
+                <strong>
+                    Назва
+                </strong>
+            </div>
+
+            <div class="col">
+                <strong>
+                    Опис
+                </strong>
+            </div>
+
+            <div class="col-2">
+                <div class="unit-card__add-unit">
+                    <button 
+                      class="btn btn-primary" 
+                      (click)="openCreateUnitModal()">
+                      Додати
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body pt-0">
+        @for (unit of units$ | async; track unit.id; let index = $index)
+        {
+        <div 
+          class="row pt-3 pb-3" 
+          [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+            <div class="col-3 text-truncate">
+                <strong> {{unit.code}}</strong>
+            </div>
+
+            <div class="col text-truncate">
                 {{unit.name}}
             </div>
 
-            <div>
+            <div class="col text-truncate">
                 {{unit.description}}
             </div>
 
-            <div class="unit-card__buttons">
-                <div 
-                  class="unit-card__button"
-                  (click)="openEditUnitModal(unit)">
-                    <img src="/assets/icons/edit.svg" alt="edit">
-                </div>
+            <div 
+              class="col-1 unit-card__button" 
+              (click)="openEditUnitModal(unit)">
+                <img src="/assets/icons/edit.svg" alt="edit">
+            </div>
 
-                <div class="unit-card__button">
-                    <img src="/assets/icons/delete.svg" alt="delete">
-                </div>
+            <div class="col-1 unit-card__button">
+                <img src="/assets/icons/delete.svg" alt="delete">
             </div>
         </div>
-
-        <div class="unit-card__underline"></div>
-    }
+        }
+    </div>
 </div>
