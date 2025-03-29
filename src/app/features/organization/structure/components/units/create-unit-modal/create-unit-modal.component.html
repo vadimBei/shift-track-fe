@@ -1,54 +1,78 @@
-<div class="my-modal">
-    <div class="my-modal-header">
-      <h6 class="h6">Створення регіону</h6>
-  
-      <button
-        class="close-modal-button" 
-        (click)="bsModalRef.hide()">
-        <span>&times;</span>
-      </button>
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col">
+        <h6 class="h6">Створення регіону</h6>
+      </div>
+
+      <div class="col-1">
+        <button class="btn-close" (click)="bsModalRef.hide()">
+        </button>
+      </div>
     </div>
-  
-    <div class="my-modal-body">
-      <form
-        id="createUnitFrom"
-        [formGroup]="form"
-        (ngSubmit)="createUnit()">
-        <label class="form-control-label mb16">
-          Код:
-          <input 
-            class="form-input"
-            type="text"
-            formControlName="code"
-            placeholder="Введіть код регіону">
-        </label>
-  
-        <label class="form-control-label mb16">
-          Назва:
-          <input 
-            class="form-input"
-            type="text"
-            formControlName="name"
-            placeholder="Введіть назву регіону">
-        </label>
-  
-        <label class="form-control-label mb16">
-          Опис:
-          <input 
-            class="form-input"
-            type="text"
-            formControlName="description"
-            placeholder="Введіть опис регіону">
-        </label>
-      </form>
-      
-      <button 
-        class="btn btn-shadow" 
-        type="submit"
-        form="createUnitFrom"
-        [class.disabled]="!form.valid"
-        [disabled]="!form.valid"
-      >Зберегти
-      </button>
+
+    <div class="row">
+      <div class="col">
+        <form 
+          id="createUnitFrom" 
+          [formGroup]="form" 
+          (ngSubmit)="createUnit()">
+          <div class="form-floating mb-3">
+            <input 
+              class="form-control" 
+              type="text" 
+              id="code" 
+              formControlName="code">
+
+            <label 
+              class="form-label" 
+              for="code">
+              Код:
+            </label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input 
+              class="form-control" 
+              type="text" 
+              id="name" 
+              formControlName="name">
+
+            <label 
+              class="form-label" 
+              for="name">
+              Назва:
+            </label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input 
+              class="form-control"
+              type="text" 
+              formControlName="description" 
+              id="description">
+
+            <label 
+              class="form-label" 
+              for="description">
+              Опис:
+            </label>
+          </div>
+
+          <div class="row">
+            <div class="col d-flex justify-content-end">
+              <button 
+                class="btn btn-primary" 
+                type="submit"
+                form="createUnitFrom"
+                [class.disabled]="!form.valid"
+                [disabled]="!form.valid"
+              >Зберегти
+            </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+</div>
