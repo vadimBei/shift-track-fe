@@ -33,6 +33,11 @@ body {
   color: #6200ea !important;
 }
 
+.text-bg-primary{
+  background-color: #6200ea !important;
+  color: var(--light-color) !important;
+}
+
 .dropdown-item {
   cursor: pointer;
   color: var(--primary-color);

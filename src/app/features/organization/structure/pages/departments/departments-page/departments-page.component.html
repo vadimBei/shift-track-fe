@@ -1,6 +1,61 @@
 <app-go-back path="/administration"></app-go-back>
 
-<div class="department-card__wrapper">
+<div class="card shadow">
+    <div class="card-header">
+        <div class="row align-items-end">
+            <div class="col">
+                <strong>
+                    Назва
+                </strong>
+            </div>
+
+            <div class="col-2">
+                <div class="unit-card__add-unit">
+                    <button class="btn btn-primary" (click)="openCreateDepartmentModal()">Додати
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        @for(groupe of groupedDepartments$ | async; track $index)
+        {
+            <div class="mb-3">
+                <div class="row pt-3 pb-3 text-bg-primary">
+                    <div class="col">
+                        <strong>
+                            Регіон: {{groupe.unit.name}}
+                        </strong>
+                    </div>
+                </div>
+    
+                @for (department of groupe.departments; track department.id; let index = $index)
+                {
+                <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+                    <div class="col-1">
+    
+                    </div>
+    
+                    <div class="col">
+                        <strong>{{department.name}}</strong>
+                    </div>
+    
+                    <div class="col-1 department-card__button" (click)="openEditDepartmentModal(department)">
+                        <img src="/assets/icons/edit.svg" alt="edit">
+                    </div>
+    
+                    <div class="col-1 department-card__button">
+                        <img src="/assets/icons/delete.svg" alt="delete">
+                    </div>
+                </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- <div class="department-card__wrapper">
     <div class="department-card__wrapper-header">
         <div>
             <strong>
@@ -9,46 +64,41 @@
         </div>
 
         <div class="department-card__add-department">
-            <button 
-              class="btn"
-              (click)="openCreateDepartmentModal()"
-            >Додати
+            <button class="btn" (click)="openCreateDepartmentModal()">Додати
             </button>
         </div>
 
     </div>
-    
+
     <div class="department-card__underline"></div>
 
     @for(groupe of groupedDepartments$ | async; track $index)
     {
-        <div class="department-card_unit">
-            <strong>
-                Регіон: {{groupe.unit.name}}
-            </strong>
+    <div class="department-card_unit">
+        <strong>
+            Регіон: {{groupe.unit.name}}
+        </strong>
+    </div>
+
+    @for (department of groupe.departments; track department.id)
+    {
+    <div class="department-card">
+        <div>
+            {{department.name}}
         </div>
 
-        @for (department of groupe.departments; track department.id) 
-        {
-            <div class="department-card">
-                <div>
-                    {{department.name}}
-                </div>
-    
-                <div class="department-card__buttons">
-                    <div 
-                      class="department-card__button"
-                      (click)="openEditDepartmentModal(department)">
-                        <img src="/assets/icons/edit.svg" alt="edit">
-                    </div>
-    
-                    <div class="department-card__button">
-                        <img src="/assets/icons/delete.svg" alt="delete">
-                    </div>
-                </div>
+        <div class="department-card__buttons">
+            <div class="department-card__button" (click)="openEditDepartmentModal(department)">
+                <img src="/assets/icons/edit.svg" alt="edit">
             </div>
 
-            <div class="department-card__underline"></div>
-        }        
+            <div class="department-card__button">
+                <img src="/assets/icons/delete.svg" alt="delete">
+            </div>
+        </div>
+    </div>
+
+    <div class="department-card__underline"></div>
     }
-</div>
+    }
+</div> -->
