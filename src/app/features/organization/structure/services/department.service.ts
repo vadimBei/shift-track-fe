@@ -34,4 +34,8 @@ export class DepartmentService {
   updateDepartment(request: EditDepartmentRequest) {
     return this.httpClient.put<Department>(this.path, request);
   }
+
+  deleteDepartment(departmentId: number) {
+    return this.httpClient.delete(this.path + `/${departmentId}`);
+  }
 }

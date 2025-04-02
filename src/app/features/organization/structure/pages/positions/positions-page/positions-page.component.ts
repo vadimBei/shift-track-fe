@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
 import { PositionService } from '../../../services/position.service';
-import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
 import { Position } from '../../../models/position.model';
 import { CommonModule } from '@angular/common';
 import { CreatePositionModalComponent } from '../../../components/positions/create-position-modal/create-position-modal.component';
 import { EditPositionModalComponent } from '../../../components/positions/edit-position-modal/edit-position-modal.component';
+import { DeleteConfirmationModalComponent } from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-positions-page',
@@ -36,11 +37,11 @@ export class PositionsPageComponent implements OnInit {
   }
 
   openCreatePositionModal() {
-    const initialState: ModalOptions = {
-      class: 'modal modal-dialog-centered'
-    }
-
-    const ref = this.modalService.show(CreatePositionModalComponent, initialState);
+    const ref = this.modalService.show(
+      CreatePositionModalComponent,
+      {
+        class: 'modal modal-dialog-centered'
+      });
 
     ref.onHidden?.subscribe({
       next: () => this.getPositions()
@@ -48,17 +49,36 @@ export class PositionsPageComponent implements OnInit {
   }
 
   openEditPositionModal(position: Position) {
-    const initialState: ModalOptions = {
-      class: 'modal modal-dialog-centered',
-      initialState: {
-        position: position
-      }
-    }
-
-    const ref = this.modalService.show(EditPositionModalComponent, initialState);
+    const ref = this.modalService.show(
+      EditPositionModalComponent,
+      {
+        class: 'modal modal-dialog-centered',
+        initialState: {
+          position: position
+        }
+      });
 
     ref.onHidden?.subscribe({
       next: () => this.getPositions()
     });
+  }
+
+  openDeleteConfirmation(position: Position): void {
+    this.modalService.show(DeleteConfirmationModalComponent,
+      {
+        class: 'modal modal-dialog-centered',
+        initialState: {
+          itemName: position.name,
+          entityName: 'посаду',
+          onConfirm: () => this.deletePosition(position.id)
+        }
+      });
+  }
+
+  deletePosition(positionId: number) {
+    this.positionService.deletePosition(positionId)
+      .subscribe({
+        next: () => this.getPositions()
+      })
   }
 }
