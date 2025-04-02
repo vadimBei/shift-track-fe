@@ -1,36 +1,49 @@
-<div class="my-modal">
-    <div class="my-modal-header">
-      <h6 class="h6">Редагування департаменту</h6>
-  
-      <button
-        class="close-modal-button" 
-        (click)="bsModalRef.hide()">
-        <span>&times;</span>
-      </button>
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col">
+        <h6 class="h6">Редагування департаменту</h6>
+      </div>
+
+      <div class="col-1">
+        <button class="btn-close" (click)="bsModalRef.hide()">
+        </button>
+      </div>
     </div>
-  
-    <div class="my-modal-body">
-      <form
-        id="editDepartmentFrom"
-        [formGroup]="form"
-        (ngSubmit)="editDepartment()">  
-        <label class="form-control-label mb16">
-          Назва:
-          <input 
-            class="form-input"
-            type="text"
-            formControlName="name"
-            placeholder="Введіть назву регіону">
-        </label>
-      </form>
-      
-      <button 
-        class="btn btn-shadow" 
-        type="submit"
-        form="editDepartmentFrom"
-        [class.disabled]="!form.valid"
-        [disabled]="!form.valid"
-      >Зберегти
-      </button>
+
+    <div class="row">
+      <div class="col">
+        <form 
+          id="editDepartmentFrom" 
+          [formGroup]="form" 
+          (ngSubmit)="editDepartment()">
+          <div class="form-floating mb-3">
+              <input 
+                class="form-control"
+                type="text"
+                id="name"
+                formControlName="name">
+            <label 
+              class="form-label"
+              for="name">
+                  Назва:
+            </label>
+          </div>
+
+          <div class="row">
+            <div class="col d-flex justify-content-end">
+              <button 
+                class="btn btn-primary" 
+                type="submit"
+                form="editDepartmentFrom"
+                [class.disabled]="!form.valid"
+                [disabled]="!form.valid"
+              >Зберегти
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+</div>
