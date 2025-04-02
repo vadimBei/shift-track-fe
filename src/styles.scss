@@ -19,6 +19,7 @@ $theme-colors: (
   --grey-color: #5f646d;
   --dark-hover-color: #212121;
   --pink-color: #e6268d;
+  --lavender-color: #F6F0FE; 
 }
 
 body {
@@ -29,11 +30,25 @@ body {
   background-color: #6200ea !important;
 }
 
+.btn-lavender {
+  background-color: var(--light-color) !important;
+  color: #6200ea !important;
+  border: none;
+}
+
+.btn-lavender:hover {
+  background-color: var(--lavender-color)!important;
+}
+
+.bg-lavender {
+  background-color: var(--lavender-color)!important;
+}
+
 .text-primary {
   color: #6200ea !important;
 }
 
-.text-bg-primary{
+.text-bg-primary {
   background-color: #6200ea !important;
   color: var(--light-color) !important;
 }
@@ -59,7 +74,7 @@ body {
 
 .btn {
   color: var(--light-color);
-  padding: 10px 20px;
+  padding: 5px 10px;
   font-weight: 700;
   font-size: 14px;
   line-height: 24px;

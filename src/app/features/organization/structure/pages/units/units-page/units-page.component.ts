@@ -7,6 +7,7 @@ import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EditUnitModalComponent } from '../../../components/units/edit-unit-modal/edit-unit-modal.component';
 import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
 import { CreateUnitModalComponent } from '../../../components/units/create-unit-modal/create-unit-modal.component';
+import { DeleteConfirmationModalComponent } from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-units-page',
@@ -35,29 +36,50 @@ export class UnitsPageComponent implements OnInit {
   }
 
   openEditUnitModal(unit: Unit) {
-    const initialState: ModalOptions = {
-      class: 'modal modal-dialog-centered',
-      initialState: {
-        unit: unit
+    const ref = this.modalService.show(
+      EditUnitModalComponent,
+      {
+        class: 'modal modal-dialog-centered',
+        initialState: {
+          unit: unit
+        }
       }
-    }
+    );
 
-    const ref = this.modalService.show(EditUnitModalComponent, initialState);
-    
     ref.onHidden?.subscribe({
       next: () => this.getUnits()
     })
   }
 
-  openCreateUnitModal(){
-    const initialState: ModalOptions = {
-      class: 'modal modal-dialog-centered'
-    }
-
-    const ref = this.modalService.show(CreateUnitModalComponent, initialState);
+  openCreateUnitModal() {
+    const ref = this.modalService.show(
+      CreateUnitModalComponent,
+      {
+        class: 'modal modal-dialog-centered',
+      });
 
     ref.onHidden?.subscribe({
       next: () => this.getUnits()
     });
+  }
+
+  openDeleteConfirmation(unit: Unit): void {
+    this.modalService.show(
+      DeleteConfirmationModalComponent,
+      {
+        class: 'modal modal-dialog-centered',
+        initialState: {
+          itemName: unit.name,
+          entityName: 'регіон',
+          onConfirm: () => this.deleteUnit(unit.id)
+        }
+      });
+  }
+
+  deleteUnit(unitId: number) {
+    this.unitService.deleteUnitById(unitId)
+      .subscribe({
+        next: () => this.getUnits()
+      })
   }
 }

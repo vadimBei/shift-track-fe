@@ -36,11 +36,15 @@
                 {{position.description}}
             </div>
 
-            <div class="col-1 position-card__button" (click)="openEditPositionModal(position)">
+            <div 
+              class="col-1 position-card__button" 
+              (click)="openEditPositionModal(position)">
                 <img src="/assets/icons/edit.svg" alt="edit">
             </div>
 
-            <div class="col-1 position-card__button">
+            <div 
+              class="col-1 position-card__button" 
+            (click)="openDeleteConfirmation(position)">
                 <img src="/assets/icons/delete.svg" alt="delete">
             </div>
         </div>

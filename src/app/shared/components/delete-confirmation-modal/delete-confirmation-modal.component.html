@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col">
+                <h6 class="h6">Підтвердження видалення</h6>
+            </div>
+        
+            <div class="col-1">
+                <button type="button" class="btn-close" (click)="decline()"></button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p>Ви впевнені, що хочете видалити {{entityName}} "{{ itemName }}"?</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <button class="btn btn-lavender text-primary" (click)="confirm()">Видалити</button>
+                <button class="btn btn-lavender text-primary" (click)="decline()">Скасувати</button>
+            </div>
+        </div>
+    </div>
+</div>

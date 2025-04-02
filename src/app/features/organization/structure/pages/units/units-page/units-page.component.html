@@ -57,7 +57,9 @@
                 <img src="/assets/icons/edit.svg" alt="edit">
             </div>
 
-            <div class="col-1 unit-card__button">
+            <div 
+              class="col-1 unit-card__button"
+              (click)="openDeleteConfirmation(unit)">
                 <img src="/assets/icons/delete.svg" alt="delete">
             </div>
         </div>
