@@ -183,12 +183,12 @@ export class EditEmployeeModalComponent implements OnInit {
       this.request.departmentId = undefined;
 
       this.departments$.next([this.defaultDropdownDepartment]);
-
-      this.form.get('departmentId')?.setValue(this.defaultDropdownDepartment.id);
     }
     else {
       this.getDepartmentsByUnitId(Number(unitId));
     }
+    
+    this.form.get('departmentId')?.setValue(this.defaultDropdownDepartment.id);
   }
 
   getDepartmentsByUnitId(unitId: number) {
