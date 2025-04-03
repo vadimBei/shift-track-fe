@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ShiftsService } from '../../../services/shifts.service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
+import { ColorPickerComponent } from '../../../../../../shared/components/color-picker/color-picker.component';
 
 @Component({
   selector: 'app-create-shift-modal',
@@ -14,7 +15,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     TimepickerModule,
-    FormsModule
+    FormsModule,
+    ColorPickerComponent
   ],
   templateUrl: './create-shift-modal.component.html',
   styleUrl: './create-shift-modal.component.scss'
@@ -27,15 +29,7 @@ export class CreateShiftModalComponent {
 
   request?: CreateShiftRequest;
 
-  colors: string[] = [
-    '#E57373', '#F06292', '#B66AC5', '#9675CE', '#7986CC',
-    '#64B5F6', '#4FC2F8', '#4DD0E2', '#4CB6AC', '#80C783',
-    '#AED584', '#DDE776', '#FFF176', '#FFD54D', '#FFB64D',
-    '#FF8B66', '#A08780', '#E0E0E0', '#90A4AD', '#FFFFFF'
-  ];
-
   selectedColor: string = '#FFFFFF';
-  dropdownOpen: boolean = false;
 
   ngOnInit(): void {
     this.request = {
@@ -78,27 +72,27 @@ export class CreateShiftModalComponent {
         ]
       ],
       startTime: [
-        '', 
+        null, 
         []
       ],
       endTime: [
-        '', 
+        null, 
         []
       ]
     });
 
-    // this.form.get('type')?.valueChanges.subscribe(value => {
-    //   if (value === 'Workday') {
-    //     this.form.get('startTime')?.setValidators([Validators.required]);
-    //     this.form.get('endTime')?.setValidators([Validators.required]);
-    //   } else {
-    //     this.form.get('startTime')?.clearValidators();
-    //     this.form.get('endTime')?.clearValidators();
-    //   }
+    this.form.get('type')?.valueChanges.subscribe(value => {
+      if (value === 'Workday') {
+        this.form.get('startTime')?.setValidators([Validators.required]);
+        this.form.get('endTime')?.setValidators([Validators.required]);
+      } else {
+        this.form.get('startTime')?.clearValidators();
+        this.form.get('endTime')?.clearValidators();
+      }
       
-    //   this.form.get('startTime')?.updateValueAndValidity();
-    //   this.form.get('endTime')?.updateValueAndValidity();
-    // });
+      this.form.get('startTime')?.updateValueAndValidity();
+      this.form.get('endTime')?.updateValueAndValidity();
+    });
   }
 
   save() {
@@ -109,6 +103,8 @@ export class CreateShiftModalComponent {
     this.request.description = this.form.value.description;
     this.request.color = this.selectedColor;
     this.request.type = this.form.value.type;
+    this.request.startTime = this.form.value.startTime;
+    this.request.endTime = this.form.value.endTime;
 
     this.shiftsService.createShift(this.request)
       .subscribe({
@@ -119,20 +115,5 @@ export class CreateShiftModalComponent {
           console.error('creating shift error', error);
         }
       });
-  }
-
-  toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
-
-  selectColor(color: string): void {
-    this.selectedColor = color;
-    this.dropdownOpen = false;
-  }
-
-  updateColor(): void {
-    if (!/^#[0-9A-Fa-f]{6}$/.test(this.selectedColor)) {
-      this.selectedColor = '#ffffff';
-    }
   }
 }
