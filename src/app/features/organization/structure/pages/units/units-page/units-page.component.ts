@@ -3,7 +3,7 @@ import { UnitService } from '../../../services/unit.service';
 import { Subject } from 'rxjs';
 import { Unit } from '../../../models/unit.model';
 import { CommonModule } from '@angular/common';
-import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { EditUnitModalComponent } from '../../../components/units/edit-unit-modal/edit-unit-modal.component';
 import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
 import { CreateUnitModalComponent } from '../../../components/units/create-unit-modal/create-unit-modal.component';

@@ -42,7 +42,7 @@ export class EditUnitModalComponent implements OnInit {
     this.unitService.getUnitById(this.unit!.id)
       .subscribe(unit => {
         this.unit = unit;
-      })
+      });
   }
 
   initializeForm(unit: Unit) {

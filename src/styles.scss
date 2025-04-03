@@ -19,7 +19,7 @@ $theme-colors: (
   --grey-color: #5f646d;
   --dark-hover-color: #212121;
   --pink-color: #e6268d;
-  --lavender-color: #F6F0FE; 
+  --lavender-color: #f6f0fe;
 }
 
 body {
@@ -37,11 +37,15 @@ body {
 }
 
 .btn-lavender:hover {
-  background-color: var(--lavender-color)!important;
+  background-color: var(--lavender-color) !important;
 }
 
 .bg-lavender {
-  background-color: var(--lavender-color)!important;
+  background-color: var(--lavender-color) !important;
+}
+
+.icon-button {
+  cursor: pointer;
 }
 
 .text-primary {
@@ -80,6 +84,10 @@ body {
   line-height: 24px;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.container{
+  padding: 10px 40px !important;
 }
 
 .h1 {
