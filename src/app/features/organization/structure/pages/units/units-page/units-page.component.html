@@ -22,13 +22,11 @@
             </div>
 
             <div class="col-2">
-                <div class="unit-card__add-unit">
-                    <button 
-                      class="btn btn-primary" 
-                      (click)="openCreateUnitModal()">
-                      Додати
-                    </button>
-                </div>
+                <button 
+                  class="btn btn-primary" 
+                  (click)="openCreateUnitModal()">
+                  Додати
+                </button>
             </div>
         </div>
     </div>
@@ -36,33 +34,33 @@
     <div class="card-body pt-0">
         @for (unit of units$ | async; track unit.id; let index = $index)
         {
-        <div 
-          class="row pt-3 pb-3" 
-          [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
-            <div class="col-3 text-truncate">
-                <strong> {{unit.code}}</strong>
-            </div>
-
-            <div class="col text-truncate">
-                {{unit.name}}
-            </div>
-
-            <div class="col text-truncate">
-                {{unit.description}}
-            </div>
-
             <div 
-              class="col-1 unit-card__button" 
-              (click)="openEditUnitModal(unit)">
-                <img src="/assets/icons/edit.svg" alt="edit">
-            </div>
+            class="row pt-3 pb-3" 
+            [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+                <div class="col-3 text-truncate">
+                    <strong> {{unit.code}}</strong>
+                </div>
 
-            <div 
-              class="col-1 unit-card__button"
-              (click)="openDeleteConfirmation(unit)">
-                <img src="/assets/icons/delete.svg" alt="delete">
+                <div class="col text-truncate">
+                    {{unit.name}}
+                </div>
+
+                <div class="col text-truncate">
+                    {{unit.description}}
+                </div>
+
+                <div 
+                  class="col-1 unit-card__button" 
+                  (click)="openEditUnitModal(unit)">
+                    <img src="/assets/icons/edit.svg" alt="edit">
+                </div>
+
+                <div 
+                  class="col-1 unit-card__button"
+                  (click)="openDeleteConfirmation(unit)">
+                    <img src="/assets/icons/delete.svg" alt="delete">
+                </div>
             </div>
-        </div>
         }
     </div>
 </div>
