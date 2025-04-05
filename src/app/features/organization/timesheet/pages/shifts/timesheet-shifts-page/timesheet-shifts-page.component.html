@@ -1,4 +1,5 @@
-<app-go-back path="/administration"></app-go-back>
+<app-go-back path="/administration">
+</app-go-back>
 
 <div class="card shadow">
     <div class="card-header">
@@ -6,6 +7,12 @@
             <div class="col-2">
                 <strong>
                     Код
+                </strong>
+            </div>
+
+            <div class="col">
+                <strong>
+                    Робочі години
                 </strong>
             </div>
 
@@ -31,7 +38,7 @@
         </div>
     </div>
 
-    <div class="card-body">
+    <div class="card-body overflow-auto">
         @for (shift of shifts$ | async; track shift.id; let index = $index)
         {
             <div 
@@ -40,6 +47,10 @@
 
                 <div class="col-2">
                     <strong> {{shift.code}}</strong>
+                </div>
+
+                <div class="col-2">
+                    <span> {{shift.workHours | timeSpanHoursMinutesFormat}}</span>
                 </div>
 
                 <div class="col-2">
@@ -69,4 +80,5 @@
             </div>
         }
     </div>
-</div>
+</div>  
+

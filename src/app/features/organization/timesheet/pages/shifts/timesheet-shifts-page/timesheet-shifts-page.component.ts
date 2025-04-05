@@ -8,13 +8,15 @@ import { DeleteConfirmationModalComponent } from '../../../../../../shared/compo
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { EditShiftModalComponent } from '../../../components/shifts/edit-shift-modal/edit-shift-modal.component';
 import { CreateShiftModalComponent } from '../../../components/shifts/create-shift-modal/create-shift-modal.component';
+import { TimeSpanHoursMinutesFormatPipe } from '../../../../../../shared/pipes/time-span-hours-minutes-format.pipe';
 
 @Component({
   selector: 'app-timesheet-shifts-page',
   standalone: true,
   imports: [
     CommonModule,
-    GoBackComponent
+    GoBackComponent,
+    TimeSpanHoursMinutesFormatPipe
   ],
   templateUrl: './timesheet-shifts-page.component.html',
   styleUrl: './timesheet-shifts-page.component.scss'

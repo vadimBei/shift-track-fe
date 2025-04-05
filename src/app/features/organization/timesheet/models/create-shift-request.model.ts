@@ -4,5 +4,7 @@ export interface CreateShiftRequest {
     code: string,
     description: string,
     color: string,
-    type: ShiftType
+    type: ShiftType,
+    startTime?: string | null; 
+    endTime?: string | null;
 }

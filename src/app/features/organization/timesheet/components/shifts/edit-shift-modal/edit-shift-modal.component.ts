@@ -6,8 +6,9 @@ import { Shift } from '../../../models/shift.model';
 import { EditShiftRequest } from '../../../models/edit-shift-request.model';
 import { ShiftType } from '../../../enums/shift-type.enum';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ColorPickerComponent } from '../../../../../../shared/components/color-picker/color-picker.component';
+import { TimeFormatService } from '../../../../../../shared/services/time-format.service';
 
 @Component({
   selector: 'app-edit-shift-modal',
@@ -15,12 +16,13 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     ReactiveFormsModule,
     TimepickerModule,
-    FormsModule
+    ColorPickerComponent
   ],
   templateUrl: './edit-shift-modal.component.html',
   styleUrl: './edit-shift-modal.component.scss'
 })
 export class EditShiftModalComponent {
+  timeFormatService = inject(TimeFormatService);
   fb = inject(FormBuilder);
   form: FormGroup = new FormGroup({});
   bsModalRef = inject(BsModalRef);
@@ -29,15 +31,8 @@ export class EditShiftModalComponent {
   shift?: Shift;
 
   request?: EditShiftRequest;
-  colors: string[] = [
-    '#E57373', '#F06292', '#B66AC5', '#9675CE', '#7986CC',
-    '#64B5F6', '#4FC2F8', '#4DD0E2', '#4CB6AC', '#80C783',
-    '#AED584', '#DDE776', '#FFF176', '#FFD54D', '#FFB64D',
-    '#FF8B66', '#A08780', '#E0E0E0', '#90A4AD', '#FFFFFF'
-  ];
 
   selectedColor: string = '#FFFFFF';
-  dropdownOpen: boolean = false;
 
   ngOnInit(): void {
     this.request = {
@@ -92,27 +87,27 @@ export class EditShiftModalComponent {
         ]
       ],
       startTime: [
-        '',
+        this.timeFormatService.fromTimeSpanFormat(shift.startTime),
         []
       ],
       endTime: [
-        '',
+        this.timeFormatService.fromTimeSpanFormat(shift.endTime),
         []
       ]
     });
 
-    // this.form.get('type')?.valueChanges.subscribe(value => {
-    //   if (value === 'Workday') {
-    //     this.form.get('startTime')?.setValidators([Validators.required]);
-    //     this.form.get('endTime')?.setValidators([Validators.required]);
-    //   } else {
-    //     this.form.get('startTime')?.clearValidators();
-    //     this.form.get('endTime')?.clearValidators();
-    //   }
+    this.form.get('type')?.valueChanges.subscribe(value => {
+      if (value === 'Workday') {
+        this.form.get('startTime')?.setValidators([Validators.required]);
+        this.form.get('endTime')?.setValidators([Validators.required]);
+      } else {
+        this.form.get('startTime')?.clearValidators();
+        this.form.get('endTime')?.clearValidators();
+      }
 
-    //   this.form.get('startTime')?.updateValueAndValidity();
-    //   this.form.get('endTime')?.updateValueAndValidity();
-    // });
+      this.form.get('startTime')?.updateValueAndValidity();
+      this.form.get('endTime')?.updateValueAndValidity();
+    });
   }
 
   save() {
@@ -125,6 +120,15 @@ export class EditShiftModalComponent {
     this.request.color = this.selectedColor;
     this.request.description = this.form.value.description;
 
+    if (this.form.value.type === 'Workday') {
+      this.request.startTime = this.timeFormatService.toTimeSpanFormat(this.form.value.startTime);
+      this.request.endTime = this.timeFormatService.toTimeSpanFormat(this.form.value.endTime);
+    }
+    else{
+      this.request.startTime = null;
+      this.request.endTime = null;
+    }
+
     this.shiftsService.updateShift(this.request!)
       .subscribe({
         next: (shift) => {
@@ -134,20 +138,5 @@ export class EditShiftModalComponent {
           console.error('updating shift error', err);
         }
       });
-  }
-
-  toggleDropdown(): void {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
-
-  selectColor(color: string): void {
-    this.selectedColor = color;
-    this.dropdownOpen = false;
-  }
-
-  updateColor(): void {
-    if (!/^#[0-9A-Fa-f]{6}$/.test(this.selectedColor)) {
-      this.selectedColor = '#ffffff';
-    }
   }
 }

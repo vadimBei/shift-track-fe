@@ -116,26 +116,10 @@
                         </div>
 
                         <div class="col-1">
-                            <div class="color-picker-container">
-                                <button 
-                                  type="button"
-                                  class="color-preview d-inline-block rounded border" 
-                                  [ngStyle]="{'background-color': selectedColor}" 
-                                  (click)="toggleDropdown()">
-                                </button>
-                              
-                                <div class="color-dropdown" *ngIf="dropdownOpen">
-                                  <div class="color-options">
-                                    <button 
-                                      type="button"
-                                      *ngFor="let color of colors" 
-                                      [ngStyle]="{'background-color': color}" 
-                                      class="color-option rounded border"
-                                      (click)="selectColor(color)">
-                                    </button>
-                                  </div>
-                                </div>
-                            </div>
+                          <app-color-picker
+                            [color]="selectedColor" 
+                            (colorChange)="selectedColor = $event">
+                          </app-color-picker>
                         </div>
                     </div>
                     
