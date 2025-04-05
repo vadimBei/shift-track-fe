@@ -8,6 +8,7 @@ import { ShiftType } from '../../../enums/shift-type.enum';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CommonModule } from '@angular/common';
 import { ColorPickerComponent } from '../../../../../../shared/components/color-picker/color-picker.component';
+import { TimeFormatService } from '../../../../../../shared/services/time-format.service';
 
 @Component({
   selector: 'app-edit-shift-modal',
@@ -21,6 +22,7 @@ import { ColorPickerComponent } from '../../../../../../shared/components/color-
   styleUrl: './edit-shift-modal.component.scss'
 })
 export class EditShiftModalComponent {
+  timeFormatService = inject(TimeFormatService);
   fb = inject(FormBuilder);
   form: FormGroup = new FormGroup({});
   bsModalRef = inject(BsModalRef);
@@ -85,11 +87,11 @@ export class EditShiftModalComponent {
         ]
       ],
       startTime: [
-        '',
+        this.timeFormatService.fromTimeSpanFormat(shift.startTime),
         []
       ],
       endTime: [
-        '',
+        this.timeFormatService.fromTimeSpanFormat(shift.endTime),
         []
       ]
     });
@@ -117,6 +119,15 @@ export class EditShiftModalComponent {
     this.request.type = this.form.value.type;
     this.request.color = this.selectedColor;
     this.request.description = this.form.value.description;
+
+    if (this.form.value.type === 'Workday') {
+      this.request.startTime = this.timeFormatService.toTimeSpanFormat(this.form.value.startTime);
+      this.request.endTime = this.timeFormatService.toTimeSpanFormat(this.form.value.endTime);
+    }
+    else{
+      this.request.startTime = null;
+      this.request.endTime = null;
+    }
 
     this.shiftsService.updateShift(this.request!)
       .subscribe({

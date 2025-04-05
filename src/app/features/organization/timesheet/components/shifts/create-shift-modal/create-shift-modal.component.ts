@@ -8,6 +8,7 @@ import { ShiftsService } from '../../../services/shifts.service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 import { ColorPickerComponent } from '../../../../../../shared/components/color-picker/color-picker.component';
+import { TimeFormatService } from '../../../../../../shared/services/time-format.service';
 
 @Component({
   selector: 'app-create-shift-modal',
@@ -22,6 +23,7 @@ import { ColorPickerComponent } from '../../../../../../shared/components/color-
   styleUrl: './create-shift-modal.component.scss'
 })
 export class CreateShiftModalComponent {
+  timeFormatService = inject(TimeFormatService);
   bsModalRef = inject(BsModalRef);
   shiftsService = inject(ShiftsService);
   fb = inject(FormBuilder);
@@ -72,11 +74,11 @@ export class CreateShiftModalComponent {
         ]
       ],
       startTime: [
-        null, 
+        null,
         []
       ],
       endTime: [
-        null, 
+        null,
         []
       ]
     });
@@ -89,7 +91,7 @@ export class CreateShiftModalComponent {
         this.form.get('startTime')?.clearValidators();
         this.form.get('endTime')?.clearValidators();
       }
-      
+
       this.form.get('startTime')?.updateValueAndValidity();
       this.form.get('endTime')?.updateValueAndValidity();
     });
@@ -103,8 +105,11 @@ export class CreateShiftModalComponent {
     this.request.description = this.form.value.description;
     this.request.color = this.selectedColor;
     this.request.type = this.form.value.type;
-    this.request.startTime = this.form.value.startTime;
-    this.request.endTime = this.form.value.endTime;
+
+    if (this.form.value.type === 'Workday') {
+      this.request.startTime = this.timeFormatService.toTimeSpanFormat(this.form.value.startTime);
+      this.request.endTime = this.timeFormatService.toTimeSpanFormat(this.form.value.endTime);
+    }
 
     this.shiftsService.createShift(this.request)
       .subscribe({
