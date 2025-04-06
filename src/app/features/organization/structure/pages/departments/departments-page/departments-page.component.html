@@ -41,12 +41,12 @@
                             <strong>{{department.name}}</strong>
                         </div>
         
-                        <div class="col-1 department-card__button" (click)="openEditDepartmentModal(department)">
-                            <img src="/assets/icons/edit.svg" alt="edit">
+                        <div class="col-1" (click)="openEditDepartmentModal(department)">
+                            <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
                         </div>
         
-                        <div class="col-1 department-card__button" (click)="openDeleteConfirmation(department)">
-                            <img src="/assets/icons/delete.svg" alt="delete">
+                        <div class="col-1" (click)="openDeleteConfirmation(department)">
+                            <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
                         </div>
                     </div>
                 }

@@ -28,6 +28,7 @@ body {
 
 .bg-primary {
   background-color: #6200ea !important;
+  color: var(--light-color);
 }
 
 .btn-lavender {
@@ -40,8 +41,8 @@ body {
   background-color: var(--lavender-color) !important;
 }
 
-.bg-lavender {
-  background-color: var(--lavender-color) !important;
+.btn-close {
+  color: var(--light-color) !important;
 }
 
 .icon-button {
@@ -86,7 +87,7 @@ body {
   border-radius: 4px;
 }
 
-.container{
+.container {
   padding: 10px 40px !important;
 }
 
@@ -131,4 +132,8 @@ body {
 
 .password-eye-btn.active {
   color: var(--primary-color);
+}
+
+.action-btn-icon {
+  cursor: pointer;
 }
