@@ -1,4 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
@@ -20,30 +22,37 @@ import { EmployeeGender } from '../../../../features/organization/employees/enum
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss'
 })
-export class RegisterPageComponent implements OnInit {
-  accountService = inject(AccountService);
+export class RegisterPageComponent implements OnInit, OnDestroy {
+  private accountService = inject(AccountService);
+  private destroy$ = new Subject<void>();
+
   router = inject(Router);
+
   fb = inject(FormBuilder);
   form: FormGroup = new FormGroup({});
+
   isPasswordVisible = signal<boolean>(false);
   isConfirmPasswordVisible = signal<boolean>(false);
   validationErrors?: string[];
-  request?: CreateUserRequest;
 
+  request = signal<CreateUserRequest>({
+    name: '',
+    surname: '',
+    patronymic: '',
+    email: '',
+    phoneNumber: '',
+    gender: EmployeeGender.none,
+    password: '',
+    confirmPassword: ''
+  });
 
   ngOnInit(): void {
-    this.initializeForm()
+    this.initializeForm();
+  }
 
-    this.request = {
-      name: '',
-      surname: '',
-      patronymic: '',
-      email: '',
-      phoneNumber: '',
-      gender: EmployeeGender.none,
-      password: '',
-      confirmPassword: ''
-    };
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initializeForm() {
@@ -85,19 +94,23 @@ export class RegisterPageComponent implements OnInit {
 
   register() {
     if (this.form.valid) {
-      if (!this.request)
-        return;
+      // Create a new request object with updated values
+      const updatedRequest: CreateUserRequest = {
+        name: this.form.value.name,
+        surname: this.form.value.surname,
+        patronymic: this.form.value.patronymic,
+        email: this.form.value.email,
+        phoneNumber: this.form.value.phoneNumber,
+        gender: this.form.value.gender,
+        confirmPassword: this.form.value.confirmPassword,
+        password: this.form.value.password
+      };
 
-      this.request.name = this.form.value.name;
-      this.request.surname = this.form.value.surname;
-      this.request.patronymic = this.form.value.patronymic;
-      this.request.email = this.form.value.email;
-      this.request.phoneNumber = this.form.value.phoneNumber;
-      this.request.gender = this.form.value.gender;
-      this.request.confirmPassword = this.form.value.confirmPassword;
-      this.request.password = this.form.value.password;
+      // Update the signal with the new request
+      this.request.set(updatedRequest);
 
-      this.accountService.register(this.request)
+      this.accountService.register(this.request())
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => this.router.navigateByUrl('/employees/contact-list'),
           error: err => {
