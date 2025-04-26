@@ -38,6 +38,11 @@ export class AdministrationPageComponent {
       title: 'Робочі зміни',
       path: '/administration/shifts',
       icon: 'administration_shifts',
+    },
+    {
+      title: 'Ролі працівників',
+      path: '/administration/employees-roles',
+      icon: 'administration_emoployee_roles',
     }
   ]
 

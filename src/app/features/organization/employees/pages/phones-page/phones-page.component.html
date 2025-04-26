@@ -20,8 +20,11 @@
 
             <div class="col-3">
                 <div class="form-floating">
-                    <select class="form-control form-control-sm" id="department" formControlName="unitId"
-                        (change)="onDepartmentChange($event)">
+                    <select 
+                      class="form-control form-control-sm" 
+                      id="department" 
+                      formControlName="departmentId"
+                      (change)="onDepartmentChange($event)">
                         <option value="null">Оберіть департамент</option>
                         @for(department of departments$ | async; track department.id)
                         {
@@ -49,7 +52,7 @@
     </div>
 </div>
 
-<div class="card shadow d-flex flex-column h-100">
+<div class="card shadow d-flex flex-column phones-card">
     <div class="card-header">
         <div class="row">
             <div class="col-3">
