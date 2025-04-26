@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { EmployeesService } from '../../services/employees.service';
 import { Employee } from '../../models/employee.model';
 import { AllEmployeesRequest } from '../../models/all-employees-request.model';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil, catchError, finalize, of } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Unit } from '../../../structure/models/unit.model';
 import { UnitService } from '../../../structure/services/unit.service';
@@ -22,117 +22,136 @@ import { Department } from '../../../structure/models/department.model';
   templateUrl: './phones-page.component.html',
   styleUrl: './phones-page.component.scss'
 })
-export class PhonesPageComponent implements OnInit {
-  employeeService = inject(EmployeesService);
-  departmentService = inject(DepartmentService);
-  unitService = inject(UnitService);
+export class PhonesPageComponent implements OnInit, OnDestroy {
+  private readonly employeeService = inject(EmployeesService);
+  private readonly departmentService = inject(DepartmentService);
+  private readonly unitService = inject(UnitService);
+  private readonly fb = inject(FormBuilder);
 
-  fb = inject(FormBuilder);
-  searchSubject$: Subject<string> = new Subject<string>();
-  form: FormGroup = new FormGroup({});
+  private readonly destroy$ = new Subject<void>();
+  private readonly searchSubject$ = new Subject<string>();
 
-  request?: AllEmployeesRequest;
-  employees$: Subject<Employee[]> = new Subject<Employee[]>();
-  units$: Subject<Unit[]> = new Subject<Unit[]>();
-  departments$: Subject<Department[]> = new Subject<Department[]>();
-  unitId?: number;
+  form!: FormGroup;
+  request: AllEmployeesRequest = {
+    searchPattern: '',
+    unitId: undefined,
+    departmentId: undefined
+  };
+
+  employees = signal<Employee[]>([]);
+  units = signal<Unit[]>([]);
+  departments = signal<Department[]>([]);
+  isLoading = signal(false);
+  errorMessage = signal('');
 
   ngOnInit(): void {
-    this.getEmployees();
-
-    this.request = {
-      searchPattern: '',
-      unitId: undefined,
-      departmentId: undefined
-    }
-
     this.initializeForm();
 
     this.searchSubject$
       .pipe(
-        debounceTime(500)
+        debounceTime(500),
+        takeUntil(this.destroy$)
       )
       .subscribe(searchPattern => {
-        this.request!.searchPattern = searchPattern;
+        this.request.searchPattern = searchPattern;
         this.getEmployees();
       });
 
     this.getUnits();
+    this.getEmployees();
   }
 
-  initializeForm() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  initializeForm(): void {
     this.form = this.fb.group({
-      searchPattern: [undefined],
+      searchPattern: [''],
       unitId: [null],
       departmentId: [null]
     });
   }
 
-  onSearchChange(event: Event) {
+  onSearchChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.searchSubject$.next(inputElement.value);
   }
 
-  onUnitChange(event: Event) {
-    if (!this.request)
-      return;
-
+  onUnitChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const unitId = selectElement.value;
 
-    if (unitId == 'null') {
+    if (unitId === 'null') {
       this.request.unitId = undefined;
       this.request.departmentId = undefined;
-
-      this.departments$.next([]);
-
-      this.initializeForm();
-    }
-    else {
-      this.request.unitId = Number(unitId);
-
-      this.getDepartmentsByUnitId(this.request!.unitId!);
+      this.departments.set([]);
+      this.form.get('departmentId')?.setValue(null);
+    } else {
+      const numericUnitId = Number(unitId);
+      this.request.unitId = numericUnitId;
+      this.getDepartmentsByUnitId(numericUnitId);
     }
 
     this.getEmployees();
   }
 
-  getEmployees() {
-    this.employeeService.getAllEmployees(this.request!)
-      .subscribe(val => {
-        this.employees$.next(val);
-      });
-  }
-
-  onDepartmentChange(event: Event) {
-    if (!this.request)
-      return;
-
+  onDepartmentChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const departmentId = selectElement.value;
 
-    if (departmentId == 'null'){
-      this.request.departmentId = undefined;
-    }
-    else
-    {
-      this.request.departmentId = Number(departmentId);
-    }
+    this.request.departmentId = departmentId === 'null'
+      ? undefined
+      : Number(departmentId);
 
     this.getEmployees();
   }
 
-  getUnits() {
-    this.unitService.getUnits()
-      .subscribe(units => {
-        this.units$.next(units);
+  getEmployees(): void {
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    this.employeeService.getAllEmployees(this.request)
+      .pipe(
+        catchError(error => {
+          this.errorMessage.set('Failed to load employees. Please try again.');
+          console.error('Error fetching employees:', error);
+          return of([] as Employee[]);
+        }),
+        finalize(() => this.isLoading.set(false)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(employees => {
+        this.employees.set(employees);
       });
   }
 
-  getDepartmentsByUnitId(unitId: number) {
+  getUnits(): void {
+    this.unitService.getUnits()
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching units:', error);
+          return of([] as Unit[]);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(units => {
+        this.units.set(units);
+      });
+  }
+
+  getDepartmentsByUnitId(unitId: number): void {
     this.departmentService.getDepartmentsByUnitId(unitId)
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching departments:', error);
+          return of([] as Department[]);
+        }),
+        takeUntil(this.destroy$)
+      )
       .subscribe(departments => {
-        this.departments$.next(departments);
+        this.departments.set(departments);
       });
   }
 }

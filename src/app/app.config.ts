@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './shared/interceptors/tocken.interceptor';
-import { errorIntercaptor } from './shared/interceptors/error.intercaptor';
+import { errorInterceptor } from './shared/interceptors/error.interceptor';
 import { apiInterceptor } from './shared/interceptors/api.interceptor';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([
       apiInterceptor,
       tokenInterceptor,
-      errorIntercaptor])),
+      errorInterceptor])),
     importProvidersFrom([
       ModalModule.forRoot()
     ])

@@ -5,7 +5,7 @@ import { AccountService } from "../../core/account/services/account.service";
 import { catchError } from "rxjs";
 import { BackendError } from "../models/errors/backend-error";
 
-export const errorIntercaptor: HttpInterceptorFn = (req, next) => {
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
     const accountService = inject(AccountService);
 

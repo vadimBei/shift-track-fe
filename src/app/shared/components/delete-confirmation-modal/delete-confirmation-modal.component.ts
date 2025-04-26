@@ -8,11 +8,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrl: './delete-confirmation-modal.component.scss'
 })
 export class DeleteConfirmationModalComponent {
-  @Input() itemName: string = ''; 
+  @Input() itemName: string = '';
   @Input() entityName: string = '';
   onConfirm!: () => void;
 
-  constructor(public modalRef: BsModalRef) {}
+  constructor(private modalRef: BsModalRef) {}
 
   confirm(): void {
     if (this.onConfirm) {
