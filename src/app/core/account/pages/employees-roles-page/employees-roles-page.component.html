@@ -1,0 +1,153 @@
+<app-go-back path="/administration"></app-go-back>
+
+<div
+  class="card shadow"
+  style="height: 80vh;">
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-3">
+        <form [formGroup]="form">
+          <div class="form-floating">
+            <select
+              class="form-control form-control-sm"
+              formControlName="unitId"
+              id="unit"
+              (change)="onUnitChange($event)">
+              <option value="null">Оберіть регіон</option>
+              @for (unit of units(); track unit.id) {
+                <option value="{{unit.id}}">{{ unit.name }}</option>
+              }
+            </select>
+
+            <label class="form-label" for="unit">
+              Регіон:
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row mb-2">
+      <div class="col">
+        <strong>Користувачі</strong>
+      </div>
+
+      <div class="col d-flex justify-content-between">
+        <strong>Роль</strong>
+
+        <button
+          *ngIf="showCreateEmployeeRoleButton"
+          class="btn btn-add btn-primary rounded-circle d-flex justify-content-center align-items-center"
+          (click)="openCreateEmployeeRoleModal()">
+          +
+        </button>
+      </div>
+
+      <div class="col d-flex justify-content-between">
+        <strong>Регіон</strong>
+
+        <button
+          *ngIf="showCreateEmployeeRoleUnitButton"
+          class="btn btn-add btn-primary rounded-circle d-flex justify-content-center align-items-center"
+          (click)="openCreateEmployeeRoleUnitModal()">
+          +
+        </button>
+      </div>
+
+      <div class="col d-flex justify-content-between">
+        <strong>Департамент</strong>
+
+        <button
+          *ngIf="showCreateEmployeeRoleUnitDepartmentButton"
+          class="btn btn-add btn-primary rounded-circle d-flex justify-content-center align-items-center"
+          (click)="openCreateEmployeeRoleUnitDepartmentModal()">
+          +
+        </button>
+      </div>
+    </div>
+
+    <div class="row" style="height: calc(98% - 100px);">
+      <div class="col me-3">
+        <div class="card h-100 d-flex flex-column">
+          <div class="card-body overflow-auto">
+            @for (employee of employees(); track employee.id; ) {
+              <div class="row mb-1 pt-2 pb-2 employee-name"
+                   [ngClass]="{'bg-primary': employee.id === employeeId, 'bg-gray-hover': employee.id !== employeeId}">
+                <div class="col">
+                  <span (click)="selectEmployee(employee.id)">
+                    <strong class="text-truncate">{{ employee.fullName }}</strong>
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col me-3">
+        @for (employeeRole of employeeRoles(); track employeeRole.id; ) {
+          <div class="row mb-1 pt-2 pb-2 bg-gray-hover"
+               [ngClass]="{'bg-primary': employeeRole.id === employeeRoleId, 'bg-gray-hover': employeeRole.id !== employeeRoleId}">
+            <div class="col">
+              <span
+                class="employee-role"
+                (click)="selectEmployeeRole(employeeRole.id)"
+              >{{ employeeRole.role.name }}
+              </span>
+            </div>
+
+            <div class="col-2">
+              <img
+                class="action-btn-icon"
+                src="/assets/icons/delete.svg"
+                alt="delete"
+                (click)="openDeleteEmployeeRoleConfirmationModal(employeeRole)">
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="col me-3">
+        @for (employeeRoleUnit of employeeRoleUnits(); track employeeRoleUnit.id; ) {
+          <div
+            class="row mb-1 pt-2 pb-2 bg-gray-hover"
+            [ngClass]="{'bg-primary': employeeRoleUnit.id === employeeRoleUnitId, 'bg-gray-hover': employeeRoleUnit.id !== employeeRoleUnitId}">
+            <div class="col">
+              <span
+                class="employee-role"
+                (click)="selectEmployeeRoleUnit(employeeRoleUnit.id)"
+              >{{ employeeRoleUnit.unit.name }}
+              </span>
+            </div>
+
+            <div class="col-2">
+              <img
+                class="action-btn-icon"
+                src="/assets/icons/delete.svg"
+                alt="delete"
+                (click)="openDeleteEmployeeRoleUnitConfirmationModal(employeeRoleUnit)">
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="col me-3">
+        @for (employeeRoleUnitDepartment of employeeRoleUnitDepartments(); track employeeRoleUnitDepartment.id; ) {
+          <div class="row mb-1 pt-2 pb-2 bg-gray-hover">
+            <div class="col">
+              <span class="employee-role">{{ employeeRoleUnitDepartment.department.name }}</span>
+            </div>
+
+            <div class="col-2">
+              <img
+                class="action-btn-icon"
+                src="/assets/icons/delete.svg"
+                alt="delete"
+                (click)="openDeleteEmployeeRoleUnitDepartmentConfirmationModal(employeeRoleUnitDepartment)">
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

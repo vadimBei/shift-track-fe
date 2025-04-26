@@ -16,7 +16,8 @@ $theme-colors: (
   --light-color: #ffffff;
   --primary-color: #6200ea;
   --primary-hover-color: #6200ea;
-  --grey-color: #5f646d;
+  --grey-color: #F5F5F5;
+  --grey-hover-color: #5f646d;
   --dark-hover-color: #212121;
   --pink-color: #e6268d;
   --lavender-color: #f6f0fe;
@@ -29,6 +30,11 @@ body {
 .bg-primary {
   background-color: #6200ea !important;
   color: var(--light-color);
+}
+
+.bg-gray-hover:hover {
+  background-color: var(--grey-color) !important;
+  color: var(--dark-color);
 }
 
 .btn-lavender {

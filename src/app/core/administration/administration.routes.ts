@@ -6,6 +6,7 @@ import { TimesheetShiftsPageComponent } from "../../features/organization/timesh
 import { PositionsPageComponent } from "../../features/organization/structure/pages/positions/positions-page/positions-page.component";
 import { EmployeesPageComponent } from "../../features/organization/employees/pages/employees-page/employees-page.component";
 import { EditAccountPageComponent } from "../account/pages/edit-account-page/edit-account-page.component";
+import { EmployeesRolesPageComponent } from "../account/pages/employees-roles-page/employees-roles-page.component";
 
 const routes: Routes = [
     {
@@ -35,6 +36,10 @@ const routes: Routes = [
     {
         path: 'employees',
         component: EmployeesPageComponent
+    },
+    {
+        path: 'employees-roles',
+        component: EmployeesRolesPageComponent
     }
 ]
 
