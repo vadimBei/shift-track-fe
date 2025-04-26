@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angul
 import { EmployeesService } from '../../services/employees.service';
 import { Employee } from '../../models/employee.model';
 import { AllEmployeesRequest } from '../../models/all-employees-request.model';
-import { Subject, takeUntil, catchError, finalize, of } from 'rxjs';
+import {Subject, takeUntil, catchError, finalize, of, delay} from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Unit } from '../../../structure/models/unit.model';
 import { UnitService } from '../../../structure/services/unit.service';
@@ -116,10 +116,12 @@ export class PhonesPageComponent implements OnInit, OnDestroy {
       .pipe(
         catchError(error => {
           this.errorMessage.set('Failed to load employees. Please try again.');
-          console.error('Error fetching employees:', error);
           return of([] as Employee[]);
         }),
-        finalize(() => this.isLoading.set(false)),
+      delay(1000),
+      finalize(() => {
+        this.isLoading.set(false);
+      }),
         takeUntil(this.destroy$)
       )
       .subscribe(employees => {
