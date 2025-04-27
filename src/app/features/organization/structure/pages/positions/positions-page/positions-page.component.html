@@ -1,53 +1,52 @@
 <app-go-back path="/administration"></app-go-back>
 
 <div class="card shadow">
-    <div class="card-header">
-        <div class="row align-items-end">
-            <div class="col">
-                <strong>
-                    Назва
-                </strong>
-            </div>
+  <div class="card-header">
+    <div class="row align-items-end">
+      <div class="col">
+        <strong>
+          Назва
+        </strong>
+      </div>
 
-            <div class="col">
-                <strong>
-                    Опис
-                </strong>
-            </div>
+      <div class="col">
+        <strong>
+          Опис
+        </strong>
+      </div>
 
-            <div class="col-2">
-                <div class="unit-card__add-unit">
-                    <button class="btn btn-primary" (click)="openCreatePositionModal()">Додати
-                    </button>
-                </div>
-            </div>
+      <div class="col-2">
+        <div class="unit-card__add-unit">
+          <button class="btn btn-primary" (click)="openCreatePositionModal()">Додати
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="card-body pt-0">
-        @for (position of positoins$ | async; track position.id; let index = $index)
-        {
-        <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
-            <div class="col">
-                <strong>{{position.name}}</strong>
-            </div>
-
-            <div class="col">
-                {{position.description}}
-            </div>
-
-            <div 
-              class="col-1" 
-              (click)="openEditPositionModal(position)">
-                <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
-            </div>
-
-            <div 
-              class="col-1" 
-            (click)="openDeleteConfirmation(position)">
-                <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
-            </div>
+  <div class="card-body pt-0">
+    @for (position of positions(); track position.id; let index = $index) {
+      <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+        <div class="col">
+          <strong>{{ position.name }}</strong>
         </div>
-        }
-    </div>
+
+        <div class="col">
+          {{ position.description }}
+        </div>
+
+        <div
+          class="col-1"
+          (click)="openEditPositionModal(position)">
+          <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
+        </div>
+
+        <div
+          class="col-1"
+          (click)="openDeleteConfirmation(position)">
+          <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
+        </div>
+      </div>
+    }
+  </div>
 </div>
