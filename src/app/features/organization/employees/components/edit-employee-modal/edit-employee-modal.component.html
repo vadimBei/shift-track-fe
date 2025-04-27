@@ -2,12 +2,12 @@
   <div class="card-body">
     <div class="row mb-4">
       <div class="col">
-        <h6 class="h6">Змінити працівника</h6>
+        <h6 class="h6">Редагувати працівника</h6>
       </div>
 
       <div class="col-1">
-        <button 
-          class="btn-close" 
+        <button
+          class="btn-close"
           (click)="bsModalRef.hide()">
         </button>
       </div>
@@ -15,22 +15,22 @@
 
     <div class="row">
       <div class="col">
-        <form 
-          id="editEmployeeForm" 
-          [formGroup]="form" 
+        <form
+          id="editEmployeeForm"
+          [formGroup]="form"
           (ngSubmit)="save()">
 
           <div class="row">
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="surname" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="surname"
                   formControlName="surname">
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="surname">
                   Прізвище:
                 </label>
@@ -39,14 +39,14 @@
 
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   class="form-control"
-                   id="name" 
-                   formControlName="name">
-    
-                <label 
-                  class="form-label" 
+                  id="name"
+                  formControlName="name">
+
+                <label
+                  class="form-label"
                   for="name">
                   Ім'я:
                 </label>
@@ -57,14 +57,14 @@
           <div class="row">
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="patronymic" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="patronymic"
                   formControlName="patronymic">
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="patronymic">
                   По-батькові:
                 </label>
@@ -73,14 +73,14 @@
 
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  id="phoneNumber" 
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phoneNumber"
                   formControlName="phoneNumber">
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="phoneNumber">
                   Номер телефону:
                 </label>
@@ -91,14 +91,14 @@
           <div class="row">
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="email" 
-                  class="form-control" 
-                  id="email" 
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
                   formControlName="email">
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="email">
                   Email:
                 </label>
@@ -107,17 +107,17 @@
 
             <div class="col">
               <div class="form-floating mb-3">
-                <select 
-                  formControlName="gender" 
-                  class="form-select" 
+                <select
+                  formControlName="gender"
+                  class="form-select"
                   id="gender">
                   <option [ngValue]="null">Не вказано</option>
                   <option [ngValue]="'Male'">Чоловік</option>
                   <option [ngValue]="'Female'">Жінка</option>
                 </select>
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="gender">
                   Стать:
                 </label>
@@ -128,14 +128,14 @@
           <div class="row">
             <div class="col">
               <div class="form-floating mb-3">
-                <input 
-                  type="date" 
-                  id="dateOfBirth" 
-                  class="form-control" 
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  class="form-control"
                   formControlName="dateOfBirth">
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="dateOfBirth">
                   Дата народження:
                 </label>
@@ -144,21 +144,20 @@
 
             <div class="col">
               <div class="form-floating mb-3">
-                <select 
-                  class="form-select" 
-                  id="unit" 
-                  formControlName="unitId" 
+                <select
+                  class="form-select"
+                  id="unit"
+                  formControlName="unitId"
                   (change)="onUnitChange($event)">
-                  @for(unit of units$ | async; track unit.id)
-                  {
+                  @for (unit of units(); track unit.id) {
                     <option [value]="unit.id">
-                      {{unit.name}}
+                      {{ unit.name }}
                     </option>
                   }
                 </select>
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="unit">
                   Регіон
                 </label>
@@ -169,20 +168,19 @@
           <div class="row">
             <div class="col">
               <div class="form-floating mb-3">
-                <select 
-                  class="form-control" 
-                  id="department" 
+                <select
+                  class="form-control"
+                  id="department"
                   formControlName="departmentId">
-                  @for(department of departments$ | async; track department.id)
-                  {
+                  @for (department of departments(); track department.id) {
                     <option [ngValue]="department.id">
-                      {{department.name}}
+                      {{ department.name }}
                     </option>
                   }
                 </select>
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="department">
                   Департамен
                 </label>
@@ -191,20 +189,19 @@
 
             <div class="col">
               <div class="form-floating mb-3">
-                <select 
-                  class="form-select" 
-                  id="position" 
+                <select
+                  class="form-select"
+                  id="position"
                   formControlName="positionId">
-                  @for (position of positions$ | async; track position.id)
-                  {
+                  @for (position of positions(); track position.id) {
                     <option [ngValue]="position.id">
-                      {{position.name}}
+                      {{ position.name }}
                     </option>
                   }
                 </select>
-    
-                <label 
-                  class="form-label" 
+
+                <label
+                  class="form-label"
                   for="position">
                   Посада
                 </label>
@@ -214,10 +211,10 @@
 
           <div class="row">
             <div class="col d-flex justify-content-end">
-              <button 
-                class="btn btn-lavender" 
-                type="submit" 
-                form="editEmployeeForm" 
+              <button
+                class="btn btn-lavender"
+                type="submit"
+                form="editEmployeeForm"
                 [class.disabled]="!form.valid"
                 [disabled]="!form.valid">Зберегти
               </button>

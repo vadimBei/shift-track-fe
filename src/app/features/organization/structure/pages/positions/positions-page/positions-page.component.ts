@@ -30,7 +30,7 @@ export class PositionsPageComponent implements OnInit {
   }
 
   getPositions() {
-    this.positionService.geyPositions()
+    this.positionService.getPositions()
       .subscribe(positions => {
         this.positoins$.next(positions);
       });
