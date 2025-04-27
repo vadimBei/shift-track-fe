@@ -24,7 +24,15 @@
     </div>
   </div>
 
-  <div class="card-body pt-0">
+  <div class="card-body pt-0 position-relative">
+    @if (isLoading()) {
+      <div class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }
+
     @for (position of positions(); track position.id; let index = $index) {
       <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
         <div class="col">

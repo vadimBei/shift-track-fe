@@ -1,66 +1,73 @@
 <app-go-back path="/administration"></app-go-back>
 
 <div class="card shadow">
-    <div class="card-header">
-        <div class="row align-items-end">
-            <div class="col-3">
-                <strong>
-                    Код
-                </strong>
-            </div>
+  <div class="card-header">
+    <div class="row align-items-end">
+      <div class="col-3">
+        <strong>
+          Код
+        </strong>
+      </div>
 
-            <div class="col">
-                <strong>
-                    Назва
-                </strong>
-            </div>
+      <div class="col">
+        <strong>
+          Назва
+        </strong>
+      </div>
 
-            <div class="col">
-                <strong>
-                    Опис
-                </strong>
-            </div>
+      <div class="col">
+        <strong>
+          Опис
+        </strong>
+      </div>
 
-            <div class="col-2">
-                <button 
-                  class="btn btn-primary" 
-                  (click)="openCreateUnitModal()">
-                  Додати
-                </button>
-            </div>
+      <div class="col-2">
+        <button
+          class="btn btn-primary"
+          (click)="openCreateUnitModal()">
+          Додати
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body pt-0 position-relative">
+    @if (isLoading()) {
+      <div class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
-    </div>
+      </div>
+    }
 
-    <div class="card-body pt-0">
-        @for (unit of units$ | async; track unit.id; let index = $index)
-        {
-            <div 
-            class="row pt-3 pb-3" 
-            [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
-                <div class="col-3 text-truncate">
-                    <strong> {{unit.code}}</strong>
-                </div>
+    @for (unit of units(); track unit.id; let index = $index) {
+      <div
+        class="row pt-3 pb-3"
+        [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+        <div class="col-3 text-truncate">
+          <strong> {{ unit.code }}</strong>
+        </div>
 
-                <div class="col text-truncate">
-                    {{unit.name}}
-                </div>
+        <div class="col text-truncate">
+          {{ unit.name }}
+        </div>
 
-                <div class="col text-truncate">
-                    {{unit.description}}
-                </div>
+        <div class="col text-truncate">
+          {{ unit.description }}
+        </div>
 
-                <div 
-                  class="col-1" 
-                  (click)="openEditUnitModal(unit)">
-                    <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
-                </div>
+        <div
+          class="col-1"
+          (click)="openEditUnitModal(unit)">
+          <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
+        </div>
 
-                <div 
-                  class="col-1"
-                  (click)="openDeleteConfirmation(unit)">
-                    <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
-                </div>
-            </div>
-        }
-    </div>
+        <div
+          class="col-1"
+          (click)="openDeleteConfirmation(unit)">
+          <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
+        </div>
+      </div>
+    }
+  </div>
 </div>

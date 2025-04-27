@@ -2,7 +2,7 @@ import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {GoBackComponent} from '../../../../../../shared/components/go-back/go-back.component';
 import {PositionService} from '../../../services/position.service';
 import {BsModalService} from 'ngx-bootstrap/modal';
-import {Subject, takeUntil} from 'rxjs';
+import {delay, finalize, Subject, takeUntil} from 'rxjs';
 import {Position} from '../../../models/position.model';
 import {CommonModule} from '@angular/common';
 import {
@@ -32,6 +32,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   readonly modalService = inject(BsModalService);
 
   positions = signal<Position[]>([]);
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.getPositions();
@@ -43,8 +44,15 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   }
 
   getPositions() {
+    this.isLoading.set(true);
+
     this.positionService.getPositions()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntil(this.destroy$))
       .subscribe(positions => {
         this.positions.set(positions);
       });
