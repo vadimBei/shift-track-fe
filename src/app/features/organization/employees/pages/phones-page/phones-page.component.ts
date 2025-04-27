@@ -118,7 +118,7 @@ export class PhonesPageComponent implements OnInit, OnDestroy {
           this.errorMessage.set('Failed to load employees. Please try again.');
           return of([] as Employee[]);
         }),
-      delay(1000),
+      delay(500),
       finalize(() => {
         this.isLoading.set(false);
       }),
