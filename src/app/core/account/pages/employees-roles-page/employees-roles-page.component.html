@@ -69,7 +69,15 @@
     <div class="row" style="height: calc(98% - 100px);">
       <div class="col me-3">
         <div class="card h-100 d-flex flex-column">
-          <div class="card-body overflow-auto">
+          <div class="card-body overflow-auto position-relative">
+            @if (isLoading()) {
+              <div class="spinner-overlay">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            }
+
             @for (employee of employees(); track employee.id; ) {
               <div class="row mb-1 pt-2 pb-2 employee-name"
                    [ngClass]="{'bg-primary': employee.id === employeeId, 'bg-gray-hover': employee.id !== employeeId}">

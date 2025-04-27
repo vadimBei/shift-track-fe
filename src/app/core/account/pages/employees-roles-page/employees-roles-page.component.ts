@@ -22,7 +22,7 @@ import {EmployeeRolesService} from '../../services/employee-roles.service';
 import {
   DeleteConfirmationModalComponent
 } from "../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component";
-import {Subject, Subscription, takeUntil} from "rxjs";
+import {delay, finalize, Subject, Subscription, takeUntil} from "rxjs";
 import {EmployeeRoleUnit} from "../../models/employee-role-unit.model";
 import {EmployeeRoleUnitsService} from "../../services/employee-role-units.service";
 import {EmployeeRoleUnitDepartmentsService} from "../../services/employee-role-unit-departments.service";
@@ -64,6 +64,7 @@ export class EmployeesRolesPageComponent implements OnInit, OnDestroy {
   employeeRoles = signal<EmployeeRole[]>([]);
   employeeRoleUnits = signal<EmployeeRoleUnit[]>([]);
   employeeRoleUnitDepartments = signal<EmployeeRoleUnitDepartment[]>([]);
+  isLoading = signal(false);
 
   unitId?: number;
   employeeId?: number;
@@ -95,8 +96,16 @@ export class EmployeesRolesPageComponent implements OnInit, OnDestroy {
   }
 
   private getEmployees() {
+    this.isLoading.set(true);
+
     this.employeeService.getAllEmployees(this.request())
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntil(this.destroy$)
+      )
       .subscribe(val => {
         this.employees.set(val);
       });
