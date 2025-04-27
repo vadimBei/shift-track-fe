@@ -1,15 +1,15 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
-import { EmployeesService } from '../../services/employees.service';
-import { Employee } from '../../models/employee.model';
-import { AllEmployeesRequest } from '../../models/all-employees-request.model';
+import {Component, inject, OnInit, OnDestroy, signal} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormGroup, FormBuilder} from '@angular/forms';
+import {EmployeesService} from '../../services/employees.service';
+import {Employee} from '../../models/employee.model';
+import {AllEmployeesRequest} from '../../models/all-employees-request.model';
 import {Subject, takeUntil, catchError, finalize, of, delay} from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { Unit } from '../../../structure/models/unit.model';
-import { UnitService } from '../../../structure/services/unit.service';
-import { CommonModule } from '@angular/common';
-import { DepartmentService } from '../../../structure/services/department.service';
-import { Department } from '../../../structure/models/department.model';
+import {debounceTime} from 'rxjs/operators';
+import {Unit} from '../../../structure/models/unit.model';
+import {UnitService} from '../../../structure/services/unit.service';
+import {CommonModule} from '@angular/common';
+import {DepartmentService} from '../../../structure/services/department.service';
+import {Department} from '../../../structure/models/department.model';
 
 @Component({
   selector: 'app-phones-page',
@@ -118,10 +118,10 @@ export class PhonesPageComponent implements OnInit, OnDestroy {
           this.errorMessage.set('Failed to load employees. Please try again.');
           return of([] as Employee[]);
         }),
-      delay(500),
-      finalize(() => {
-        this.isLoading.set(false);
-      }),
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe(employees => {
