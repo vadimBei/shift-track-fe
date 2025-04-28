@@ -1,28 +1,27 @@
-import {Component, inject, OnInit, OnDestroy, signal} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, FormGroup, FormBuilder} from '@angular/forms';
-import {EmployeesService} from '../../services/employees.service';
-import {Employee} from '../../models/employee.model';
-import {AllEmployeesRequest} from '../../models/all-employees-request.model';
-import {Subject, takeUntil, catchError, finalize, of, delay} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {Unit} from '../../../structure/models/unit.model';
-import {UnitService} from '../../../structure/services/unit.service';
-import {CommonModule} from '@angular/common';
-import {DepartmentService} from '../../../structure/services/department.service';
-import {Department} from '../../../structure/models/department.model';
+import {Component, inject, signal} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {EmployeesService} from "../../services/employees.service";
+import {DepartmentService} from "../../../structure/services/department.service";
+import {UnitService} from "../../../structure/services/unit.service";
+import {catchError, delay, finalize, of, Subject, takeUntil} from "rxjs";
+import {AllEmployeesRequest} from "../../models/all-employees-request.model";
+import {Employee} from "../../models/employee.model";
+import {Unit} from "../../../structure/models/unit.model";
+import {Department} from "../../../structure/models/department.model";
+import {debounceTime} from "rxjs/operators";
+import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-phones-page',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './phones-page.component.html',
-  styleUrl: './phones-page.component.scss'
+  selector: 'app-contacts-page',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+  templateUrl: './contacts-page.component.html',
+  styleUrl: './contacts-page.component.scss'
 })
-export class PhonesPageComponent implements OnInit, OnDestroy {
+export class ContactsPageComponent {
   private readonly employeeService = inject(EmployeesService);
   private readonly departmentService = inject(DepartmentService);
   private readonly unitService = inject(UnitService);
