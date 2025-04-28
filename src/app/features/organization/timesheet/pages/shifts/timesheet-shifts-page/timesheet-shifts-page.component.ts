@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
-import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
-import { Subject } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { Shift } from '../../../models/shift.model';
-import { ShiftsService } from '../../../services/shifts.service';
-import { DeleteConfirmationModalComponent } from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { EditShiftModalComponent } from '../../../components/shifts/edit-shift-modal/edit-shift-modal.component';
-import { CreateShiftModalComponent } from '../../../components/shifts/create-shift-modal/create-shift-modal.component';
-import { TimeSpanHoursMinutesFormatPipe } from '../../../../../../shared/pipes/time-span-hours-minutes-format.pipe';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {GoBackComponent} from '../../../../../../shared/components/go-back/go-back.component';
+import {delay, finalize, Subject, takeUntil} from 'rxjs';
+import {CommonModule} from '@angular/common';
+import {Shift} from '../../../models/shift.model';
+import {ShiftsService} from '../../../services/shifts.service';
+import {
+  DeleteConfirmationModalComponent
+} from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {EditShiftModalComponent} from '../../../components/shifts/edit-shift-modal/edit-shift-modal.component';
+import {CreateShiftModalComponent} from '../../../components/shifts/create-shift-modal/create-shift-modal.component';
+import {TimeSpanHoursMinutesFormatPipe} from '../../../../../../shared/pipes/time-span-hours-minutes-format.pipe';
 
 @Component({
   selector: 'app-timesheet-shifts-page',
@@ -21,19 +23,36 @@ import { TimeSpanHoursMinutesFormatPipe } from '../../../../../../shared/pipes/t
   templateUrl: './timesheet-shifts-page.component.html',
   styleUrl: './timesheet-shifts-page.component.scss'
 })
-export class TimesheetShiftsPageComponent {
-  shifts$: Subject<Shift[]> = new Subject<Shift[]>();
-  readonly modalService = inject(BsModalService);
-  readonly shiftsService = inject(ShiftsService);
+export class TimesheetShiftsPageComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  private readonly modalService = inject(BsModalService);
+  private readonly shiftsService = inject(ShiftsService);
+
+  shifts = signal<Shift[]>([]);
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.getShifts();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getShifts() {
+    this.isLoading.set(true);
+
     this.shiftsService.getShifts()
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntil(this.destroy$))
       .subscribe(shifts => {
-        this.shifts$.next(shifts);
+        this.shifts.set(shifts);
       })
   }
 
@@ -64,7 +83,6 @@ export class TimesheetShiftsPageComponent {
     });
   }
 
-
   openDeleteConfirmation(shift: Shift) {
     this.modalService.show(
       DeleteConfirmationModalComponent,
@@ -80,6 +98,7 @@ export class TimesheetShiftsPageComponent {
 
   deleteShift(shiftId: number) {
     this.shiftsService.deleteShift(shiftId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => this.getShifts()
       });

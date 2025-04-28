@@ -2,83 +2,90 @@
 </app-go-back>
 
 <div class="card shadow">
-    <div class="card-header">
-        <div class="row align-items-end">
-            <div class="col-2">
-                <strong>
-                    Код
-                </strong>
-            </div>
+  <div class="card-header">
+    <div class="row align-items-end">
+      <div class="col-2">
+        <strong>
+          Код
+        </strong>
+      </div>
 
-            <div class="col">
-                <strong>
-                    Робочі години
-                </strong>
-            </div>
+      <div class="col">
+        <strong>
+          Робочі години
+        </strong>
+      </div>
 
-            <div class="col-2">
-                <strong>
-                    Колір
-                </strong>
-            </div>
+      <div class="col-2">
+        <strong>
+          Колір
+        </strong>
+      </div>
 
-            <div class="col">
-                <strong>
-                    Опис
-                </strong>
-            </div>
-            
-            <div class="col-2">
-                <button 
-                  class="btn btn-primary"
-                  (click)="openCreateShiftModal()">
-                  Додати
-                </button>
-            </div>
+      <div class="col">
+        <strong>
+          Опис
+        </strong>
+      </div>
+
+      <div class="col-2">
+        <button
+          class="btn btn-primary"
+          (click)="openCreateShiftModal()">
+          Додати
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body position-relative overflow-auto">
+    @if (isLoading()) {
+      <div class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
-    </div>
+      </div>
+    }
 
-    <div class="card-body overflow-auto">
-        @for (shift of shifts$ | async; track shift.id; let index = $index)
-        {
-            <div 
-              class="row pt-3 pb-3" 
-              [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+    @for (shift of shifts(); track shift.id; let index = $index) {
+      <div
+        class="row pt-3 pb-3"
+        [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
 
-                <div class="col-2">
-                    <strong> {{shift.code}}</strong>
-                </div>
+        <div class="col-2">
+          <strong> {{ shift.code }}</strong>
+        </div>
 
-                <div class="col-2">
-                    <span> {{shift.workHours | timeSpanHoursMinutesFormat}}</span>
-                </div>
+        <div class="col-2">
+          <span> {{ shift.workHours | timeSpanHoursMinutesFormat }}</span>
+        </div>
 
-                <div class="col-2">
-                    <div 
-                      class="d-inline-block rounded border" 
-                      [style.background]="shift.color" 
-                      style="width: 24px; height: 24px;" 
-                      [attr.title]="shift.color">
-                    </div>
-                </div>
+        <div class="col-2">
+          <div
+            class="d-inline-block rounded border"
+            [style.background]="shift.color"
+            style="width: 24px; height: 24px;"
+            [attr.title]="shift.color">
+          </div>
+        </div>
 
-                <div class="col text-truncate">
-                    <span> {{shift.description}}</span>
-                </div>
+        <div class="col text-truncate">
+          <span> {{ shift.description }}</span>
+        </div>
 
-                <div 
-                  class="col-1 icon-button"
-                  (click)="openEditShiftModal(shift)">
-                  <img src="/assets/icons/edit.svg" alt="edit">
-                </div>
-    
-                <div 
-                  class="col-1 icon-button"
-                  (click)="openDeleteConfirmation(shift)">
-                  <img src="/assets/icons/delete.svg" alt="delete">
-                </div>
-            </div>
-        }
-    </div>
-</div>  
+        <div
+          class="col-1 icon-button"
+          (click)="openEditShiftModal(shift)">
+          <img src="/assets/icons/edit.svg" alt="edit">
+        </div>
+
+        <div
+          class="col-1 icon-button"
+          (click)="openDeleteConfirmation(shift)">
+          <img src="/assets/icons/delete.svg" alt="delete">
+        </div>
+      </div>
+    }
+  </div>
+</div>
 
