@@ -1,5 +1,4 @@
 import { Routes } from "@angular/router";
-import { PhonesPageComponent } from "./pages/phones-page/phones-page.component";
 import {ContactsPageComponent} from "./pages/contacts-page/contacts-page.component";
 
 const routes: Routes = [
