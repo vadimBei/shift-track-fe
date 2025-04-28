@@ -99,7 +99,7 @@
     </div>
   </div>
 
-  <div class="card-body pt-0 position-relative">
+  <div class="card-body pt-0 position-relative overflow-auto" >
     @if (isLoading()) {
       <div class="spinner-overlay">
         <div class="spinner-border text-primary" role="status">
@@ -141,12 +141,6 @@
         <div class="col text-truncate">
           {{ employee.position?.name }}
         </div>
-      </div>
-    }
-
-    @if (!isLoading() && employees().length === 0) {
-      <div class="text-center p-3">
-        No employees found.
       </div>
     }
   </div>
