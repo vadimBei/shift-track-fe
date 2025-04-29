@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { DepartmentService } from '../../../services/department.service';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EditDepartmentRequest } from '../../../models/edit-department-request.model';
-import { Department } from '../../../models/department.model';
-import { CommonModule } from '@angular/common';
+import {Component, inject, OnInit, signal} from '@angular/core';
+import {DepartmentService} from '../../../services/department.service';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {EditDepartmentRequest} from '../../../models/edit-department-request.model';
+import {Department} from '../../../models/department.model';
+import {CommonModule} from '@angular/common';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-edit-department-modal',
@@ -17,33 +18,42 @@ import { CommonModule } from '@angular/common';
   styleUrl: './edit-department-modal.component.scss'
 })
 export class EditDepartmentModalComponent implements OnInit {
-  departmentService = inject(DepartmentService);
-  bsModalRef = inject(BsModalRef);
-  form: FormGroup = new FormGroup({});
-  fb = inject(FormBuilder);
+  private readonly destroy$ = new Subject<void>();
 
-  request?: EditDepartmentRequest;
+  private readonly departmentService = inject(DepartmentService);
+
+  fb = inject(FormBuilder);
+  bsModalRef = inject(BsModalRef);
+  form: FormGroup = this.fb.group({
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(100)
+      ]
+    ]
+  });
+
+  request = signal<EditDepartmentRequest>(
+    {
+      id: 0,
+      name: ''
+    });
   department?: Department;
 
   ngOnInit(): void {
-    this.request = {
-      id: 0,
-      name: ''
-    }
-
     this.getDepartmentById();
-
-    this.initializeForm(this.department!);
   }
 
   getDepartmentById() {
     this.departmentService.getDepartmentById(this.department!.id)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(department => {
-        this.department = department;
+        this.updateFormWithDepartmentData(department);
       });
   }
 
-  initializeForm(department: Department) {
+  updateFormWithDepartmentData(department: Department) {
     this.form = this.fb.group({
       name: [
         department.name,
@@ -55,14 +65,18 @@ export class EditDepartmentModalComponent implements OnInit {
     });
   }
 
-  editDepartment() {
+  save() {
     if (!this.request)
       return;
 
-    this.request.id = this.department!.id;
-    this.request.name = this.form.value.name;
+    this.request.update(value => ({
+      ...value,
+      id: this.department!.id,
+      name: this.form.value.name
+    }));
 
-    this.departmentService.updateDepartment(this.request!)
+    this.departmentService.updateDepartment(this.request())
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (departmen) => {
           this.bsModalRef.hide();
