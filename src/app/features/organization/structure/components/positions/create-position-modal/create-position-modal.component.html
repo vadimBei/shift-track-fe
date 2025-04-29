@@ -6,36 +6,41 @@
       </div>
 
       <div class="col-1">
-        <button class="btn-close" (click)="bsModalRef.hide()">
+        <button
+          class="btn-close"
+          (click)="bsModalRef.hide()">
         </button>
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        <form id="createPositionForm" [formGroup]="form" (ngSubmit)="createPosition()">
+        <form
+          id="createPositionForm"
+          [formGroup]="form"
+          (ngSubmit)="createPosition()">
           <div class="form-floating mb-3">
-            <input 
-              id="name" 
-              class="form-control" 
-              type="text" 
+            <input
+              id="name"
+              class="form-control"
+              type="text"
               formControlName="name">
 
-            <label 
-              class="form-label" 
+            <label
+              class="form-label"
               for="name">
               Назва:
             </label>
           </div>
 
           <div class="form-floating mb-3">
-            <input 
-              class="form-control" 
-              type="text" 
-              id="description" 
+            <input
+              class="form-control"
+              type="text"
+              id="description"
               formControlName="description">
 
-            <label 
+            <label
               class="form-label"
               for="description">
               Опис:
@@ -44,13 +49,13 @@
 
           <div class="row">
             <div class="col d-flex justify-content-end">
-              <button 
-                class="btn btn-lavender" 
-                type="submit" 
-                form="createPositionForm" 
+              <button
+                class="btn btn-lavender"
+                type="submit"
+                form="createPositionForm"
                 [class.disabled]="!form.valid"
                 [disabled]="!form.valid"
-                >Зберегти
+              >Зберегти
               </button>
             </div>
           </div>
