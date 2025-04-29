@@ -31,6 +31,8 @@ export class CreateShiftModalComponent implements OnInit, OnDestroy {
 
   readonly bsModalRef = inject(BsModalRef);
 
+  selectedColor: string = '#FFFFFF';
+
   fb = inject(FormBuilder);
   form: FormGroup = this.fb.group({
     code: [
@@ -48,7 +50,7 @@ export class CreateShiftModalComponent implements OnInit, OnDestroy {
       ]
     ],
     color: [
-      '#FFFFFF',
+      this.selectedColor,
       [
         Validators.required,
         Validators.maxLength(7)
@@ -77,8 +79,6 @@ export class CreateShiftModalComponent implements OnInit, OnDestroy {
       color: '',
       type: ShiftType.none
     });
-
-  selectedColor: string = '#FFFFFF';
 
   ngOnInit(): void {
     this.form.get('type')?.valueChanges.subscribe(value => {

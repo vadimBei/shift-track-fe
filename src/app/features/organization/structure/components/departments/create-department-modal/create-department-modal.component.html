@@ -13,35 +13,34 @@
 
     <div class="row">
       <div class="col">
-        <form 
-          id="createDepartmentFrom" 
-          [formGroup]="form" 
+        <form
+          id="createDepartmentFrom"
+          [formGroup]="form"
           (ngSubmit)="createDepartment()">
           <div class="form-floating mb-3">
-              <input 
-                class="form-control"
-                type="text"
-                id="name"
-                formControlName="name">
-            <label 
+            <input
+              class="form-control"
+              type="text"
+              id="name"
+              formControlName="name">
+            <label
               class="form-label"
               for="name">
-                  Назва:
+              Назва:
             </label>
           </div>
 
           <div class="form-floating mb-3">
-              <select 
-                formControlName="unitId"
-                id="unit"
-                class="form-select">
-                  <option [ngValue]="null">Не обрано</option>
-  
-                  @for (unit of units$ | async; track $index) 
-                  {
-                      <option [ngValue]="[unit.id]">{{unit.name}}</option>
-                  }
-              </select>
+            <select
+              formControlName="unitId"
+              id="unit"
+              class="form-select">
+              <option [ngValue]="null">Не обрано</option>
+
+              @for (unit of units(); track $index) {
+                <option [ngValue]="[unit.id]">{{ unit.name }}</option>
+              }
+            </select>
 
             <label class="form-label" for="unit">
               Регіон:
@@ -50,8 +49,8 @@
 
           <div class="row">
             <div class="col d-flex justify-content-end">
-              <button 
-                class="btn btn-lavender" 
+              <button
+                class="btn btn-lavender"
                 type="submit"
                 form="createDepartmentFrom"
                 [class.disabled]="!form.valid"
