@@ -22,8 +22,9 @@ export class EditDepartmentModalComponent implements OnInit {
 
   private readonly departmentService = inject(DepartmentService);
 
-  fb = inject(FormBuilder);
   bsModalRef = inject(BsModalRef);
+
+  fb = inject(FormBuilder);
   form: FormGroup = this.fb.group({
     name: [
       '',
@@ -39,6 +40,7 @@ export class EditDepartmentModalComponent implements OnInit {
       id: 0,
       name: ''
     });
+
   department?: Department;
 
   ngOnInit(): void {
@@ -54,14 +56,8 @@ export class EditDepartmentModalComponent implements OnInit {
   }
 
   updateFormWithDepartmentData(department: Department) {
-    this.form = this.fb.group({
-      name: [
-        department.name,
-        [
-          Validators.required,
-          Validators.maxLength(100)
-        ]
-      ]
+    this.form.patchValue({
+      name: department.name,
     });
   }
 
