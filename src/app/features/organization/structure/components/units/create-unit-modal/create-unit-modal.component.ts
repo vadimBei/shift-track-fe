@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnDestroy, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UnitService} from '../../../services/unit.service';
 import {BsModalRef} from 'ngx-bootstrap/modal';
@@ -14,7 +14,7 @@ import {Subject, takeUntil} from "rxjs";
   templateUrl: './create-unit-modal.component.html',
   styleUrl: './create-unit-modal.component.scss'
 })
-export class CreateUnitModalComponent {
+export class CreateUnitModalComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   private readonly unitService = inject(UnitService);
@@ -53,6 +53,11 @@ export class CreateUnitModalComponent {
       code: ''
     }
   );
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   createUnit() {
     if (!this.request)
