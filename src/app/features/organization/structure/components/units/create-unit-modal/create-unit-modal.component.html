@@ -6,54 +6,56 @@
       </div>
 
       <div class="col-1">
-        <button class="btn-close" (click)="bsModalRef.hide()">
+        <button
+          class="btn-close"
+          (click)="bsModalRef.hide()">
         </button>
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        <form 
-          id="createUnitFrom" 
-          [formGroup]="form" 
+        <form
+          id="createUnitFrom"
+          [formGroup]="form"
           (ngSubmit)="createUnit()">
           <div class="form-floating mb-3">
-            <input 
-              class="form-control" 
-              type="text" 
-              id="code" 
+            <input
+              class="form-control"
+              type="text"
+              id="code"
               formControlName="code">
 
-            <label 
-              class="form-label" 
+            <label
+              class="form-label"
               for="code">
               Код:
             </label>
           </div>
 
           <div class="form-floating mb-3">
-            <input 
-              class="form-control" 
-              type="text" 
-              id="name" 
+            <input
+              class="form-control"
+              type="text"
+              id="name"
               formControlName="name">
 
-            <label 
-              class="form-label" 
+            <label
+              class="form-label"
               for="name">
               Назва:
             </label>
           </div>
 
           <div class="form-floating mb-3">
-            <input 
+            <input
               class="form-control"
-              type="text" 
-              formControlName="description" 
+              type="text"
+              formControlName="description"
               id="description">
 
-            <label 
-              class="form-label" 
+            <label
+              class="form-label"
               for="description">
               Опис:
             </label>
@@ -61,13 +63,13 @@
 
           <div class="row">
             <div class="col d-flex justify-content-end">
-              <button 
-                class="btn btn-lavender" 
+              <button
+                class="btn btn-lavender"
                 type="submit"
                 form="createUnitFrom"
                 [class.disabled]="!form.valid"
                 [disabled]="!form.valid"
-                >Зберегти
+              >Зберегти
               </button>
             </div>
           </div>
