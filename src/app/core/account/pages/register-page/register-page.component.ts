@@ -1,14 +1,14 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterLink } from '@angular/router';
-import { AbstractControl } from '@angular/forms';
-import { NgIf } from '@angular/common';
-import { AccountService } from '../../services/account.service';
-import { CreateUserRequest } from '../../models/create-user-request.model';
-import { EmployeeGender } from '../../../../features/organization/employees/enums/employee-gender.enum';
+import {Component, inject, OnDestroy, signal} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {RouterLink} from '@angular/router';
+import {AbstractControl} from '@angular/forms';
+import {NgIf} from '@angular/common';
+import {AccountService} from '../../services/account.service';
+import {CreateUserRequest} from '../../models/create-user-request.model';
+import {EmployeeGender} from '../../../../features/organization/employees/enums/employee-gender.enum';
 
 @Component({
   selector: 'app-register-page',
@@ -22,41 +22,14 @@ import { EmployeeGender } from '../../../../features/organization/employees/enum
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss'
 })
-export class RegisterPageComponent implements OnInit, OnDestroy {
+export class RegisterPageComponent implements OnDestroy {
   private accountService = inject(AccountService);
   private destroy$ = new Subject<void>();
 
   router = inject(Router);
 
   fb = inject(FormBuilder);
-  form: FormGroup = new FormGroup({});
-
-  isPasswordVisible = signal<boolean>(false);
-  isConfirmPasswordVisible = signal<boolean>(false);
-  validationErrors?: string[];
-
-  request = signal<CreateUserRequest>({
-    name: '',
-    surname: '',
-    patronymic: '',
-    email: '',
-    phoneNumber: '',
-    gender: EmployeeGender.none,
-    password: '',
-    confirmPassword: ''
-  });
-
-  ngOnInit(): void {
-    this.initializeForm();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  initializeForm() {
-    this.form = this.fb.group({
+  form: FormGroup = this.fb.group({
       name: ['', [
         Validators.required
       ]],
@@ -87,9 +60,28 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
       ],
       gender: [null, [Validators.required]],
     },
-      {
-        validators: this.passwordMatchValidator
-      });
+    {
+      validators: this.passwordMatchValidator
+    });
+
+  isPasswordVisible = signal<boolean>(false);
+  isConfirmPasswordVisible = signal<boolean>(false);
+  validationErrors?: string[];
+
+  request = signal<CreateUserRequest>({
+    name: '',
+    surname: '',
+    patronymic: '',
+    email: '',
+    phoneNumber: '',
+    gender: EmployeeGender.none,
+    password: '',
+    confirmPassword: ''
+  });
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   register() {
@@ -124,6 +116,6 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
 
-    return password === confirmPassword ? null : { passwordsNotMatch: true };
+    return password === confirmPassword ? null : {passwordsNotMatch: true};
   }
 }
