@@ -1,0 +1,12 @@
+﻿export const ErrorTranslations: Record<string, string> = {
+  'VALIDATION_ERROR': 'Помилка валідації',
+  'NotFound': 'Ресурс не знайдено',
+  'Unauthorized': 'Необхідна авторизація',
+  'Forbidden': 'Доступ заборонено',
+  'ServerError': 'Помилка сервера',
+  'ENTITY_NOT_FOUND_ERROR': 'Запис незнайдено',
+  'ROLE_ALREADY_EXIST': 'Така роль вже існує',
+  'SYS_USR_EMPLOYEE_ROLE_ALREADY_EXISTS': 'Працівник вже має таку роль',
+  'SYS_USR_EMPLOYEE_ROLE_UNIT_ALREADY_EXISTS': 'Працівник вже має таку роль для такого регіону',
+  'SYS_USR_EMPLOYEE_ROLE_UNIT_DEPARTMENT_ALREADY_EXISTS': 'Працівник вже має таку роль для такого департаменту',
+};

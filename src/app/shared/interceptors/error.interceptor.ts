@@ -1,31 +1,56 @@
-import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { inject } from "@angular/core";
-import { AccountService } from "../../core/account/services/account.service";
-import { catchError } from "rxjs";
-import { BackendError } from "../models/errors/backend-error";
+import {HttpErrorResponse, HttpInterceptorFn} from "@angular/common/http";
+import {inject} from "@angular/core";
+import {catchError, throwError} from "rxjs";
+import {BackendError} from "../models/errors/backend-error";
+import {ErrorService} from "../services/error.service";
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-    const router = inject(Router);
-    const accountService = inject(AccountService);
+  const errorService = inject(ErrorService);
 
-    return next(req)
-        .pipe(
-            catchError((httpError: HttpErrorResponse) => {
-                const backendError = httpError.error as BackendError;
+  return next(req).pipe(
+    catchError((httpError: HttpErrorResponse) => {
+      const backendError = httpError.error as BackendError;
 
-                if (httpError) {
-                    switch (httpError.status) {
+      if (backendError) {
+        switch (httpError.status) {
+          case 400: // Bad Request
+            if (backendError.ValidationErrors) {
+              errorService.handleValidationError(backendError.ValidationErrors);
+            } else {
+              errorService.handleBackendError(backendError);
+            }
+            break;
 
-                        default: {
-                            console.log('Unhandled error', httpError);
+          case 422:
+            if (backendError.ValidationErrors) {
+              errorService.handleValidationError(backendError.ValidationErrors);
+            }
+            break;
 
-                        }
-                    }
-                }
-                throw httpError;
-            })
-        );
-}
+          case 403: // Forbidden
+            errorService.handleError('У вас немає прав доступу до цього ресурсу');
+            break;
 
+          case 404: // Not Found
+            errorService.handleError('Ресурс не знайдено');
+            break;
 
+          case 500: // Server Error
+            errorService.handleError('Помилка сервера. Спробуйте пізніше');
+            break;
+
+          default:
+            errorService.handleError(backendError.ErrorMessage || 'Виникла непередбачена помилка');
+        }
+      } else {
+        if (!navigator.onLine) {
+          errorService.handleError('Відсутнє з\'єднання з інтернетом');
+        } else {
+          errorService.handleError('Виникла непередбачена помилка');
+        }
+      }
+
+      return throwError(() => httpError);
+    })
+  );
+};
