@@ -7,6 +7,7 @@ import {CurrentUser} from '../models/current-user.model';
 import {CreateUserRequest} from '../models/create-user-request.model';
 import {Employee} from '../../../features/organization/employees/models/employee.model';
 import {EditAccountRequest} from '../models/edit-account-request.model';
+import {ChangePasswordRequest} from "../models/change-password-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -142,6 +143,18 @@ export class AccountService {
       .pipe(
         tap(() => {
           this.loadCurrentUser();
+        })
+      );
+  }
+
+  changePassword(request: ChangePasswordRequest) {
+    return this.httpClient.post<Token>(`system/user/employees/change-password`, request)
+      .pipe(
+        map((token) => {
+          if (token.tokenType && token.accessToken && token.refreshToken) {
+            this.setToken(token);
+            this.loadCurrentUser();
+          }
         })
       );
   }

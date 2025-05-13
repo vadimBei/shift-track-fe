@@ -4,6 +4,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ErrorService} from "../../services/error.service";
 import {Subscription} from "rxjs";
 import {ErrorNotification} from "../../models/errors/error-notification";
+import {ErrorType} from "../../enums/error-type.enum";
 
 @Component({
   selector: 'app-error-notification',
@@ -58,10 +59,11 @@ export class ErrorNotificationComponent implements OnInit, OnDestroy {
       clearTimeout(this.autoHideTimeout);
     }
 
-    // Автоматично приховувати сповіщення через 5 секунд
     this.autoHideTimeout = setTimeout(() => {
       this.currentError = null;
     }, 5000);
   }
+
+  protected readonly ErrorType = ErrorType;
 }
 

@@ -1,5 +1,7 @@
-﻿export interface ErrorNotification {
+﻿import {ErrorType} from "../../enums/error-type.enum";
+
+export interface ErrorNotification {
   message: string;
-  type: 'error' | 'warning' | 'info';
+  type: ErrorType;
   timestamp: Date;
 }

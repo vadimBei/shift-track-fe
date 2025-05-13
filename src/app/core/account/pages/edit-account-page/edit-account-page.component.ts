@@ -7,6 +7,8 @@ import { EditAccountRequest } from '../../models/edit-account-request.model';
 import { Subject, catchError, finalize, takeUntil, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import moment from "moment";
+import {ErrorService} from "../../../../shared/services/error.service";
+import {ErrorType} from "../../../../shared/enums/error-type.enum";
 
 @Component({
   selector: 'app-edit-account-page',
@@ -19,9 +21,11 @@ import moment from "moment";
   styleUrl: './edit-account-page.component.scss'
 })
 export class EditAccountPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  private errorService = inject(ErrorService);
   private accountService = inject(AccountService);
   private fb = inject(FormBuilder);
-  private destroy$ = new Subject<void>();
 
   form: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -114,18 +118,13 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
     this.accountService.updateAccount(updatedRequest)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => this.isLoading.set(false)),
-        catchError(error => {
-          this.errorMessage.set('Помилка при збереженні даних: ' + (error.message || 'Невідома помилка'));
-          console.error('Error updating account:', error);
-          throw error;
-        })
+        finalize(() => this.isLoading.set(false))
       )
       .subscribe({
         next: () => {
           this.saveSuccess.set(true);
 
-          this.loadCurrentEmployee();
+          this.errorService.handleError('Зміни успішно збережено', ErrorType.info)
         }
       });
   }

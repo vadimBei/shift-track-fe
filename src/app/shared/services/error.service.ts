@@ -1,8 +1,9 @@
-import { Injectable, signal } from '@angular/core';
-import { Subject } from 'rxjs';
-import { BackendError } from '../models/errors/backend-error';
+import {Injectable, signal} from '@angular/core';
+import {Subject} from 'rxjs';
+import {BackendError} from '../models/errors/backend-error';
 import {ErrorNotification} from "../models/errors/error-notification";
 import {ErrorTranslations} from "../constants/error-translations";
+import {ErrorType} from "../enums/error-type.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ErrorService {
 
   constructor() {}
 
-  handleError(message: string, type: 'error' | 'warning' | 'info' = 'error'): void {
+  handleError(message: string, type: ErrorType = ErrorType.error): void {
     const notification: ErrorNotification = {
       message,
       type,
@@ -38,7 +39,7 @@ export class ErrorService {
       translatedMessage = `${errorTypeTranslation}`;
     }
 
-    this.handleError(translatedMessage, 'error');
+    this.handleError(translatedMessage);
 
     if (error.ValidationErrors) {
       console.log('Validation errors:', error.ValidationErrors);
@@ -48,7 +49,7 @@ export class ErrorService {
   handleValidationError(validationErrors: Record<string, string[]>): void {
     this.validationErrorsSubject.next(validationErrors);
 
-    this.handleError('Перевірте коректність введених даних', 'warning');
+    this.handleError('Перевірте коректність введених даних', ErrorType.warning);
   }
 
   clearError(): void {
