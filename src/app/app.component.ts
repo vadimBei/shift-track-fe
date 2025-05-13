@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {ErrorNotificationComponent} from "./shared/components/error-notification/error-notification.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet
+    RouterOutlet,
+    ErrorNotificationComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

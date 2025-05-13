@@ -1,18 +1,20 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { GoBackComponent } from '../../../../../shared/components/go-back/go-back.component';
-import { EmployeesService } from '../../services/employees.service';
-import { UnitService } from '../../../structure/services/unit.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, Subject } from 'rxjs';
-import { AllEmployeesRequest } from '../../models/all-employees-request.model';
-import { Employee } from '../../models/employee.model';
-import { Unit } from '../../../structure/models/unit.model';
-import { CommonModule } from '@angular/common';
-import { DepartmentService } from '../../../structure/services/department.service';
-import { Department } from '../../../structure/models/department.model';
-import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { EditEmployeeModalComponent } from '../../components/edit-employee-modal/edit-employee-modal.component';
-import { DeleteConfirmationModalComponent } from '../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {GoBackComponent} from '../../../../../shared/components/go-back/go-back.component';
+import {EmployeesService} from '../../services/employees.service';
+import {UnitService} from '../../../structure/services/unit.service';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime, delay, finalize, Subject, takeUntil} from 'rxjs';
+import {AllEmployeesRequest} from '../../models/all-employees-request.model';
+import {Employee} from '../../models/employee.model';
+import {Unit} from '../../../structure/models/unit.model';
+import {CommonModule} from '@angular/common';
+import {DepartmentService} from '../../../structure/services/department.service';
+import {Department} from '../../../structure/models/department.model';
+import {BsModalService, ModalOptions} from 'ngx-bootstrap/modal';
+import {EditEmployeeModalComponent} from '../../components/edit-employee-modal/edit-employee-modal.component';
+import {
+  DeleteConfirmationModalComponent
+} from '../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-employees-page',
@@ -26,53 +28,61 @@ import { DeleteConfirmationModalComponent } from '../../../../../shared/componen
   templateUrl: './employees-page.component.html',
   styleUrl: './employees-page.component.scss'
 })
-export class EmployeesPageComponent implements OnInit {
-  departmentService = inject(DepartmentService);
-  employeeService = inject(EmployeesService);
-  unitService = inject(UnitService);
-  fb = inject(FormBuilder);
-  modalService = inject(BsModalService);
+export class EmployeesPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  private readonly departmentService = inject(DepartmentService);
+  private readonly employeeService = inject(EmployeesService);
+  private readonly unitService = inject(UnitService);
+  private readonly modalService = inject(BsModalService);
 
   searchSubject$: Subject<string> = new Subject<string>();
+  fb = inject(FormBuilder);
   form: FormGroup = new FormGroup({});
 
-  request?: AllEmployeesRequest;
-  employees$: Subject<Employee[]> = new Subject<Employee[]>();
-  units$: Subject<Unit[]> = new Subject<Unit[]>();
-  departments$: Subject<Department[]> = new Subject<Department[]>();
+  request = signal<AllEmployeesRequest>({
+    searchPattern: '',
+    unitId: undefined,
+    departmentId: undefined
+  });
+  employees = signal<Employee[]>([]);
+  units = signal<Unit[]>([]);
+  departments = signal<Department[]>([]);
   unitId?: number;
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.getEmployees();
 
-    this.request = {
-      searchPattern: '',
-      unitId: undefined,
-      departmentId: undefined
-    }
-
     this.initializeForm();
 
-    this.searchSubject$
-      .pipe(
-        debounceTime(500)
-      )
-      .subscribe(searchPattern => {
-        this.request!.searchPattern = searchPattern;
-        this.getEmployees();
-      });
+    this.setupSearchSubscription();
 
     this.getUnits();
   }
 
-  getEmployees() {
-    this.employeeService.getAllEmployees(this.request!)
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+
+  private getEmployees() {
+    this.isLoading.set(true);
+
+    this.employeeService.getAllEmployees(this.request())
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        })
+      )
       .subscribe(val => {
-        this.employees$.next(val);
+        this.employees.set(val);
       });
   }
 
-  initializeForm() {
+  private initializeForm() {
     this.form = this.fb.group({
       searchPattern: [undefined],
       unitId: [null],
@@ -93,16 +103,21 @@ export class EmployeesPageComponent implements OnInit {
     const unitId = selectElement.value;
 
     if (unitId == 'null') {
-      this.request.unitId = undefined;
-      this.request.departmentId = undefined;
-      this.departments$.next([]);
+      this.request.update(req => ({
+        ...req,
+        unitId: undefined,
+        departmentId: undefined
+      }));
+      this.departments.set([]);
 
       this.initializeForm();
-    }
-    else {
-      this.request.unitId = Number(unitId);
+    } else {
+      this.request.update(req => ({
+        ...req,
+        unitId: Number(unitId)
+      }));
 
-      this.getDepartmentsByUnitId(this.request!.unitId!);
+      this.getDepartmentsByUnitId(this.request().unitId!);
     }
 
     this.getEmployees();
@@ -116,24 +131,36 @@ export class EmployeesPageComponent implements OnInit {
     const departmentId = selectElement.value;
 
     if (departmentId == 'null')
-      this.request.departmentId = undefined;
+      this.request.update(req => ({
+        ...req,
+        departmentId: undefined
+      }));
     else
-      this.request.departmentId = Number(departmentId);
+      this.request.update(req => ({
+        ...req,
+        departmentId: Number(departmentId)
+      }));
 
     this.getEmployees();
   }
 
-  getUnits() {
+  private getUnits() {
     this.unitService.getUnits()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe(units => {
-        this.units$.next(units);
+        this.units.set(units);
       });
   }
 
-  getDepartmentsByUnitId(unitId: number) {
+  private getDepartmentsByUnitId(unitId: number) {
     this.departmentService.getDepartmentsByUnitId(unitId)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe(departments => {
-        this.departments$.next(departments);
+        this.departments.set(departments);
       });
   }
 
@@ -150,5 +177,20 @@ export class EmployeesPageComponent implements OnInit {
     ref.onHidden?.subscribe({
       next: () => this.getEmployees()
     });
+  }
+
+  private setupSearchSubscription() {
+    this.searchSubject$
+      .pipe(
+        debounceTime(500),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(searchPattern => {
+        this.request.update(req => ({
+          ...req,
+          searchPattern: searchPattern
+        }));
+        this.getEmployees();
+      });
   }
 }

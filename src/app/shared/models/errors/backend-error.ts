@@ -1,6 +1,6 @@
 export interface BackendError {
-    code: number;
-    errorType: string;
-    errorMessage: string;
-    validationErrors: any;
+  Code: number;
+  ErrorType: string;
+  ErrorMessage: string;
+  ValidationErrors: any;
 }

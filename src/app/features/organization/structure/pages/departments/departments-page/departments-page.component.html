@@ -1,56 +1,61 @@
 <app-go-back path="/administration"></app-go-back>
 
 <div class="card shadow">
-    <div class="card-header">
-        <div class="row align-items-end">
-            <div class="col">
-                <strong>
-                    Назва
-                </strong>
-            </div>
+  <div class="card-header">
+    <div class="row align-items-end">
+      <div class="col">
+        <strong>
+          Назва
+        </strong>
+      </div>
 
-            <div class="col-2">
-                <div class="unit-card__add-unit">
-                    <button class="btn btn-primary" (click)="openCreateDepartmentModal()">Додати
-                    </button>
-                </div>
-            </div>
+      <div class="col-2">
+        <div class="unit-card__add-unit">
+          <button class="btn btn-primary" (click)="openCreateDepartmentModal()">Додати
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="card-body">
-        @for(groupe of groupedDepartments$ | async; track $index)
-        {
-            <div class="mb-3">
-                <div class="row pt-3 pb-3 text-bg-primary">
-                    <div class="col">
-                        <strong>
-                            Регіон: {{groupe.unit.name}}
-                        </strong>
-                    </div>
-                </div>
-    
-                @for (department of groupe.departments; track department.id; let index = $index)
-                {
-                    <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
-                        <div class="col-1">
-        
-                        </div>
-        
-                        <div class="col">
-                            <strong>{{department.name}}</strong>
-                        </div>
-        
-                        <div class="col-1" (click)="openEditDepartmentModal(department)">
-                            <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
-                        </div>
-        
-                        <div class="col-1" (click)="openDeleteConfirmation(department)">
-                            <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
-                        </div>
-                    </div>
-                }
+  <div class="card-body position-relative overflow-auto">
+    @if (isLoading()) {
+      <div class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }
+
+    @for (group of groupedDepartments(); track $index) {
+      <div class="mb-3">
+        <div class="row pt-3 pb-3 text-bg-primary">
+          <div class="col">
+            <strong>
+              Регіон: {{ group.unit.name }}
+            </strong>
+          </div>
+        </div>
+
+        @for (department of group.departments; track department.id; let index = $index) {
+          <div class="row pt-3 pb-3" [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
+            <div class="col-1">
             </div>
+
+            <div class="col">
+              <strong>{{ department.name }}</strong>
+            </div>
+
+            <div class="col-1" (click)="openEditDepartmentModal(department)">
+              <img class="action-btn-icon" src="/assets/icons/edit.svg" alt="edit">
+            </div>
+
+            <div class="col-1" (click)="openDeleteConfirmation(department)">
+              <img class="action-btn-icon" src="/assets/icons/delete.svg" alt="delete">
+            </div>
+          </div>
         }
-    </div>
+      </div>
+    }
+  </div>
 </div>

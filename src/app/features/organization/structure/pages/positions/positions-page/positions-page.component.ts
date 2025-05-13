@@ -1,13 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
-import { PositionService } from '../../../services/position.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { Subject } from 'rxjs';
-import { Position } from '../../../models/position.model';
-import { CommonModule } from '@angular/common';
-import { CreatePositionModalComponent } from '../../../components/positions/create-position-modal/create-position-modal.component';
-import { EditPositionModalComponent } from '../../../components/positions/edit-position-modal/edit-position-modal.component';
-import { DeleteConfirmationModalComponent } from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
+import {GoBackComponent} from '../../../../../../shared/components/go-back/go-back.component';
+import {PositionService} from '../../../services/position.service';
+import {BsModalService} from 'ngx-bootstrap/modal';
+import {delay, finalize, Subject, takeUntil} from 'rxjs';
+import {Position} from '../../../models/position.model';
+import {CommonModule} from '@angular/common';
+import {
+  CreatePositionModalComponent
+} from '../../../components/positions/create-position-modal/create-position-modal.component';
+import {
+  EditPositionModalComponent
+} from '../../../components/positions/edit-position-modal/edit-position-modal.component';
+import {
+  DeleteConfirmationModalComponent
+} from '../../../../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-positions-page',
@@ -19,20 +25,36 @@ import { DeleteConfirmationModalComponent } from '../../../../../../shared/compo
   templateUrl: './positions-page.component.html',
   styleUrl: './positions-page.component.scss'
 })
-export class PositionsPageComponent implements OnInit {
-  readonly positionService = inject(PositionService);
+export class PositionsPageComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  private readonly positionService = inject(PositionService);
   readonly modalService = inject(BsModalService);
 
-  positoins$: Subject<Position[]> = new Subject<Position[]>();
+  positions = signal<Position[]>([]);
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.getPositions();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getPositions() {
-    this.positionService.geyPositions()
+    this.isLoading.set(true);
+
+    this.positionService.getPositions()
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntil(this.destroy$))
       .subscribe(positions => {
-        this.positoins$.next(positions);
+        this.positions.set(positions);
       });
   }
 
@@ -77,6 +99,7 @@ export class PositionsPageComponent implements OnInit {
 
   deletePosition(positionId: number) {
     this.positionService.deletePosition(positionId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => this.getPositions()
       })

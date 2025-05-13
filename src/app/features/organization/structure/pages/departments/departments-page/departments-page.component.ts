@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {Component, inject, OnDestroy, OnInit,  signal} from '@angular/core';
 import { GoBackComponent } from '../../../../../../shared/components/go-back/go-back.component';
 import { DepartmentService } from '../../../services/department.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Subject } from 'rxjs';
+import {delay, finalize, Subject, takeUntil} from 'rxjs';
 import { Department } from '../../../models/department.model';
 import { CommonModule } from '@angular/common';
 import { GroupedDepartmentsByUnit } from '../../../models/grouped-departments-by-unit.model';
@@ -20,25 +20,41 @@ import { DeleteConfirmationModalComponent } from '../../../../../../shared/compo
   templateUrl: './departments-page.component.html',
   styleUrl: './departments-page.component.scss'
 })
-export class DepartmentsPageComponent implements OnInit {
-  readonly departmentService = inject(DepartmentService);
+export class DepartmentsPageComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  private readonly departmentService = inject(DepartmentService);
   readonly modalService = inject(BsModalService);
 
-  groupedDepartments$: Subject<GroupedDepartmentsByUnit[]> = new Subject<GroupedDepartmentsByUnit[]>();
+  groupedDepartments = signal<GroupedDepartmentsByUnit[]>([]);
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.getDepartments();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getDepartments() {
+    this.isLoading.set(true);
+
     this.departmentService.getGroupedDepartmentsGroupedByUnits()
+      .pipe(
+        delay(500),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntil(this.destroy$))
       .subscribe(departments => {
-        this.groupedDepartments$.next(departments);
+        this.groupedDepartments.set(departments);
       })
   }
 
   openCreateDepartmentModal() {
-    const ref = this.modalService.show(CreateDepartmentModalComponent, 
+    const ref = this.modalService.show(CreateDepartmentModalComponent,
       {
         class: 'modal modal-dialog-centered',
         initialState: {
@@ -81,6 +97,7 @@ export class DepartmentsPageComponent implements OnInit {
 
   deleteDepartment(departmentId: number) {
     this.departmentService.deleteDepartment(departmentId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.getDepartments();

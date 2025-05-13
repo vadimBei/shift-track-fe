@@ -1,12 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
-import { Token } from '../models/token.model';
-import { catchError, map, tap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { CurrentUser } from '../models/current-user.model';
-import { CreateUserRequest } from '../models/create-user-request.model';
-import { Employee } from '../../../features/organization/employees/models/employee.model';
-import { EditAccountRequest } from '../models/edit-account-request.model';
+import {HttpClient} from '@angular/common/http';
+import {inject, Injectable, signal} from '@angular/core';
+import {Token} from '../models/token.model';
+import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 'rxjs';
+import {Router} from '@angular/router';
+import {CurrentUser} from '../models/current-user.model';
+import {CreateUserRequest} from '../models/create-user-request.model';
+import {Employee} from '../../../features/organization/employees/models/employee.model';
+import {EditAccountRequest} from '../models/edit-account-request.model';
+import {ChangePasswordRequest} from "../models/change-password-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,70 @@ export class AccountService {
     }
   }
 
+  private loadCurrentUser() {
+    this.httpClient.get<CurrentUser>('system/user/employees/current')
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching user data:', error);
+          return throwError(() => error);
+        })
+      )
+      .subscribe({
+        next: (user) => {
+          this.setCurrentUser(user);
+        },
+        error: (error) => console.error('Error in subscription:', error)
+      });
+  }
+
+  private setCurrentUser(user: CurrentUser): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  getCurrentUserFromLocalStorage(): CurrentUser | null {
+    const storedUser = localStorage.getItem('currentUser');
+
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Error parsing user data from localStorage:', e);
+      }
+    }
+    return null;
+  }
+
+  getCurrentUser(): Observable<CurrentUser | null> {
+    const storedUser = localStorage.getItem('currentUser');
+
+    if (storedUser) {
+      try {
+        return of(JSON.parse(storedUser));
+      } catch (e) {
+        console.error('Error parsing user data from localStorage:', e);
+      }
+    }
+
+    return this.httpClient.get<CurrentUser>('system/user/employees/current')
+      .pipe(
+        tap(user => {
+          this.setCurrentUser(user);
+        }),
+        catchError(error => {
+          console.error('Error fetching user data:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+
   login(model: any) {
     return this.httpClient.post<Token>(`system/auth/tokens/generate`, model)
       .pipe(
-        map((tooken) => {
-          if (tooken.tokenType && tooken.accessToken && tooken.refreshToken) {
-            this.setToken(tooken);
+        map((token) => {
+          if (token.tokenType && token.accessToken && token.refreshToken) {
+            this.setToken(token);
+            this.loadCurrentUser();
           }
         })
       );
@@ -48,6 +107,7 @@ export class AccountService {
         map((tooken) => {
           if (tooken.tokenType && tooken.accessToken && tooken.refreshToken) {
             this.setToken(tooken);
+            this.loadCurrentUser();
           }
         })
       )
@@ -73,16 +133,29 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('token');
-
+    localStorage.removeItem('currentUser');
     this.token.set(null);
     this.router.navigate(['/account/login']);
   }
 
-  getCurrentUser() {
-    return this.httpClient.get<CurrentUser>('system/user/employees/current');
+  updateAccount(request: EditAccountRequest) {
+    return this.httpClient.put<Employee>('system/user/employees', request)
+      .pipe(
+        tap(() => {
+          this.loadCurrentUser();
+        })
+      );
   }
 
-  updateAccount(request: EditAccountRequest) {
-    return this.httpClient.put<Employee>('system/user/employees', request);
+  changePassword(request: ChangePasswordRequest) {
+    return this.httpClient.post<Token>(`system/user/employees/change-password`, request)
+      .pipe(
+        map((token) => {
+          if (token.tokenType && token.accessToken && token.refreshToken) {
+            this.setToken(token);
+            this.loadCurrentUser();
+          }
+        })
+      );
   }
 }

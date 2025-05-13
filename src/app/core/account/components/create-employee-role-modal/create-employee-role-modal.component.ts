@@ -1,7 +1,7 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BsModalRef} from 'ngx-bootstrap/modal';
-import {Subject, takeUntil} from 'rxjs';
+import {catchError, of, Subject, takeUntil} from 'rxjs';
 import {Role} from '../../models/role.model';
 import {RolesService} from '../../services/roles.service';
 import {CommonModule} from '@angular/common';
@@ -11,6 +11,8 @@ import {UnitService} from '../../../../features/organization/structure/services/
 import {DepartmentService} from '../../../../features/organization/structure/services/department.service';
 import {CreateEmployeeRoleRequest} from '../../models/create-employee-role-request.model';
 import {EmployeeRolesService} from '../../services/employee-roles.service';
+import {ErrorService} from "../../../../shared/services/error.service";
+import {EmployeeRole} from "../../models/employee-role.model";
 
 @Component({
   selector: 'app-create-employee-role-modal',
@@ -33,7 +35,17 @@ export class CreateEmployeeRoleModalComponent implements OnInit, OnDestroy {
   bsModalRef = inject(BsModalRef);
 
   fb = inject(FormBuilder);
-  form: FormGroup = new FormGroup({});
+  form: FormGroup = this.fb.group({
+    roleId: this.fb.control<number | null>(
+      null,
+      [
+        Validators.required,
+        Validators.min(1)
+      ]
+    ),
+    unitId: this.fb.control<number | null>(null),
+    departmentIds: this.fb.control<number[]>([])
+  });
 
   roles = signal<Role[]>([]);
   units = signal<Unit[]>([]);
@@ -50,7 +62,6 @@ export class CreateEmployeeRoleModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoles();
     this.getUnits();
-    this.initializeForm();
   }
 
   ngOnDestroy(): void {
@@ -67,20 +78,6 @@ export class CreateEmployeeRoleModalComponent implements OnInit, OnDestroy {
           console.error('Failed to fetch roles', error);
         }
       });
-  }
-
-  initializeForm() {
-    this.form = this.fb.group({
-      roleId: this.fb.control<number | null>(
-        null,
-        [
-          Validators.required,
-          Validators.min(1)
-        ]
-      ),
-      unitId: this.fb.control<number | null>(null),
-      departmentIds: this.fb.control<number[]>([])
-    });
   }
 
   getUnits() {

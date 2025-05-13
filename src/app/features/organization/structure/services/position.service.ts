@@ -22,7 +22,7 @@ export class PositionService {
     return this.httpClient.put<Position>(this.path, request);
   }
 
-  geyPositions() {
+  getPositions() {
     return this.httpClient.get<Position[]>(this.path);
   }
 

@@ -5,23 +5,22 @@
         <div class="row">
           <div class="col">
             <div class="card-body">
-              <form 
-                class="edit-profile-card" 
-                id="editProfileForm" 
-                [formGroup]="form" 
+              <form
+                id="editProfileForm"
+                [formGroup]="form"
                 (ngSubmit)="save()">
 
                 <div class="row justify-content-around">
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        class="form-control" 
-                        id="surname" 
-                        type="text" 
+                      <input
+                        class="form-control"
+                        id="surname"
+                        type="text"
                         formControlName="surname">
 
-                      <label 
-                        class="form-label" 
+                      <label
+                        class="form-label"
                         for="surname">
                         Прізвище:
                       </label>
@@ -30,14 +29,14 @@
 
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        class="form-control" 
-                        id="name" 
-                        type="text" 
+                      <input
+                        class="form-control"
+                        id="name"
+                        type="text"
                         formControlName="name">
 
-                      <label 
-                        class="form-label" 
+                      <label
+                        class="form-label"
                         for="name">
                         Ім'я:
                       </label>
@@ -48,9 +47,9 @@
                 <div class="row justify-content-around">
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        class="form-control" 
-                        id="patronymic" 
+                      <input
+                        class="form-control"
+                        id="patronymic"
                         type="text"
                         formControlName="patronymic">
 
@@ -62,14 +61,15 @@
 
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        class="form-control" 
-                        id="phoneNumber" 
-                        type="text" 
-                        placeholder="+380XXXXXXXXX">
+                      <input
+                        class="form-control"
+                        id="phoneNumber"
+                        type="text"
+                        placeholder="+380XXXXXXXXX"
+                        formControlName="phoneNumber">
 
-                      <label 
-                        class="form-label" 
+                      <label
+                        class="form-label"
                         for="phoneNumber">
                         Телефон:
                       </label>
@@ -80,15 +80,15 @@
                 <div class="row justify-content-around">
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        class="form-control" 
-                        id="email" 
-                        type="email" 
+                      <input
+                        class="form-control"
+                        id="email"
+                        type="email"
                         placeholder="user@example.com"
                         formControlName="email">
 
-                      <label 
-                        class="form-label" 
+                      <label
+                        class="form-label"
                         for="email">
                         Email:
                       </label>
@@ -98,16 +98,16 @@
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
                       <select
-                        formControlName="gender" 
-                        class="form-select" 
+                        formControlName="gender"
+                        class="form-select"
                         id="gender">
                         <option [ngValue]="null">Не вказано</option>
                         <option [ngValue]="'Male'">Чоловік</option>
                         <option [ngValue]="'Female'">Жінка</option>
                       </select>
 
-                      <label 
-                        class="form-label" 
+                      <label
+                        class="form-label"
                         for="gender">
                         Стать:
                       </label>
@@ -118,9 +118,9 @@
                 <div class="row justify-content-start">
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3">
-                      <input 
-                        type="date" 
-                        class="form-control" 
+                      <input
+                        type="date"
+                        class="form-control"
                         formControlName="dateOfBirth">
 
                       <label class="form-label" for="email">
@@ -133,11 +133,11 @@
                 <div class="row justify-content-end">
                   <div class="col-lg-6 col-md-6">
                     <div class="form-floating mb-3 d-flex justify-content-end">
-                      <button 
-                        class="btn btn-primary" 
-                        type="submit" 
+                      <button
+                        class="btn btn-primary"
+                        type="submit"
                         form="editProfileForm"
-                        [class.disabled]="!form.valid" 
+                        [class.disabled]="!form.valid"
                         [disabled]="!form.valid">
                         Зберегти
                       </button>
