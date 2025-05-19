@@ -6,7 +6,6 @@ export interface EditEmployeeRequest {
     surname: string;
     patronymic: string;
     email: string;
-    phoneNumber: string;
     departmentId?: number;
     positionId?: number;
     dateOfBirth?: Date;
