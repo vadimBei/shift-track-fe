@@ -66,10 +66,6 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
             this.employee.set(currentUser.employee);
             this.updateFormWithEmployeeData();
           }
-        },
-        error: (error) => {
-          this.errorMessage.set('Помилка завантаження даних користувача');
-          console.error('Error loading user data:', error);
         }
       });
   }

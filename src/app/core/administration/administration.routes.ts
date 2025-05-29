@@ -16,6 +16,7 @@ import {
 import {EditAccountPageComponent} from "../account/pages/edit-account-page/edit-account-page.component";
 import {EmployeesRolesPageComponent} from "../account/pages/employees-roles-page/employees-roles-page.component";
 import {ChangePasswordComponent} from "../account/pages/change-password/change-password.component";
+import {ViewProfilePageComponent} from "../account/pages/view-profile-page/view-profile-page.component";
 
 const routes: Routes = [
   {
@@ -35,8 +36,12 @@ const routes: Routes = [
     component: TimesheetShiftsPageComponent
   },
   {
-    path: 'profile',
+    path: 'profile/edit',
     component: EditAccountPageComponent
+  },
+  {
+    path: 'profile',
+    component: ViewProfilePageComponent
   },
   {
     path: 'positions',

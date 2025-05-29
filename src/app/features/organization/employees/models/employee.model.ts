@@ -1,4 +1,3 @@
-
 import { EmployeeGender } from "../enums/employee-gender.enum";
 import { Department } from "../../structure/models/department.model";
 import { Position } from "../../structure/models/position.model";

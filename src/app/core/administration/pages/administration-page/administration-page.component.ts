@@ -17,17 +17,17 @@ export class AdministrationPageComponent {
     {
       title: 'Регіони',
       path: '/administration/units',
-      icon: 'administration_units',
+      icon: 'unit',
     },
     {
       title: 'Департаменти',
       path: '/administration/departments',
-      icon: 'administration_departments',
+      icon: 'department',
     },
     {
       title: 'Посади',
       path: '/administration/positions',
-      icon: 'administration_positions'
+      icon: 'position'
     },
     {
       title: 'Працівники',
