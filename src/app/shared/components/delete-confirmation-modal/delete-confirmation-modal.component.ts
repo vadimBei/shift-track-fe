@@ -3,6 +3,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-delete-confirmation-modal',
+  standalone: true,
   imports: [],
   templateUrl: './delete-confirmation-modal.component.html',
   styleUrl: './delete-confirmation-modal.component.scss'

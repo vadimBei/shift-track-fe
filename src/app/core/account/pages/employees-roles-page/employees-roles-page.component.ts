@@ -30,6 +30,7 @@ import {EmployeeRoleUnitDepartment} from "../../models/employee-role-unit-depart
 
 @Component({
   selector: 'app-employees-roles-page',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

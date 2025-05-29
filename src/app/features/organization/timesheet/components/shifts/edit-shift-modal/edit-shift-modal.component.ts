@@ -13,6 +13,7 @@ import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-edit-shift-modal',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

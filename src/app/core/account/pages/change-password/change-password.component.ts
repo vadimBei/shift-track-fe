@@ -10,6 +10,7 @@ import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-change-password',
+  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

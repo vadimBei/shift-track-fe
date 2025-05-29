@@ -98,7 +98,7 @@
                       @for (employeeRoleUnit of employeeRole.units; track employeeRoleUnit.id) {
                         <div class="row">
                           <div class="col">
-                            {{ employeeRoleUnit.unit?.description }}
+                            {{ employeeRoleUnit.unit.description }}
                           </div>
                         </div>
                         @for (_ of getEmptyRows(employeeRoleUnit.departments.length); track $index) {
@@ -113,7 +113,7 @@
                       @for (employeeRoleUnit of employeeRole.units; track employeeRoleUnit.id) {
                         @for (employeeRoleUnitDepartment of employeeRoleUnit.departments; track employeeRoleUnitDepartment.id) {
                           <div class="row">
-                            {{ employeeRoleUnitDepartment.department?.name }}
+                            {{ employeeRoleUnitDepartment.department.name }}
                           </div>
                         }
                       }

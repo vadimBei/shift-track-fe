@@ -9,6 +9,7 @@ import {CreateEmployeeRoleUnitRequest} from "../../models/create-employee-role-u
 
 @Component({
   selector: 'app-create-employee-role-unit-modal',
+  standalone: true,
   imports: [
     ReactiveFormsModule
   ],

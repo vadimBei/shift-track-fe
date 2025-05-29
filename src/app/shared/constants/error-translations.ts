@@ -13,10 +13,5 @@
   'SYS_USR_UNIT_DIRECTOR_OUT_OF_SCOPE': 'Ви можете призначати ролі працівникам лише із свого регіону.',
   'SYS_USR_UNIT_DIRECTOR_INVALID_ROLE': 'Ви можете призначати ролі лише DEPARTMENT_ADMIN, DEPARTMENT_STYLIST, DEPARTMENT_DIRECTOR',
   'SYS_USR_UNIT_DIRECTOR_GLOBAL_SCOPE': 'Ви не можете призначити роль глобально',
-  'SYS_USR_DELETE_ROLE_WRONG_UNIT': 'Ви можете видаляти ролі працівникам лише зі свого регіону.',
-  '': '',
-  '': '',
-  '': '',
-  '': '',
-  '': '',
+  'SYS_USR_DELETE_ROLE_WRONG_UNIT': 'Ви можете видаляти ролі працівникам лише зі свого регіону.'
 };

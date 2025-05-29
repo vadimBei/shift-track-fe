@@ -10,6 +10,7 @@ import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-view-profile-page',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
