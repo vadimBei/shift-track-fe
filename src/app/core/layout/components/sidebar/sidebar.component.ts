@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { MenuItem } from '../../models/menu-item.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    NgClass
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
@@ -16,22 +18,22 @@ export class SidebarComponent {
   menuItems: MenuItem[] = [
     {
       label: 'Адміністрування',
-      icon: 'administration',
+      icon: 'bi bi-person-gear',
       link: '/administration'
     },
     {
       label: 'Табель',
-      icon: 'board',
+      icon: 'bi bi-calendar',
       link: '/timesheet'
     },
     {
       label: 'Відрядження',
-      icon: 'trip',
+      icon: 'bi bi-briefcase',
       link: '/trips'
     },
     {
       label: 'Довідник',
-      icon: 'addressBook',
+      icon: 'bi bi-journal-text',
       link: '/employees/contact-list'
     },
   ]

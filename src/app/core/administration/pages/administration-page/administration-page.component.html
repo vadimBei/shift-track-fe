@@ -10,7 +10,7 @@
                                 <div routerLink="{{item.path}}">
                                     <div class="row">
                                         <div class="col">
-                                            <img [src]="getIconSrc(item.icon)" alt="logo" class="mb16">
+                                            <i [ngClass]="item.icon"></i>
                                         </div>
                                     </div>
                                     <div class="row">
