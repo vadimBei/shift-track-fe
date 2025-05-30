@@ -1,25 +1,22 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {AccountService} from "../../services/account.service";
-import {Employee} from "../../../../features/organization/employees/models/employee.model";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EmployeeRolesService} from "../../services/employee-roles.service";
+import {Employee} from "../../../../features/organization/employees/models/employee.model";
 import {EmployeeRole} from "../../models/employee-role.model";
 import {RoleScope} from "../../enums/role-scope.enum";
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-view-profile-page',
+  selector: 'app-profile-page',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule
+    CommonModule
   ],
-  templateUrl: './view-profile-page.component.html',
-  styleUrl: './view-profile-page.component.scss'
+  templateUrl: './profile-page.component.html',
+  styleUrl: './profile-page.component.scss'
 })
-export class ViewProfilePageComponent implements OnInit, OnDestroy {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   private accountService = inject(AccountService);
