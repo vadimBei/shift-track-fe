@@ -13,7 +13,8 @@ import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-contacts-page',
-    imports: [
+  standalone: true,
+  imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule

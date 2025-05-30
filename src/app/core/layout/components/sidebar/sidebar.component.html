@@ -7,7 +7,7 @@
             <a class="menu-item d-flex align-items-center w-100 py-1  pt-2 pb-2"
                routerLink="{{item.link}}"
                routerLinkActive="active">
-              <img class="me-2" [src]="getMenuIconSrc(item.icon)">
+              <i [ngClass]="item.icon"></i>
               <span>{{ item.label }}</span>
             </a>
           </li>

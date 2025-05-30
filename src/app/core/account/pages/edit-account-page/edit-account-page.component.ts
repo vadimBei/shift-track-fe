@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AccountService } from '../../services/account.service';
-import { Employee } from '../../../../features/organization/employees/models/employee.model';
-import { EmployeeGender } from '../../../../features/organization/employees/enums/employee-gender.enum';
-import { EditAccountRequest } from '../../models/edit-account-request.model';
-import { Subject, catchError, finalize, takeUntil, tap } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import {Component, inject, OnInit, OnDestroy, signal, computed} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AccountService} from '../../services/account.service';
+import {Employee} from '../../../../features/organization/employees/models/employee.model';
+import {EmployeeGender} from '../../../../features/organization/employees/enums/employee-gender.enum';
+import {EditAccountRequest} from '../../models/edit-account-request.model';
+import {Subject, takeUntil} from 'rxjs';
+import {CommonModule} from '@angular/common';
 import moment from "moment";
 import {ErrorService} from "../../../../shared/services/error.service";
 import {ErrorType} from "../../../../shared/enums/error-type.enum";
@@ -37,8 +37,6 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
     gender: [EmployeeGender.none, [Validators.required]]
   });
 
-  isLoading = signal<boolean>(false);
-  saveSuccess = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
   employee = signal<Employee | null>(null);
@@ -58,11 +56,9 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
   }
 
   loadCurrentEmployee(): void {
-    this.isLoading.set(true);
     this.accountService.getCurrentUser()
       .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isLoading.set(false))
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: (currentUser) => {
@@ -70,16 +66,13 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
             this.employee.set(currentUser.employee);
             this.updateFormWithEmployeeData();
           }
-        },
-        error: (error) => {
-          this.errorMessage.set('Помилка завантаження даних користувача');
-          console.error('Error loading user data:', error);
         }
       });
   }
 
   updateFormWithEmployeeData(): void {
     const emp = this.employee();
+
     if (!emp) return;
 
     this.form.patchValue({
@@ -101,8 +94,6 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
     }
 
     this.errorMessage.set(null);
-    this.saveSuccess.set(false);
-    this.isLoading.set(true);
 
     const updatedRequest: EditAccountRequest = {
       id: this.employee()?.id || 0,
@@ -116,14 +107,9 @@ export class EditAccountPageComponent implements OnInit, OnDestroy {
     };
 
     this.accountService.updateAccount(updatedRequest)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.isLoading.set(false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.saveSuccess.set(true);
-
           this.errorService.handleError('Зміни успішно збережено', ErrorType.info)
         }
       });

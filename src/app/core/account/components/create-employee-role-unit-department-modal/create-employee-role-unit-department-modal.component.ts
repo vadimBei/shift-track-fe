@@ -11,6 +11,7 @@ import {EmployeeRoleUnit} from "../../models/employee-role-unit.model";
 
 @Component({
   selector: 'app-create-employee-role-unit-department-modal',
+  standalone: true,
   imports: [
     ReactiveFormsModule
   ],

@@ -41,7 +41,7 @@ export class EditEmployeeModalComponent implements OnInit, OnDestroy {
     name: ['', [Validators.required]],
     patronymic: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    phoneNumber: ['', [Validators.required]],
+    phoneNumber: [{value: '', disabled: true}],
     unitId: [0],
     positionId: [0],
     departmentId: [0],
@@ -83,7 +83,6 @@ export class EditEmployeeModalComponent implements OnInit, OnDestroy {
     patronymic: '',
     email: '',
     gender: EmployeeGender.none,
-    phoneNumber: '',
     departmentId: undefined,
     positionId: undefined,
     dateOfBirth: undefined
@@ -146,7 +145,6 @@ export class EditEmployeeModalComponent implements OnInit, OnDestroy {
     if (!this.employeeId)
       return;
 
-    // Using the update method to modify the signal's value
     this.request.update(value => ({
       ...value,
       id: this.employeeId!,
@@ -156,12 +154,10 @@ export class EditEmployeeModalComponent implements OnInit, OnDestroy {
       email: this.form.value.email,
       dateOfBirth: this.form.value.dateOfBirth,
       gender: this.form.value.gender,
-      phoneNumber: this.form.value.phoneNumber,
       departmentId: Number(this.form.value.departmentId) === 0 ? null : this.form.value.departmentId,
       positionId: Number(this.form.value.positionId) === 0 ? null : this.form.value.positionId
     }));
 
-    // Then use the signal's value when calling the service
     this.employeesService.updateEmployee(this.request())
       .subscribe({
         next: (employee) => {

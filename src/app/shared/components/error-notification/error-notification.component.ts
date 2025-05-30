@@ -8,6 +8,7 @@ import {ErrorType} from "../../enums/error-type.enum";
 
 @Component({
   selector: 'app-error-notification',
+  standalone: true,
   imports: [
     CommonModule
   ],

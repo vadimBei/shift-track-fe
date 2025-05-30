@@ -28,7 +28,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case 403: // Forbidden
-            errorService.handleError('У вас немає прав доступу до цього ресурсу');
+            errorService.handleBackendError(backendError);
             break;
 
           case 404: // Not Found

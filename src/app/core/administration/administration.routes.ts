@@ -15,7 +15,8 @@ import {
 } from "../../features/organization/employees/pages/employees-page/employees-page.component";
 import {EditAccountPageComponent} from "../account/pages/edit-account-page/edit-account-page.component";
 import {EmployeesRolesPageComponent} from "../account/pages/employees-roles-page/employees-roles-page.component";
-import {ChangePasswordComponent} from "../account/pages/change-password/change-password.component";
+import {ProfilePageComponent} from "../account/pages/profile-page/profile-page.component";
+import {ChangePasswordPageComponent} from "../account/pages/change-password-page/change-password-page.component";
 
 const routes: Routes = [
   {
@@ -35,8 +36,12 @@ const routes: Routes = [
     component: TimesheetShiftsPageComponent
   },
   {
-    path: 'profile',
+    path: 'profile/edit',
     component: EditAccountPageComponent
+  },
+  {
+    path: 'profile',
+    component: ProfilePageComponent
   },
   {
     path: 'positions',
@@ -52,7 +57,7 @@ const routes: Routes = [
   },
   {
     path: 'change-password',
-    component: ChangePasswordComponent
+    component: ChangePasswordPageComponent
   }
 ]
 

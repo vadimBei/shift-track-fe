@@ -27,6 +27,14 @@ body {
   font-family: "JetBrains Mono", sans-serif;
 }
 
+i {
+  color: #ae7aff;
+  font-size: 20px;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+}
+
 .bg-primary {
   background-color: #6200ea !important;
   color: var(--light-color);

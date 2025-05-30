@@ -16,6 +16,7 @@ import {EmployeeRole} from "../../models/employee-role.model";
 
 @Component({
   selector: 'app-create-employee-role-modal',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

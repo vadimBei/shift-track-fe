@@ -1,24 +1,25 @@
 import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {NgIf} from "@angular/common";
 import {Subject, takeUntil} from "rxjs";
+import {ErrorService} from "../../../../shared/services/error.service";
 import {AccountService} from "../../services/account.service";
 import {Employee} from "../../../../features/organization/employees/models/employee.model";
 import {ChangePasswordRequest} from "../../models/change-password-request.model";
-import {ErrorService} from "../../../../shared/services/error.service";
 import {ErrorType} from "../../../../shared/enums/error-type.enum";
-import {NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-change-password',
+  selector: 'app-change-password-page',
+  standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule,
-    NgIf
+    NgIf,
+    ReactiveFormsModule
   ],
-  templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.scss'
+  templateUrl: './change-password-page.component.html',
+  styleUrl: './change-password-page.component.scss'
 })
-export class ChangePasswordComponent implements OnInit, OnDestroy {
+export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   private errorService = inject(ErrorService);

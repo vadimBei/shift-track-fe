@@ -3,11 +3,13 @@ import { AdministrationItem } from '../../models/administration-item.model';
 import { RouterLink
 
  } from '@angular/router';
+import {NgClass} from "@angular/common";
 @Component({
   selector: 'app-administration-page',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   templateUrl: './administration-page.component.html',
   styleUrl: './administration-page.component.scss'
@@ -17,36 +19,32 @@ export class AdministrationPageComponent {
     {
       title: 'Регіони',
       path: '/administration/units',
-      icon: 'administration_units',
+      icon: 'bi bi-pin-map',
     },
     {
       title: 'Департаменти',
       path: '/administration/departments',
-      icon: 'administration_departments',
+      icon: 'bi bi-shop',
     },
     {
       title: 'Посади',
       path: '/administration/positions',
-      icon: 'administration_positions'
+      icon: 'bi bi-person-workspace',
     },
     {
       title: 'Працівники',
       path: '/administration/employees',
-      icon: 'administration_employees'
+      icon: 'bi bi-people'
     },
     {
       title: 'Робочі зміни',
       path: '/administration/shifts',
-      icon: 'administration_shifts',
+      icon: 'bi bi-calendar-week',
     },
     {
       title: 'Ролі працівників',
       path: '/administration/employees-roles',
-      icon: 'administration_emoployee_roles',
+      icon: 'bi bi-person-rolodex',
     }
   ]
-
-  getIconSrc(icon: string): string {
-    return `/assets/icons/${icon}.svg`
-  }
 }

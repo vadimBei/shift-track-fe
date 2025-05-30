@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable, signal} from '@angular/core';
 import {Token} from '../models/token.model';
-import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 'rxjs';
+import {catchError, map, Observable, of, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {CurrentUser} from '../models/current-user.model';
 import {CreateUserRequest} from '../models/create-user-request.model';
@@ -27,18 +27,11 @@ export class AccountService {
   }
 
   private loadCurrentUser() {
-    this.httpClient.get<CurrentUser>('system/user/employees/current')
-      .pipe(
-        catchError(error => {
-          console.error('Error fetching user data:', error);
-          return throwError(() => error);
-        })
-      )
+    this.httpClient.get<CurrentUser>('system/account/current-user')
       .subscribe({
         next: (user) => {
           this.setCurrentUser(user);
         },
-        error: (error) => console.error('Error in subscription:', error)
       });
   }
 
@@ -70,7 +63,7 @@ export class AccountService {
       }
     }
 
-    return this.httpClient.get<CurrentUser>('system/user/employees/current')
+    return this.httpClient.get<CurrentUser>('system/account/current-user')
       .pipe(
         tap(user => {
           this.setCurrentUser(user);
@@ -84,7 +77,7 @@ export class AccountService {
 
 
   login(model: any) {
-    return this.httpClient.post<Token>(`system/auth/tokens/generate`, model)
+    return this.httpClient.post<Token>(`system/auth/token/generate`, model)
       .pipe(
         map((token) => {
           if (token.tokenType && token.accessToken && token.refreshToken) {
@@ -102,11 +95,11 @@ export class AccountService {
   }
 
   register(request: CreateUserRequest) {
-    return this.httpClient.post<Token>(`system/user/employees/register`, request)
+    return this.httpClient.post<Token>(`system/account/register`, request)
       .pipe(
-        map((tooken) => {
-          if (tooken.tokenType && tooken.accessToken && tooken.refreshToken) {
-            this.setToken(tooken);
+        map((token) => {
+          if (token.tokenType && token.accessToken && token.refreshToken) {
+            this.setToken(token);
             this.loadCurrentUser();
           }
         })
@@ -115,7 +108,7 @@ export class AccountService {
 
   refreshToken() {
     return this.httpClient.post<Token>(
-      `system/auth/tokens/refresh`,
+      `system/auth/token/refresh`,
       {
         refreshToken: this.token()?.refreshToken
       })
@@ -139,7 +132,7 @@ export class AccountService {
   }
 
   updateAccount(request: EditAccountRequest) {
-    return this.httpClient.put<Employee>('system/user/employees', request)
+    return this.httpClient.put<Employee>('system/account', request)
       .pipe(
         tap(() => {
           this.loadCurrentUser();
@@ -148,7 +141,7 @@ export class AccountService {
   }
 
   changePassword(request: ChangePasswordRequest) {
-    return this.httpClient.post<Token>(`system/user/employees/change-password`, request)
+    return this.httpClient.post<Token>(`system/auth/password/change`, request)
       .pipe(
         map((token) => {
           if (token.tokenType && token.accessToken && token.refreshToken) {

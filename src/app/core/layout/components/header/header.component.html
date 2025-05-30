@@ -21,39 +21,28 @@
 
       <ul class="dropdown-menu bg-body-tertiary">
         <li>
-          <a class="dropdown-item text-primary" routerLink="/administration/profile">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25px" height="25px">
-              <path
-                d="M19 4h-4v-1a3 3 0 0 0 -6 0v1h-4a5.006 5.006 0 0 0 -5 5v10a5.006 5.006 0 0 0 5 5h14a5.006 5.006 0 0 0 5-5v-10a5.006 5.006 0 0 0 -5-5zm-9 14a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1-1v-8a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1zm2-12a1 1 0 0 1 -1-1v-2a1 1 0 0 1 2 0v2a1 1 0 0 1 -1 1zm6 13h-4a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm2-4h-6a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm0-4h-6a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm-15 0h3v6h-3z"
-                fill="#ae7aff"/>
-            </svg>
-            Профіль
+          <a class="dropdown-item text-primary"  routerLink="/administration/profile">
+           <i class="bi bi-person"></i>
+            Мій профіль
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item text-primary" routerLink="/administration/profile/edit">
+            <i class="bi bi-person-gear"></i>
+            Редагувати профіль
           </a>
         </li>
 
         <li>
           <a class="dropdown-item text-primary" routerLink="/administration/change-password">
-            <svg width="25px" height="25px" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" fill="#000000"
-                 transform="matrix(-1, 0, 0, -1, 0, 0)">
-              <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M17.408 3.412a1.974 1.974 0 0 0 0-2.82 1.973 1.973 0 0 0-2.819 0l-.29.29-.59-.59a1.009 1.009 0 0 0-1.65.35l-.35-.35a1.004 1.004 0 1 0-1.42 1.42l.35.35a1.033 1.033 0 0 0-.58.58l-.35-.35a1.004 1.004 0 0 0-1.42 1.42L9.879 5.3l-3.02 3.01c-.01.01-.02.03-.03.04A4.885 4.885 0 0 0 5 8a5 5 0 1 0 5 5 4.885 4.885 0 0 0-.35-1.83c.01-.01.03-.02.04-.03l7.718-7.728zM5 15a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
-                  fill="#ae7aff" fill-rule="evenodd"/>
-              </g>
-            </svg>
+            <i class="bi bi-lock"></i>
             Змінити пароль
           </a>
         </li>
 
         <li>
           <a class="dropdown-item text-primary" (click)="logOut()">
-            <svg fill="#ae7aff" width="25px" height="25px" viewBox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg" stroke="#ae7aff">
-              <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-              <g id="SVGRepo_iconCarrier"> <path d="M221.65723,133.65625l-41.98828,42a8.00018,8.00018,0,0,1-11.31543-11.3125L196.68994,136H104a8,8,0,0,1,0-16h92.68994L168.35352,91.65625A8.00018,8.00018,0,0,1,179.669,80.34375l41.98828,42A7.99974,7.99974,0,0,1,221.65723,133.65625ZM104,208H48V48h56a8,8,0,0,0,0-16H48A16.01833,16.01833,0,0,0,32,48V208a16.01833,16.01833,0,0,0,16,16h56a8,8,0,0,0,0-16Z"/> </g>
-            </svg>
+            <i class="bi bi-box-arrow-right"></i>
             Вихід
           </a>
         </li>
