@@ -105,8 +105,6 @@ export class CreateEmployeeRoleModalComponent implements OnInit, OnDestroy {
         unitId: null,
         departmentIds: []
       });
-
-      this.departments.set([]);
     } else {
       this.request.update(current => ({
         ...current,
@@ -115,6 +113,12 @@ export class CreateEmployeeRoleModalComponent implements OnInit, OnDestroy {
 
       this.getDepartmentsByUnitId(this.request().unitId!);
     }
+
+    this.departments.set([]);
+    this.form.patchValue({
+      departmentIds: []
+    });
+
   }
 
   getDepartmentsByUnitId(unitId: number) {
