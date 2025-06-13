@@ -25,6 +25,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             if (backendError.ValidationErrors) {
               errorService.handleValidationError(backendError.ValidationErrors);
             }
+            else {
+              errorService.handleBackendError(backendError);
+            }
+
             break;
 
           case 403: // Forbidden
