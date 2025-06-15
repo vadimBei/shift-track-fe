@@ -6,18 +6,25 @@
           <div class="row">
             <div class="col">
               <div class="row">
-                <div class="col">
-                  <h6 class="h6">{{ employee()?.fullName }}</h6>
-                </div>
-              </div>
-
-              <div class="row">
                 <div class="col-3">
-                  <img class="profile-image" src="/assets/images/profile.png" alt="Profile">
+                  <div class="profile-image-container">
+                    <img class="profile-image" [src]="profilePhotoUrl()" alt="Profile">
+                    <div class="profile-image-overlay">
+                      <button class="btn btn-light btn-sm" (click)="triggerFileInput()">
+                        <i class="bi bi-camera-fill"></i> Змінити фото
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="col">
-                  <div class="row mt-4 mb-2">
+                  <div class="row">
+                    <div class="col">
+                      <h6 class="h6">{{ employee()?.fullName }}</h6>
+                    </div>
+                  </div>
+
+                  <div class="row mb-2">
                     <div class="col">
                       <i class="bi bi-person-workspace"></i>
                       {{ employee()?.position?.name }}
@@ -35,7 +42,6 @@
                       <i class="bi bi-pin-map"></i>
                       {{ employee()?.department?.unit?.description }}
                     </div>
-
 
                     <div class="col">
                       <i class="bi bi-envelope"></i>
@@ -113,7 +119,8 @@
 
                     <div class="col">
                       @for (employeeRoleUnit of employeeRole.units; track employeeRoleUnit.id) {
-                        @for (employeeRoleUnitDepartment of employeeRoleUnit.departments; track employeeRoleUnitDepartment.id) {
+                        @for (
+                          employeeRoleUnitDepartment of employeeRoleUnit.departments; track employeeRoleUnitDepartment.id) {
                           <div class="row">
                             {{ employeeRoleUnitDepartment.department.name }}
                           </div>
