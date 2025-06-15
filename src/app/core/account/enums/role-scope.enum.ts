@@ -1,5 +1,5 @@
 export enum RoleScope {
-    none,
-    local,
-    global
+  none = "None",
+  local = "Local",
+  global = "Global"
 }

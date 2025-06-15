@@ -1,13 +1,14 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpEventType} from '@angular/common/http';
 import {inject, Injectable, signal} from '@angular/core';
 import {Token} from '../models/token.model';
-import {catchError, map, Observable, of, tap, throwError} from 'rxjs';
+import {catchError, filter, map, Observable, of, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {CurrentUser} from '../models/current-user.model';
 import {CreateUserRequest} from '../models/create-user-request.model';
 import {Employee} from '../../../features/organization/employees/models/employee.model';
 import {EditAccountRequest} from '../models/edit-account-request.model';
 import {ChangePasswordRequest} from "../models/change-password-request.model";
+import {UploadPhotoResponse} from "../models/uplodad-profile-photo-response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,11 +29,7 @@ export class AccountService {
 
   private loadCurrentUser() {
     this.httpClient.get<CurrentUser>('system/account/current-user')
-      .subscribe({
-        next: (user) => {
-          this.setCurrentUser(user);
-        },
-      });
+      .subscribe(user => this.setCurrentUser(user));
   }
 
   private setCurrentUser(user: CurrentUser): void {
@@ -67,14 +64,9 @@ export class AccountService {
       .pipe(
         tap(user => {
           this.setCurrentUser(user);
-        }),
-        catchError(error => {
-          console.error('Error fetching user data:', error);
-          return throwError(() => error);
         })
       );
   }
-
 
   login(model: any) {
     return this.httpClient.post<Token>(`system/auth/token/generate`, model)
@@ -103,7 +95,7 @@ export class AccountService {
             this.loadCurrentUser();
           }
         })
-      )
+      );
   }
 
   refreshToken() {
@@ -150,5 +142,30 @@ export class AccountService {
           }
         })
       );
+  }
+
+  getProfilePhoto(employeeId: number) {
+    return this.httpClient.get(`system/account/photo`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      },
+      params: {
+        EmployeeId: employeeId
+      },
+      responseType: 'blob',
+      observe: 'response'
+    });
+  }
+
+  uploadProfilePhoto(formData: FormData) {
+    return this.httpClient.post(
+      `system/account/upload-photo`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'blob',
+        observe: 'response'
+      });
   }
 }
