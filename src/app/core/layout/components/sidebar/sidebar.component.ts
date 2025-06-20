@@ -22,20 +22,20 @@ export class SidebarComponent {
       link: '/administration'
     },
     {
-      label: 'Табель',
-      icon: 'bi bi-calendar',
-      link: '/timesheet'
-    },
-    {
       label: 'Відрядження',
       icon: 'bi bi-briefcase',
       link: '/trips'
     },
     {
+      label: 'Табель',
+      icon: 'bi bi-calendar',
+      link: '/timesheet'
+    },
+    {
       label: 'Довідник',
       icon: 'bi bi-journal-text',
       link: '/employees/contact-list'
-    },
+    }
   ]
 
   getMenuIconSrc(icon: string): string {
