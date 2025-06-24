@@ -4,13 +4,13 @@
 <div class="card shadow">
   <div class="card-header">
     <div class="row align-items-end">
-      <div class="col-2">
+      <div class="col-1">
         <strong>
           Код
         </strong>
       </div>
 
-      <div class="col">
+      <div class="col-2">
         <strong>
           Робочі години
         </strong>
@@ -26,14 +26,6 @@
         <strong>
           Опис
         </strong>
-      </div>
-
-      <div class="col-2">
-        <button
-          class="btn btn-primary"
-          (click)="openCreateShiftModal()">
-          Додати
-        </button>
       </div>
     </div>
   </div>
@@ -52,7 +44,7 @@
         class="row pt-3 pb-3"
         [ngClass]="{ 'bg-body-tertiary': index % 2 !== 0 }">
 
-        <div class="col-2">
+        <div class="col-1">
           <strong> {{ shift.code }}</strong>
         </div>
 
@@ -73,19 +65,22 @@
           <span> {{ shift.description }}</span>
         </div>
 
-        <div
-          class="col-1 icon-button"
-          (click)="openEditShiftModal(shift)">
-          <i class="bi bi-pencil"></i>
-        </div>
+        <div class="col-1 d-flex justify-content-between">
+          <i class="bi bi-pencil"
+             (click)="openEditShiftModal(shift)"
+          ></i>
 
-        <div
-          class="col-1 icon-button"
-          (click)="openDeleteConfirmation(shift)">
-          <i class="bi bi-trash"></i>
+          <i class="bi bi-trash"
+             (click)="openDeleteConfirmation(shift)"
+          ></i>
         </div>
       </div>
     }
   </div>
+
+  <button class="floating-action-button">
+    <i class="bi bi-plus"
+       (click)="openCreateShiftModal()"></i>
+  </button>
 </div>
 

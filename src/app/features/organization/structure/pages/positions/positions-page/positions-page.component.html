@@ -14,13 +14,6 @@
           Опис
         </strong>
       </div>
-
-      <div class="col-2">
-        <div class="unit-card__add-unit">
-          <button class="btn btn-primary" (click)="openCreatePositionModal()">Додати
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -43,18 +36,21 @@
           {{ position.description }}
         </div>
 
-        <div
-          class="col-1"
-          (click)="openEditPositionModal(position)">
-          <i class="bi bi-pencil"></i>
-        </div>
+        <div class="col-1 d-flex justify-content-between">
+          <i class="bi bi-pencil"
+             (click)="openEditPositionModal(position)"
+          ></i>
 
-        <div
-          class="col-1"
-          (click)="openDeleteConfirmation(position)">
-          <i class="bi bi-trash"></i>
+          <i class="bi bi-trash"
+             (click)="openDeleteConfirmation(position)"
+          ></i>
         </div>
       </div>
     }
   </div>
+
+  <button class="floating-action-button">
+    <i class="bi bi-plus"
+       (click)="openCreatePositionModal()"></i>
+  </button>
 </div>

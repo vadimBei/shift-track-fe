@@ -8,15 +8,6 @@
           Назва
         </strong>
       </div>
-
-      <div class="col-2">
-        <div class="unit-card__add-unit">
-          <button class="btn btn-primary"
-                  (click)="openCreateDepartmentModal()"
-          >Додати
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -48,16 +39,23 @@
               <strong>{{ department.name }}</strong>
             </div>
 
-            <div class="col-1" (click)="openEditDepartmentModal(department)">
-              <i class="bi bi-pencil"></i>
-            </div>
+            <div class="col-1 d-flex justify-content-between">
+              <i class="bi bi-pencil"
+                 (click)="openEditDepartmentModal(department)"
+              ></i>
 
-            <div class="col-1" (click)="openDeleteConfirmation(department)">
-              <i class="bi bi-trash"></i>
+              <i class="bi bi-trash"
+                 (click)="openDeleteConfirmation(department)"
+              ></i>
             </div>
           </div>
         }
       </div>
     }
   </div>
+
+  <button class="floating-action-button">
+    <i class="bi bi-plus"
+       (click)="openCreateDepartmentModal()"></i>
+  </button>
 </div>

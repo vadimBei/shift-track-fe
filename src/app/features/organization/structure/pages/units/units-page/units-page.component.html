@@ -20,14 +20,6 @@
           Опис
         </strong>
       </div>
-
-      <div class="col-2">
-        <button
-          class="btn btn-primary"
-          (click)="openCreateUnitModal()">
-          Додати
-        </button>
-      </div>
     </div>
   </div>
 
@@ -56,18 +48,21 @@
           {{ unit.description }}
         </div>
 
-        <div
-          class="col-1"
-          (click)="openEditUnitModal(unit)">
-          <i class="bi bi-pencil"></i>
-        </div>
+        <div class="col-1 d-flex justify-content-between">
+          <i class="bi bi-pencil"
+             (click)="openEditUnitModal(unit)"
+          ></i>
 
-        <div
-          class="col-1"
-          (click)="openDeleteConfirmation(unit)">
-          <i class="bi bi-trash"></i>
+          <i class="bi bi-trash"
+             (click)="openDeleteConfirmation(unit)"
+          ></i>
         </div>
       </div>
     }
   </div>
+
+  <button class="floating-action-button">
+    <i class="bi bi-plus"
+       (click)="openCreateUnitModal()"></i>
+  </button>
 </div>
