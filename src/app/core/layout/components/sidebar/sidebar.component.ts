@@ -17,9 +17,14 @@ import {NgClass} from "@angular/common";
 export class SidebarComponent {
   menuItems: MenuItem[] = [
     {
-      label: 'Адміністрування',
-      icon: 'bi bi-person-gear',
-      link: '/administration'
+      label: 'Табель',
+      icon: 'bi bi-calendar',
+      link: '/timesheet'
+    },
+    {
+      label: 'Відпустки',
+      icon: 'bi bi-airplane',
+      link: '/vacations'
     },
     {
       label: 'Відрядження',
@@ -27,14 +32,14 @@ export class SidebarComponent {
       link: '/trips'
     },
     {
-      label: 'Табель',
-      icon: 'bi bi-calendar',
-      link: '/timesheet'
-    },
-    {
       label: 'Довідник',
       icon: 'bi bi-journal-text',
       link: '/employees/contact-list'
+    },
+    {
+      label: 'Адміністрування',
+      icon: 'bi bi-person-gear',
+      link: '/administration'
     }
   ]
 

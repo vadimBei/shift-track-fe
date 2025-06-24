@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {EmployeesService} from "../../services/employees.service";
 import {DepartmentService} from "../../../structure/services/department.service";
@@ -22,7 +22,7 @@ import {CommonModule} from "@angular/common";
   templateUrl: './contacts-page.component.html',
   styleUrl: './contacts-page.component.scss'
 })
-export class ContactsPageComponent {
+export class ContactsPageComponent implements OnInit, OnDestroy {
   private readonly employeeService = inject(EmployeesService);
   private readonly departmentService = inject(DepartmentService);
   private readonly unitService = inject(UnitService);
@@ -133,7 +133,6 @@ export class ContactsPageComponent {
     this.unitService.getUnits()
       .pipe(
         catchError(error => {
-          console.error('Error fetching units:', error);
           return of([] as Unit[]);
         }),
         takeUntil(this.destroy$)
@@ -147,7 +146,6 @@ export class ContactsPageComponent {
     this.departmentService.getDepartmentsByUnitId(unitId)
       .pipe(
         catchError(error => {
-          console.error('Error fetching departments:', error);
           return of([] as Department[]);
         }),
         takeUntil(this.destroy$)
