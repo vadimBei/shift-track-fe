@@ -4,6 +4,7 @@ import {AccountService} from '../../services/account.service';
 import {Router} from '@angular/router';
 import {RouterLink} from '@angular/router';
 import {Subject, takeUntil} from 'rxjs';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login-page',
@@ -11,7 +12,8 @@ import {Subject, takeUntil} from 'rxjs';
   imports: [
     FormsModule,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
