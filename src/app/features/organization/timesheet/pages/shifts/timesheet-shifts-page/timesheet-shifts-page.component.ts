@@ -36,11 +36,6 @@ export class TimesheetShiftsPageComponent implements OnInit, OnDestroy {
     this.getShifts();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   getShifts() {
     this.isLoading.set(true);
 
@@ -102,5 +97,10 @@ export class TimesheetShiftsPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => this.getShifts()
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
