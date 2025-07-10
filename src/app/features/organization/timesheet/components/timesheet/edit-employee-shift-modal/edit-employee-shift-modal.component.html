@@ -1,0 +1,105 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        {{ employeeShiftDate  | date: 'dd.MM.yyyy' }}
+      </div>
+
+      <div class="col-1">
+        <button class="btn-close" (click)="bsModalRef.hide()">
+        </button>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col">
+        <h6 class="h6">{{ employee?.fullName }}</h6>
+      </div>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="save()">
+      <div class="row mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <select
+              class="form-select"
+              id="shiftSelect"
+              formControlName="shiftId">
+              <option [ngValue]="null">Оберіть зміну</option>
+              @for (shift of shifts(); track shift.id) {
+                <option [ngValue]="shift.id">
+                  {{ shift.code }}: {{ shift.description }}
+                </option>
+              }
+            </select>
+            <label
+              class="form-label"
+              for="shiftSelect">
+              Зміна:
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <div class="form-floating">
+            <input
+              class="form-control"
+              id="dateFrom"
+              type="date"
+              formControlName="dateFrom">
+
+            <label
+              class="form-label"
+              for="dateFrom">
+              Дата початку:
+            </label>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="form-floating">
+            <input
+              class="form-control"
+              id="dateTo"
+              type="date"
+              formControlName="dateTo">
+
+            <label
+              class="form-label"
+              for="dateTo">
+              Дата закінчення:
+            </label>
+          </div>
+        </div>
+      </div>
+
+      @if (form.errors?.['dateRange']) {
+        <div class="row">
+          <div class="col">
+            <small class="text-danger">
+              Дата закінчення не може бути раніше дати початку
+            </small>
+          </div>
+        </div>
+      }
+
+    </form>
+
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button
+          class="btn btn-lavender"
+          type="submit"
+          form=""
+          [class.disabled]="!form.valid"
+          [disabled]="!form.valid"
+        >Зберегти
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

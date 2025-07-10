@@ -11,6 +11,7 @@
 
 .main-menu-list a {
   text-decoration: none;
+  width: 90%;
 }
 
 .menu-item {
@@ -29,6 +30,11 @@
   &:hover,
   &:focus-visible {
     background: var(--primary-color);
-    color: var(--light-color);;
+    color: var(--light-color);
+    border-radius: 10px;
+
+    i {
+      color: white;
+    }
   }
 }

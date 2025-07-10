@@ -24,7 +24,7 @@ export class DepartmentsPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   private readonly departmentService = inject(DepartmentService);
-  readonly modalService = inject(BsModalService);
+  private readonly modalService = inject(BsModalService);
 
   groupedDepartments = signal<GroupedDepartmentsByUnit[]>([]);
   isLoading = signal(false);
@@ -54,7 +54,8 @@ export class DepartmentsPageComponent implements OnInit, OnDestroy {
   }
 
   openCreateDepartmentModal() {
-    const ref = this.modalService.show(CreateDepartmentModalComponent,
+    const ref = this.modalService.show(
+      CreateDepartmentModalComponent,
       {
         class: 'modal modal-dialog-centered',
         initialState: {
