@@ -1,14 +1,13 @@
-import {HttpClient, HttpEventType} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {inject, Injectable, signal} from '@angular/core';
 import {Token} from '../models/token.model';
-import {catchError, filter, map, Observable, of, tap, throwError} from 'rxjs';
+import {catchError, map, Observable, of, tap, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {CurrentUser} from '../models/current-user.model';
 import {CreateUserRequest} from '../models/create-user-request.model';
 import {Employee} from '../../../features/organization/employees/models/employee.model';
 import {EditAccountRequest} from '../models/edit-account-request.model';
 import {ChangePasswordRequest} from "../models/change-password-request.model";
-import {UploadPhotoResponse} from "../models/uplodad-profile-photo-response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +27,7 @@ export class AccountService {
   }
 
   private loadCurrentUser() {
-    this.httpClient.get<CurrentUser>('system/account/current-user')
+    this.httpClient.get<CurrentUser>('system/auth/account/current-user')
       .subscribe(user => this.setCurrentUser(user));
   }
 
@@ -60,7 +59,7 @@ export class AccountService {
       }
     }
 
-    return this.httpClient.get<CurrentUser>('system/account/current-user')
+    return this.httpClient.get<CurrentUser>('system/auth/account/current-user')
       .pipe(
         tap(user => {
           this.setCurrentUser(user);
@@ -69,7 +68,7 @@ export class AccountService {
   }
 
   login(model: any) {
-    return this.httpClient.post<Token>(`system/auth/token/generate`, model)
+    return this.httpClient.post<Token>(`system/auth/tokens/generate`, model)
       .pipe(
         map((token) => {
           if (token.tokenType && token.accessToken && token.refreshToken) {
@@ -87,7 +86,7 @@ export class AccountService {
   }
 
   register(request: CreateUserRequest) {
-    return this.httpClient.post<Token>(`system/account/register`, request)
+    return this.httpClient.post<Token>(`system/auth/account/register`, request)
       .pipe(
         map((token) => {
           if (token.tokenType && token.accessToken && token.refreshToken) {
@@ -100,7 +99,7 @@ export class AccountService {
 
   refreshToken() {
     return this.httpClient.post<Token>(
-      `system/auth/token/refresh`,
+      `system/auth/tokens/refresh`,
       {
         refreshToken: this.token()?.refreshToken
       })
@@ -124,7 +123,7 @@ export class AccountService {
   }
 
   updateAccount(request: EditAccountRequest) {
-    return this.httpClient.put<Employee>('system/account', request)
+    return this.httpClient.put<Employee>('system/auth/account', request)
       .pipe(
         tap(() => {
           this.loadCurrentUser();
@@ -133,7 +132,7 @@ export class AccountService {
   }
 
   changePassword(request: ChangePasswordRequest) {
-    return this.httpClient.post<Token>(`system/auth/password/change`, request)
+    return this.httpClient.post<Token>(`system/auth/account/password/change`, request)
       .pipe(
         map((token) => {
           if (token.tokenType && token.accessToken && token.refreshToken) {
@@ -145,7 +144,7 @@ export class AccountService {
   }
 
   getProfilePhoto(employeeId: number) {
-    return this.httpClient.get(`system/account/photo`, {
+    return this.httpClient.get(`system/auth/account/photo`, {
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache'
@@ -160,7 +159,7 @@ export class AccountService {
 
   uploadProfilePhoto(formData: FormData) {
     return this.httpClient.post(
-      `system/account/upload-photo`,
+      `system/auth/account/upload-photo`,
       formData,
       {
         reportProgress: true,

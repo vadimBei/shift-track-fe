@@ -10,7 +10,7 @@ import {EditEmployeeRequest} from '../models/edit-employee-request';
 export class EmployeesService {
   private httpClient = inject(HttpClient);
 
-  private path = 'system/user/employees';
+  private path = 'organization/employees';
 
   getAllEmployees(request: AllEmployeesRequest) {
     let filter = new HttpParams();
